@@ -4,7 +4,7 @@ NFT MARKET NOTES
 npm install next
 
 # init node
-npx hardhat init 
+npx hardhat node 
 
 # deploy node
 npx hardhat run scripts/deploy.js --network localhost
