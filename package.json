@@ -13,6 +13,7 @@
     "axios": "^1.6.2",
     "ether": "^0.0.9",
     "framer-motion": "^7.2.1",
+    "fs": "^0.0.1-security",
     "ipfs-http-client": "^60.0.1",
     "next": "^12.2.5",
     "react": "18.2.0",

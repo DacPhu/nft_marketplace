@@ -5,24 +5,11 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import {create as ipfsHttpClient} from "ipfs-http-client";
 
-const projectId = "";
-const projectSecretKey = "";
-const auth = `Basic${Buffer.from(`${projectId}:${projectSecretKey}`).toString("base64")}`;
-
-const subdomain = "";
-
-const client = ipfsHttpClient({
-    host: "infura-ipfs.io",
-    port: 5001,
-    protocol: "https",
-    headers:{
-        authorization: auth,
-    },
-});
-
+const FormData = require("form-data");
+const JWT_IMAGE = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiOGFjMGNjYjYwNTYzODI4ZTgzMiIsInNjb3BlZEtleVNlY3JldCI6IjYwZmU1M2U0Yjc0YjM3YjM5MmZiMDE0N2U4YTk5NTM3YWYxMmFlOTlmOWM4ZjVjYTg5Nzk0NTM0NjhkYzlkZDAiLCJpYXQiOjE3MDI1NDc4NDd9.KOotMzKqWDIEvACWWl4qhs0fJlO-MGiSH1tfbRVWpEM'
+const JWT_META = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1NGE3ZWJiYWMzZDQ3MGE1NDE1MSIsInNjb3BlZEtleVNlY3JldCI6IjgwN2MwNDdmNDNkMjI2NDhhMzQ3YTBjZmVhOGU3MWVhZTU3OTIxZDM3ZTRhYTEwZTc4YWYzMWE2OGI3MDExMzciLCJpYXQiOjE3MDI1NDc5MDh9.ZGOw-cX_PC3ibP5OWDj5YSpCOfbeCR9ojjiG0rgGgVE'
 // INTERNAL IMPORT 
 import { NFTMarketplaceAddress, NFTMarketplaceABI } from './constants';
-
 
 //---FETCHING SMART CONTRACT 
 const fetchContract = (signerOrProvider) => new ethers.Contract(
@@ -99,32 +86,99 @@ export const NFTMarketplaceProvider = (({children}) => {
 
     //---UPLOAD TO IPFS FUNCTION
     const uploadToIPFS = async(file) =>{
-        try {
-            const added = await client.add({content: file});
-            const url = `${subdomain}/ipfs/${added.path}`;
-            return url;
-        } catch (error) {
-            console.log("Error Uploading to IPFS");
-        }
-    };
+        const formData = new FormData();
+        formData.append('file', file)
+        
+        const pinataOptions = JSON.stringify({
+            cidVersion: 0,
+        })
+        formData.append('pinataOptions', pinataOptions);
 
+        const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+
+        try {
+            const response = await axios.post(url, formData, {
+                maxBodyLength: "Infinity",
+                headers: {
+                'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+                Authorization: JWT_IMAGE
+                }
+            });
+            console.log(response.data);
+
+            if (response.status === 200) {
+                const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+                
+                return ipfsUrl;
+            } else {
+                throw new Error('Failed to upload file to IPFS');
+            }
+        } catch (error) {
+            throw new Error('Failed to upload file to IPFS: ' + error.message);
+        }
+        
+    };
+    
     //---CREATENFT FUNCTION
     const createNFT = async(name, price, image, description, router) => {
-
-        if(!name || !description || !price || !fileUrl)
-            return console.log("Data is missing");
-
-        const data = JSON.stringify({name, description, image: fileUrl});
-
         try {
-            const added = await client.add(data);
-
-            const url = `${subdomain}/ipfs/${added.path}`;
-
-            await createSale(url, price);
-        } catch (error) {
-            console.log(error);
-        }
+            if (!name || !description || !price || !image) {
+              console.error("Data is missing");
+              return;
+            }
+        
+            // Constructing the metadata for Pinata
+            const pinataMetadata = JSON.stringify({
+              name: name.toString('base64'),
+              description: description.toString('base64'),
+              image: image.toString('base64'), // Assuming image is a valid URL or a base64-encoded string
+            });
+        
+            // Constructing the options for Pinata
+            const pinataOptions = {
+              cidVersion: 0,
+            };
+        
+            // Creating a FormData object to send as multipart/form-data
+            const formData = new FormData();
+        
+            // Appending JSON stringified metadata to the FormData
+            formData.append("pinataMetadata", pinataMetadata);
+        
+            // Appending JSON stringified options to the FormData
+            formData.append("pinataOptions", JSON.stringify(pinataOptions));
+            
+            // Making a POST request to Pinata to pin the file to IPFS
+            const response = await axios.post(
+              "https://api.pinata.cloud/pinning/pinFileToIPFS",
+              formData,
+              {
+                maxBodyLength: "Infinity",
+                headers: {
+                  "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+                  Authorization: JWT_META, // Replace with your actual JWT token
+                },
+              }
+            );
+            
+            // Log the response from Pinata
+            console.log(response.data);
+        
+            if (response.status === 200) {
+              // Constructing the IPFS URL
+              const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        
+              // Call the createSale function with the constructed IPFS URL and price
+              await createSale(ipfsUrl, price);
+        
+              // Redirect to another page using the router (if needed)
+              router.push("/success"); // Replace with the actual path you want to redirect to
+            } else {
+              throw new Error("Failed to upload file to IPFS");
+            }
+          } catch (error) {
+            console.error("Fail to create NFT", error);
+          }
     };
 
     //---CREATESALE FUNCTION

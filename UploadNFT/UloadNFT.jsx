@@ -203,7 +203,7 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
               <input
                 type="text"
                 placeholder="Price"
-                onChange={(e) => setProperties(e.target.value)}
+                onChange={(e) => setPrice(e.target.value)}
               />
             </div>
           </div>

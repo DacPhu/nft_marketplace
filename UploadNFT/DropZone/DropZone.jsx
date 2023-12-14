@@ -33,6 +33,7 @@ const DropZone = ({
     accept: "image/*",
     maxSize: 5000000,
   });
+  
   return (
     <div className={Style.DropZone}>
       <div className={Style.DropZone_box} {...getRootProps()}>

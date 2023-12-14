@@ -20,8 +20,13 @@ const searchPage = () => {
 
   useEffect(() => {
     fetchNFTs().then((items) => {
-      setNfts(items.reverse());
-      setNftsCopy(items);
+      if (Array.isArray(items)) {
+        setNfts(items.reverse());
+        setNftsCopy(items);
+        console.log(nfts);
+      } else {
+        console.error('Invalid items format:', items);
+      }
     })
   });
 
