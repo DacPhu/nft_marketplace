@@ -29,16 +29,16 @@ const Home = () => {
   return (
     <div className={Style.homePage}>
       <HeroSection />
-      <Service />
+      {/* <Service /> */}
       <BigNFTSilder />
-      <Title
+      {/* <Title
         heading="Audio Collection"
         paragraph="Discover the most outstanding NFTs in all topics of life."
-      />
-      <AudioLive />
+      /> */}
+      {/* <AudioLive /> */}
       <FollowerTab />
-      <Slider />
-      <Collection />
+      {/* <Slider /> */}
+      {/* <Collection /> */}
       <Title
         heading="Featured NFTs"
         paragraph="Discover the most outstanding NFTs in all topics of life."
@@ -50,9 +50,9 @@ const Home = () => {
         paragraph="Explore the NFTs in the most featured categories."
       />
       <Category />
-      <Subscribe />
-      <Brand />
-      <Video />
+      {/* <Subscribe />
+      <Brand /> */}
+      {/* <Video /> */}
     </div>
   );
 };
