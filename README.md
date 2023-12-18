@@ -12,3 +12,10 @@ npx hardhat run scripts/deploy.js --network localhost
 # run web
 npm run dev
 
+# essential documents
+https://docs.pinata.cloud/docs/getting-started
+https://docs.ethers.org/v6/migrating/#migrate-providers
+https://hardhat.org/hardhat-runner/docs/getting-started#overview
+https://docs.openzeppelin.com/contracts/2.x/api/token/erc721#IERC721-Approval-address-address-uint256-
+https://github.com/OpenZeppelin/openzeppelin-contracts
+

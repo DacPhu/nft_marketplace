@@ -1,9 +1,9 @@
 import React ,{useState, useEffect, useContext} from 'react';
-import Wenb3Modal from "web3modal";
+import Web3Modal from "web3modal";
+import Web3 from "web3";
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import {create as ipfsHttpClient} from "ipfs-http-client";
 
 const FormData = require("form-data");
 const JWT_IMAGE = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MDEwNzVjNWNhYzYyOWY4NTJkZSIsInNjb3BlZEtleVNlY3JldCI6ImQ4OWI4MjliMjY5ZmY3NmFmMDIxMmM2ZjdiYTA3NzhiOWVhZjVhZjkxZmEwN2E2N2MwNzIyMzJkMjY0ZTlhMzgiLCJpYXQiOjE3MDI4Nzg3MzB9.YrUjdRI0RjrPaL1ytGXqdIVqP_6Y78DQWzQxBzP3U3Q'
@@ -22,20 +22,21 @@ const fetchContract = (signerOrProvider) => new ethers.Contract(
 //---CONNECTING WITH SMART CONTRACT
 const connectingWithSmartContract = async ()=>{
     try {
-        const web3Modal = new Wenb3Modal();
+        const web3Modal = new Web3Modal();
         const connection = await web3Modal.connect();
         const provider = new ethers.BrowserProvider(connection);
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
         const contract = fetchContract(signer);
+        console.log(contract);
         return contract;
     } catch (error) {
-        console.log("Something went wrong while connecting with smart contract.");
+        console.log("Something went wrong while connecting with smart contract.", error);
     }
 }
 
 export const NFTMarketplaceContext = React.createContext();
 
-export const NFTMarketplaceProvider = (({children}) => {
+export const NFTMarketplaceProvider = ({children}) => {
     const titleData = "Discover, collect, and sell NFTs";
 
     //---USESTATE
@@ -47,11 +48,11 @@ export const NFTMarketplaceProvider = (({children}) => {
         try {
             if(!window.ethereum)
                 return console.log("Install MetaMask");
-
             const accounts = await window.ethereum.request({
                 method: "eth_accounts"
             });
-
+            console.log(accounts);
+            
             if(accounts.length){
                 setcurrentAccount(accounts[0]);
             }
@@ -60,7 +61,7 @@ export const NFTMarketplaceProvider = (({children}) => {
             }
             console.log(currentAccount);
         } catch (error) {
-            console.log("Something wrong while connecting to wallet.");
+            console.log("Something wrong while connecting to wallet.", error);
         }
     };
 
@@ -165,8 +166,8 @@ export const NFTMarketplaceProvider = (({children}) => {
               // Call the createSale function with the constructed IPFS URL and price
               await createSale(ipfsUrl, price);
         
-              // Redirect to another page using the router (if needed)
-              router.push("/success"); // Replace with the actual path you want to redirect to
+            //   // Redirect to another page using the router (if needed)
+            //   router.push("/success"); // Replace with the actual path you want to redirect to
             } else {
               throw new Error("Failed to upload file to IPFS");
             }
@@ -180,21 +181,24 @@ export const NFTMarketplaceProvider = (({children}) => {
         try {
             const price = ethers.parseUnits(formInputPrice, "ether");
             const contract = await connectingWithSmartContract();
-
+            console.log(NFTMarketplaceABI);
+            // await contract["getListingPrice()"]();
+            console.log(contract);
             const listingPrice = await contract.getListingPrice();
-            
+            // console.log(listingPrice);
+            // const listingPrice = 1n;
             const transaction = !isReselling 
                 ? await contract.createToken(url, price, {
                     value: listingPrice.toString(),
                 })
                 : await contract.reSellToken(url, price, {
-                    value: listingPrice.toString(),
+                    value: (listingPrice.toString()),
                 });
 
             await transaction.wait();
-            router.push('/searchPage');
+            console.log(transaction);
         } catch (error) {
-            console.log("Error while creating sale");
+            console.log("Error while creating sale", error);
         }
     };
 
@@ -236,9 +240,9 @@ export const NFTMarketplaceProvider = (({children}) => {
         }
     };
 
-    useEffect(() => {
-        fetchNFTs();
-    }, [])
+    // useEffect(() => {
+    //     fetchNFTs();
+    // }, [])
 
     //---FETCHING MY NFTs OR LISTED NFTs
     const fetchMyNFTsOrListedNTFs = async(type) =>{
@@ -293,19 +297,21 @@ export const NFTMarketplaceProvider = (({children}) => {
     };
 
     return (
-        <NFTMarketplaceContext.Provider value = {{
-            checkIfWalletConnected,
-            connectWallet,
-            uploadToIPFS,
-            createNFT,
-            fetchNFTs,
-            fetchMyNFTsOrListedNTFs,
-            buyNFT,
-            currentAccount,
-            titleData
-        }}
+        <NFTMarketplaceContext.Provider 
+            value = {{
+                // checkContract,
+                checkIfWalletConnected,
+                connectWallet,
+                uploadToIPFS,
+                createNFT,
+                fetchNFTs,
+                fetchMyNFTsOrListedNTFs,
+                buyNFT,
+                currentAccount,
+                titleData
+            }}
         >
             {children}
         </NFTMarketplaceContext.Provider>
     )
-})
+}
