@@ -6,8 +6,9 @@ import axios from 'axios';
 import {create as ipfsHttpClient} from "ipfs-http-client";
 
 const FormData = require("form-data");
-const JWT_IMAGE = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiOGFjMGNjYjYwNTYzODI4ZTgzMiIsInNjb3BlZEtleVNlY3JldCI6IjYwZmU1M2U0Yjc0YjM3YjM5MmZiMDE0N2U4YTk5NTM3YWYxMmFlOTlmOWM4ZjVjYTg5Nzk0NTM0NjhkYzlkZDAiLCJpYXQiOjE3MDI1NDc4NDd9.KOotMzKqWDIEvACWWl4qhs0fJlO-MGiSH1tfbRVWpEM'
+const JWT_IMAGE = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MDEwNzVjNWNhYzYyOWY4NTJkZSIsInNjb3BlZEtleVNlY3JldCI6ImQ4OWI4MjliMjY5ZmY3NmFmMDIxMmM2ZjdiYTA3NzhiOWVhZjVhZjkxZmEwN2E2N2MwNzIyMzJkMjY0ZTlhMzgiLCJpYXQiOjE3MDI4Nzg3MzB9.YrUjdRI0RjrPaL1ytGXqdIVqP_6Y78DQWzQxBzP3U3Q'
 const JWT_META = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1NGE3ZWJiYWMzZDQ3MGE1NDE1MSIsInNjb3BlZEtleVNlY3JldCI6IjgwN2MwNDdmNDNkMjI2NDhhMzQ3YTBjZmVhOGU3MWVhZTU3OTIxZDM3ZTRhYTEwZTc4YWYzMWE2OGI3MDExMzciLCJpYXQiOjE3MDI1NDc5MDh9.ZGOw-cX_PC3ibP5OWDj5YSpCOfbeCR9ojjiG0rgGgVE'
+
 // INTERNAL IMPORT 
 import { NFTMarketplaceAddress, NFTMarketplaceABI } from './constants';
 
@@ -95,7 +96,7 @@ export const NFTMarketplaceProvider = (({children}) => {
         formData.append('pinataOptions', pinataOptions);
 
         const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
-
+        
         try {
             const response = await axios.post(url, formData, {
                 maxBodyLength: "Infinity",
@@ -128,34 +129,27 @@ export const NFTMarketplaceProvider = (({children}) => {
             }
         
             // Constructing the metadata for Pinata
-            const pinataMetadata = JSON.stringify({
-              name: name.toString('base64'),
-              description: description.toString('base64'),
-              image: image.toString('base64'), // Assuming image is a valid URL or a base64-encoded string
-            });
-        
-            // Constructing the options for Pinata
-            const pinataOptions = {
-              cidVersion: 0,
-            };
-        
-            // Creating a FormData object to send as multipart/form-data
-            const formData = new FormData();
-        
-            // Appending JSON stringified metadata to the FormData
-            formData.append("pinataMetadata", pinataMetadata);
+            const data = JSON.stringify({
+                pinataContent: {
+                  name: name,
+                  description: description,
+                  image: image,
+                },
+                pinataMetadata: {
+                  name: "metadata.json"
+                }
+              })
         
             // Appending JSON stringified options to the FormData
-            formData.append("pinataOptions", JSON.stringify(pinataOptions));
-            
+            // formData.append("pinataOptions", JSON.stringify(pinataOptions));
             // Making a POST request to Pinata to pin the file to IPFS
             const response = await axios.post(
-              "https://api.pinata.cloud/pinning/pinFileToIPFS",
-              formData,
+              "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+              data,
               {
                 maxBodyLength: "Infinity",
                 headers: {
-                  "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+                  "Content-Type": `application/json`,
                   Authorization: JWT_META, // Replace with your actual JWT token
                 },
               }
