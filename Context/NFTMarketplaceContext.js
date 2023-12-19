@@ -180,9 +180,7 @@ export const NFTMarketplaceProvider = ({children}) => {
         try {
             const price = ethers.parseUnits(formInputPrice, "ether");
             const contract = await connectingWithSmartContract();
-            console.log(NFTMarketplaceABI);
             // await contract["getListingPrice()"]();
-            console.log(contract);
             const listingPrice = await contract.getListingPrice();
             // console.log(listingPrice);
             // const listingPrice = 1n;
@@ -222,6 +220,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                     );
 
                     return {
+                        name,
                         price,
                         tokenId: tokenId,
                         seller,
@@ -250,7 +249,7 @@ export const NFTMarketplaceProvider = ({children}) => {
 
             const data = type == "fetchItemsListed" 
                 ? await contract.fetchItemsListed()
-                : await contract.fetchMyNFT();
+                : await contract.fetchMyNFTs();
 
             const items = await Promise.all(
                 data.map(async ({tokenId, seller, owner, price: unformattedPrice}) => {
@@ -283,22 +282,24 @@ export const NFTMarketplaceProvider = ({children}) => {
     const buyNFT = async (nft) => {
         try {
             const contract = await connectingWithSmartContract();
-            const price = ethers.parseUnits(nft.price.toString(), "ether");
+            console.log(nft.price)
+            const price = ethers.parseUnits(BigInt(price).toString(), "ether");
+            // const price = BigInt(price);
             
             const transaction = await contract.createMarketSale(nft.tokenId, {
                 value: price,
             });
 
             await transaction.wait();
+            router.push("/author");
         } catch (error) {
-            console.log("Error while buying NFTs")
+            console.log("Error while buying NFTs", error)
         }
     };
 
     return (
         <NFTMarketplaceContext.Provider 
             value = {{
-                // checkContract,
                 checkIfWalletConnected,
                 connectWallet,
                 uploadToIPFS,

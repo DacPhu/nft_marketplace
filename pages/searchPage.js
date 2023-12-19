@@ -20,32 +20,28 @@ const searchPage = () => {
 
   useEffect(() => {
     fetchNFTs().then((items) => {
-      if (Array.isArray(items)) {
         setNfts(items.reverse());
         setNftsCopy(items);
-      } else {
-        console.error('Invalid items format:', items);
-      }
     });
   }, []);
 
   const onHandleSearch = (value) => {
     const filteredNFTs = nfts.filter(({name}) => 
-      String(name).toLowerCase().includes(value.toLowerCase()));
+      name.toLowerCase().includes(value.toLowerCase()));
 
-    if(filteredNFTs.length == 0){
+    if(filteredNFTs.length === 0){
       setNfts(nftsCopy);
     }
     else{
       setNfts(filteredNFTs);
     }
-  }
+  };
 
   const onClearSearch = () => {
     if(nfts.length && nftsCopy.length){
       setNfts(nftsCopy);
     }
-  }
+  };
 
   // const collectionArray = [
   //   images.nft_image_1,
