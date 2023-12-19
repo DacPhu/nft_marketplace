@@ -51,7 +51,6 @@ export const NFTMarketplaceProvider = ({children}) => {
             const accounts = await window.ethereum.request({
                 method: "eth_accounts"
             });
-            console.log(accounts);
             
             if(accounts.length){
                 setcurrentAccount(accounts[0]);
@@ -196,7 +195,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                 });
 
             await transaction.wait();
-            console.log(transaction);
+            router.push('/searchPage');
         } catch (error) {
             console.log("Error while creating sale", error);
         }
@@ -208,7 +207,7 @@ export const NFTMarketplaceProvider = ({children}) => {
             const provider = new ethers.JsonRpcProvider();
             const contract = fetchContract(provider);
 
-            const data = await contract.fetchMarketItem();
+            const data = await contract.fetchMarketItems();
 
             const items = await Promise.all(
                 data.map(async({tokenId, seller, owner, price: unformattedPrice}) => {
@@ -224,7 +223,7 @@ export const NFTMarketplaceProvider = ({children}) => {
 
                     return {
                         price,
-                        tokenId: tokenId.toNumber(),
+                        tokenId: tokenId,
                         seller,
                         owner,
                         image,
@@ -236,13 +235,13 @@ export const NFTMarketplaceProvider = ({children}) => {
 
             return items;
         } catch (error) {
-            console.log("Error while fetching NFTs");
+            console.log("Error while fetching NFTs", error);
         }
     };
 
-    // useEffect(() => {
-    //     fetchNFTs();
-    // }, [])
+    useEffect(() => {
+        fetchNFTs();
+    }, [])
 
     //---FETCHING MY NFTs OR LISTED NFTs
     const fetchMyNFTsOrListedNTFs = async(type) =>{

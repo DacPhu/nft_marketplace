@@ -106,7 +106,7 @@ const NavBar = () => {
             </p>
           </div>
           <div className={Style.navbar_container_right_discover}>
-            <p onClick={() => window.location.href = "/collection"}
+            <p onClick={() => window.location.href = "/searchPage"}
             style={{ color: "#4c5773", cursor: 'pointer' }}
             onMouseOver={(e) => e.target.style.color = 'blue'}
             onMouseOut={(e) => e.target.style.color = "#4c5773"}>
