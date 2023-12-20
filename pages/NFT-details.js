@@ -24,6 +24,7 @@ const NFTDetails = () => {
   useEffect(() => {
     if(!router.isReady) return;
     setNft(router.query);
+    console.log(nft.tokenId);
   }, [router.isReady]);
 
   return (

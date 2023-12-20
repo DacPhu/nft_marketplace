@@ -11,6 +11,7 @@ const JWT_META = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYX
 
 // INTERNAL IMPORT 
 import { NFTMarketplaceAddress, NFTMarketplaceABI } from './constants';
+import { BigNumber } from 'alchemy-sdk';
 
 //---FETCHING SMART CONTRACT 
 const fetchContract = (signerOrProvider) => new ethers.Contract(
@@ -27,7 +28,6 @@ const connectingWithSmartContract = async ()=>{
         const provider = new ethers.BrowserProvider(connection);
         const signer = await provider.getSigner();
         const contract = fetchContract(signer);
-        console.log(contract);
         return contract;
     } catch (error) {
         console.log("Something went wrong while connecting with smart contract.", error);
@@ -180,10 +180,8 @@ export const NFTMarketplaceProvider = ({children}) => {
         try {
             const price = ethers.parseUnits(formInputPrice, "ether");
             const contract = await connectingWithSmartContract();
-            // await contract["getListingPrice()"]();
             const listingPrice = await contract.getListingPrice();
-            // console.log(listingPrice);
-            // const listingPrice = 1n;
+
             const transaction = !isReselling 
                 ? await contract.createToken(url, price, {
                     value: listingPrice.toString(),
@@ -191,6 +189,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                 : await contract.reSellToken(url, price, {
                     value: (listingPrice.toString()),
                 });
+            id = transaction;
 
             await transaction.wait();
             router.push('/searchPage');
@@ -222,7 +221,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                     return {
                         name,
                         price,
-                        tokenId: tokenId,
+                        tokenId: Number(tokenId),
                         seller,
                         owner,
                         image,
@@ -247,7 +246,7 @@ export const NFTMarketplaceProvider = ({children}) => {
         try {
             const contract = await connectingWithSmartContract();
 
-            const data = type == "fetchItemsListed" 
+            const data = (type == "fetchItemsListed" )
                 ? await contract.fetchItemsListed()
                 : await contract.fetchMyNFTs();
 
@@ -262,8 +261,9 @@ export const NFTMarketplaceProvider = ({children}) => {
                         "ether"
                     );
                     return {
+                        name,
                         price, 
-                        tokenId: tokenId.toNumber(),
+                        tokenId: Number(tokenId),
                         seller,
                         owner,
                         image,
@@ -282,9 +282,7 @@ export const NFTMarketplaceProvider = ({children}) => {
     const buyNFT = async (nft) => {
         try {
             const contract = await connectingWithSmartContract();
-            console.log(nft.price)
-            const price = ethers.parseUnits(BigInt(price).toString(), "ether");
-            // const price = BigInt(price);
+            const price = ethers.parseUnits(nft.price, "ether");
             
             const transaction = await contract.createMarketSale(nft.tokenId, {
                 value: price,
