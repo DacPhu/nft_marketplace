@@ -1,15 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { FaUserAlt, FaRegImage, FaUserEdit, FaCog, FaLanguage, FaAddressBook, FaUsers } from "react-icons/fa";
-import { MdHelpCenter } from "react-icons/md";
-import { TbDownloadOff, TbDownload } from "react-icons/tb";
+import { FaUserAlt, FaRegImage, FaUserEdit, FaCog, FaLanguage, FaAddressBook, FaUsers, FaSignOutAlt } from "react-icons/fa";
+import { TbDownload } from "react-icons/tb";
 import Link from "next/link";
-
-//INTERNAL IMPORT
 import Style from "./Profile.module.css";
 import images from "../../../img";
 
 const Profile = () => {
+  const [checked, setChecked] = React.useState(false);
   return (
     <div className={Style.profile}>
       <div className={Style.profile_account}>
@@ -74,11 +72,12 @@ const Profile = () => {
 
         
           <div className={Style.profile_menu_one_item}>
-            <TbDownload />
+            <FaSignOutAlt />
             <p>
-              <Link href={{ pathname: "/disconnet" }}>Disconnet</Link>
+              <Link href={{ pathname: "/logout" }}>Log out</Link>
             </p>
           </div>
+          
         </div>
       </div>
   );

@@ -1,53 +1,42 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+
 //----IMPORT ICON
 import { MdNotifications } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
-import { CgMenuRight } from "react-icons/cg";
+import { CgMenuLeft, CgMenuRight } from "react-icons/cg";
+
+import { useRouter } from 'next/router';
+import { Switch } from "@mui/joy";
 
 //INTERNAL IMPORT
 import Style from "./NavBar.module.css";
-import { Notification, Profile, SideBar, More } from "./index";
+import { Discover, HelpCenter, Notification, Profile, SideBar, More } from "./index";
 import { Button } from "../componentsindex";
 import images from "../../img";
 
 //IMPORT FROM SMART CONTRACT
 import { NFTMarketplaceContext } from "../../Context/NFTMarketplaceContext";
+import { TbTextColor } from "react-icons/tb";
 
-const NavBar = () => {
-  const moreRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Close the More menu if the click is outside of the More menu
-      if (moreRef.current && !moreRef.current.contains(event.target)) {
-        setOpenMore(false);
-      }
-    };
-
-    // Add event listener for clicks outside of the More menu
-    document.addEventListener("mousedown", handleClickOutside);
+const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
   //----USESTATE COMPONNTS
- 
-  
-  return () => {
-    // Cleanup the event listener on component unmount
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [moreRef]);
+  const [notification, setNotification] = useState(false);
+  const [profile, setProfile] = useState(false);
+  const [openSideMenu, setOpenSideMenu] = useState(false);
+  const [openMore, setOpenMore] = useState(false);
 
-const [notification, setNotification] = useState(false);
-const [profile, setProfile] = useState(false);
-const [openSideMenu, setOpenSideMenu] = useState(false);
-const [openMore, setOpenMore] = useState(false);
   const openMenu = (e) => {
     const btnText = e.target.innerText;
     if (btnText == "More") {
-      setOpenMore((prevState) => !prevState);
       setNotification(false);
       setProfile(false);
+      setOpenMore(true);
     }
     else {
+      setNotification(false);
+      setProfile(false);
       setOpenMore(false);
     }
   };
@@ -129,15 +118,13 @@ const [openMore, setOpenMore] = useState(false);
           {/* HELP CENTER MENU */}
 
           <div className={Style.navbar_container_right_more}>
-            <span onClick={(e) => openMenu(e)}
-            ref={moreRef}
+            <p onClick={(e) => openMenu(e)}
             style={{ color: "#4c5773", cursor: 'pointer' }}
             onMouseOver={(e) => e.target.style.color = 'blue'}
             onMouseOut={(e) => e.target.style.color = "#4c5773"}
             >
               More
-            </span>
-            
+            </p>
             {openMore && (
               <div className={Style.navbar_container_right_more_box}>
                 <More />
@@ -163,6 +150,18 @@ const [openMore, setOpenMore] = useState(false);
                   <Button btnName="Create" handleClick={() => { }} />
                 </a>
               )}
+          </div>
+          <div className="navbar_container_right_switch">
+            <Switch
+              onChange={() => {
+                switchTheme();
+                handleSwitchChange();
+              }}
+              checked={switchState}
+              color={switchState ? 'warning' : 'neutral'}
+              variant={switchState ? 'solid' : 'outlined'}
+              endDecorator={switchState ? 'Light' : 'Dark'}
+            />
           </div>
 
           {/* USER PROFILE */}
