@@ -223,6 +223,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                     );
 
                     return {
+                        name,
                         price,
                         tokenId: tokenId.toNumber(),
                         seller,
