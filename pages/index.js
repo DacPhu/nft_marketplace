@@ -18,6 +18,7 @@ import {
   Brand,
   Video,
 } from "../components/componentsindex";
+import { getTopCreators } from "../TopCreator/TopCreator";
 import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
 
 const Home = () => {
@@ -39,6 +40,9 @@ const Home = () => {
     });
   }, []);
 
+  // CREATOR LIST
+  const creators = getTopCreators(nfts);
+
   return (
     <div className={Style.homePage}>
       <HeroSection />
@@ -49,7 +53,7 @@ const Home = () => {
         paragraph="Discover the most outstanding NFTs in all topics of life."
       /> */}
       {/* <AudioLive /> */}
-      <FollowerTab />
+      <FollowerTab TopCreator={creators}/>
       {/* <Slider /> */}
       {/* <Collection /> */}
       <Title
