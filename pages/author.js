@@ -51,19 +51,19 @@ const author = () => {
 
   //IMPORT SMART CONTRACT DATA
 
-  const {fetchMyNFTsOrListedNFTs, currentAccount} = useContext(NFTMarketplaceContext);
+  const {fetchMyNFTsOrListedNTFs, currentAccount} = useContext(NFTMarketplaceContext);
 
   const [nfts, setNfts] = useState([]);
   const [myNFTs, setMyNFTs] = useState([]);
 
   useEffect(() => {
-    fetchMyNFTsOrListedNFTs("fetchItemsListed").then((items) => {
+    fetchMyNFTsOrListedNTFs("fetchItemsListed").then((items) => {
       setNfts(items);
     });
   }, []);
 
   useEffect(() => {
-    fetchMyNFTsOrListedNFTs("fetchMyNFTs").then((items) => {
+    fetchMyNFTsOrListedNTFs("fetchMyNFTs").then((items) => {
       setMyNFTs(items);
     });
   }, []);

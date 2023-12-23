@@ -164,7 +164,7 @@ export const NFTMarketplaceProvider = ({children}) => {
         
               // Call the createSale function with the constructed IPFS URL and price
               await createSale(ipfsUrl, price);
-        
+              router.push('/searchPage');
             //   // Redirect to another page using the router (if needed)
             //   router.push("/success"); // Replace with the actual path you want to redirect to
             } else {
@@ -186,13 +186,12 @@ export const NFTMarketplaceProvider = ({children}) => {
                 ? await contract.createToken(url, price, {
                     value: listingPrice.toString(),
                 })
-                : await contract.reSellToken(url, price, {
+                : await contract.resellToken(id, price, {
                     value: (listingPrice.toString()),
                 });
             id = transaction;
 
             await transaction.wait();
-            router.push('/searchPage');
         } catch (error) {
             console.log("Error while creating sale", error);
         }
@@ -305,6 +304,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                 fetchNFTs,
                 fetchMyNFTsOrListedNTFs,
                 buyNFT,
+                createSale,
                 currentAccount,
                 titleData
             }}
