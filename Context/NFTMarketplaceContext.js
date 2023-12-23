@@ -181,7 +181,6 @@ export const NFTMarketplaceProvider = ({children}) => {
             const price = ethers.parseUnits(formInputPrice, "ether");
             const contract = await connectingWithSmartContract();
             const listingPrice = await contract.getListingPrice();
-
             const transaction = !isReselling 
                 ? await contract.createToken(url, price, {
                     value: listingPrice.toString(),
@@ -189,7 +188,6 @@ export const NFTMarketplaceProvider = ({children}) => {
                 : await contract.resellToken(id, price, {
                     value: (listingPrice.toString()),
                 });
-            id = transaction;
 
             await transaction.wait();
         } catch (error) {
@@ -216,7 +214,6 @@ export const NFTMarketplaceProvider = ({children}) => {
                         unformattedPrice.toString(),
                         "ether"
                     );
-
                     return {
                         name,
                         price,
@@ -245,7 +242,7 @@ export const NFTMarketplaceProvider = ({children}) => {
         try {
             const contract = await connectingWithSmartContract();
 
-            const data = (type == "fetchItemsListed" )
+            const data = (type == "fetchItemsListed")
                 ? await contract.fetchItemsListed()
                 : await contract.fetchMyNFTs();
 
@@ -255,7 +252,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                     const {
                         data: {image, name, description}
                     } = await axios.get(tokenURI);
-                    const price = ethers.parseUnits(
+                    const price = ethers.formatUnits(
                         unformattedPrice.toString(),
                         "ether"
                     );

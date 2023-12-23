@@ -75,6 +75,7 @@ const AuthorProfileCard = ({currentAccount}) => {
               type="text"
               value={currentAccount}
               id="myInput"
+              onChange={() => (any)}
             />
             <FiCopy
               onClick={() => copyAddress()}

@@ -43,11 +43,11 @@ const reSellToken = () => {
             <div className={formStyle.Form_box_input}>
                 <label htmlFor="name">Price</label>
                 <input
-                type="number"
-                min={1}
-                placeholder="reSell Price"
-                className={formStyle.Form_box_input_userName}
-                onChange={(e) => setPrice(e.target.value)}
+                    type="number"
+                    placeholder="Price"
+                    min={1}
+                    className={formStyle.Form_box_input_userName}
+                    onChange={(e) => setPrice(e.target.value)}
                 />
             </div>
             <div className={Style.reSellToken_box_image}> 
