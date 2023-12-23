@@ -1,0 +1,44 @@
+#loading_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Màu nền overlay với độ mờ */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading_overlay_none {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Màu nền overlay với độ mờ */
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+  
+.loading_spinner {
+    border: 4px solid rgba(255, 255, 255, 0.2); /* Màu của vòng quay */
+    border-top: 4px solid #fff; /* Màu của vòng quay */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+  
+  
