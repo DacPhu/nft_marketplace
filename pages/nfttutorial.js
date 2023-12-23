@@ -15,6 +15,7 @@ const nfttutorial = () => {
           <ul>
             <li><Link href="#getting-started"><a>Getting Started</a></Link></li>
             <li><Link href="#buying-nfts"><a>Buying NFTs</a></Link></li>
+            <li><Link href="#create-nfts"><a>Create NFTs</a></Link></li>
             <li><Link href="#selling-nfts"><a>Selling NFTs</a></Link></li>
             {/* Add more links as needed */}
           </ul>
@@ -32,9 +33,15 @@ const nfttutorial = () => {
             {/* Additional content */}
           </section>
 
+          <section id="create-nfts">
+            <h2>Create NFTs</h2>
+            <p>Learn how to create NFTs on our platform.</p>
+            {/* Additional content */}
+          </section>
+
           <section id="selling-nfts">
             <h2>Selling NFTs</h2>
-            <p>Here's how you can list your NFTs for sale and what to expect.</p>
+            <p>Learn how to sell your NFTs on our platform.</p>
             {/* Additional content */}
           </section>
 
