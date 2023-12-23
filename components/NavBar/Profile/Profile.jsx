@@ -9,7 +9,7 @@ import Link from "next/link";
 import Style from "./Profile.module.css";
 import images from "../../../img";
 
-const Profile = () => {
+const Profile = ({currentAccount}) => {
   return (
     <div className={Style.profile}>
       <div className={Style.profile_account}>
@@ -23,7 +23,7 @@ const Profile = () => {
 
         <div className={Style.profile_account_info}>
           <p>Shoaib Bhai</p>
-          <small>X038499382920203...</small>
+          <small>{currentAccount.slice(0, 18)}...</small>
         </div>
       </div>
 
@@ -33,13 +33,6 @@ const Profile = () => {
             <FaUserAlt />
             <p>
               <Link href={{ pathname: "/author" }}>My Profile</Link>
-            </p>
-          </div>
-
-          <div className={Style.profile_menu_one_item}>
-            <FaCog />
-            <p>
-              <Link href={{ pathname: "/setting" }}>Setting</Link>
             </p>
           </div>
 
@@ -70,9 +63,22 @@ const Profile = () => {
               <Link href={{ pathname: "/account" }}>Edit Profile</Link>
             </p>
           </div>
+
+          <div className={Style.profile_menu_one_item}>
+            <FaCog />
+            <p>
+              <Link href={{ pathname: "/contactus" }}>Help</Link>
+            </p>
+          </div>
+
+          <div className={Style.profile_menu_one_item}>
+            <FaCog />
+            <p>
+              <Link href={{ pathname: "/aboutus" }}>About Us</Link>
+            </p>
+          </div>
         </div>
 
-        
           <div className={Style.profile_menu_one_item}>
             <TbDownload />
             <p>

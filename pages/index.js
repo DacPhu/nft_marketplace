@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 //INTERNAL IMPORT
 import Style from "../styles/index.module.css";
@@ -21,9 +21,22 @@ import {
 import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
 
 const Home = () => {
+
+  
   const {checkIfWalletConnected } = useContext(NFTMarketplaceContext);
   useEffect(() => {
     checkIfWalletConnected();
+  }, []);
+
+  const {fetchNFTs} = useContext(NFTMarketplaceContext);
+  const [nfts, setNfts] = useState([]);
+  const [nftsCopy, setNftsCopy] = useState([]);
+
+  useEffect(() => {
+    fetchNFTs().then((items) => {
+        setNfts(items.reverse());
+        setNftsCopy(items);
+    });
   }, []);
 
   return (
@@ -44,7 +57,7 @@ const Home = () => {
         paragraph="Discover the most outstanding NFTs in all topics of life."
       />
       <Filter />
-      <NFTCard />
+      <NFTCard NFTData={nfts}/>
       <Title
         heading="Browse by category"
         paragraph="Explore the NFTs in the most featured categories."
