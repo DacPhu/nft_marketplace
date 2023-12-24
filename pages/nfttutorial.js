@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/tutorial.module.css';
+import ErrorPopup from "../components/ErrorPopup/ErrorPopup";
 
 const nfttutorial = () => {
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const testErrorPopup = () => {
+    setErrorMessage('This is a test error message!');
+    setShowErrorPopup(true);
+  };
+
+  const closeErrorPopup = () => {
+    setShowErrorPopup(false);
+  };
   return (
     <>
       <Head>
@@ -17,6 +29,8 @@ const nfttutorial = () => {
             <li><Link href="#buying-nfts"><a>Buying NFTs</a></Link></li>
             <li><Link href="#create-nfts"><a>Create NFTs</a></Link></li>
             <li><Link href="#selling-nfts"><a>Selling NFTs</a></Link></li>
+            <li><a href="#" onClick={testErrorPopup}>Test Error Popup</a></li> {/* Test link for error popup */}
+
             {/* Add more links as needed */}
           </ul>
         </aside>
@@ -48,6 +62,7 @@ const nfttutorial = () => {
           {/* More sections as needed */}
         </main>
       </div>
+      {showErrorPopup && <ErrorPopup message={errorMessage} onClose={closeErrorPopup} />}
     </>
   );
 };
