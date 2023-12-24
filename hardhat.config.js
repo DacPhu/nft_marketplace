@@ -1,14 +1,17 @@
 
 require("@nomicfoundation/hardhat-toolbox");
-
-task("accounts: Prints the list of accounts", async() => {
-  const accounts = await ethers.getSigners();
-  for(const account of accounts){
-    console.log(account.target);
-  }
-});
+require('dotenv').config();
 
 module.exports = {
   solidity: "0.8.20",
-  networks: { hardhat: { chainId: 1337 }}
+  networks: {
+    // harhat: { chainId: 1337 },
+    hardhat: {},
+    polygon_mumbai: {
+      url: process.env.POLYGON_MUMBAI_URL,
+      accounts:[
+        `0x${process.env.PRIVATE_KEY_METAMASK_ACCOUNT}`,
+      ],
+    }
+  }
 };

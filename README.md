@@ -7,7 +7,8 @@ npm install next
 npx hardhat node 
 
 # deploy node
-npx hardhat run scripts/deploy.js --network localhost
+Local: npx hardhat run scripts/deploy.js --network localhost
+Polygon Mumbai: npx hardhat run scripts/deploy.js --network polygon_mumbai
 
 # run web
 npm run dev
