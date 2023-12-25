@@ -5,6 +5,7 @@ import { NFTMarketplaceProvider } from "../Context/NFTMarketplaceContext";
 import { useState, useEffect } from "react";
 import { Switch } from "@mui/joy";
 import { createContext } from "react";
+import KommunicateChat from "../components/ChatBot";
 const ThemeContext = createContext();
 
 const MyApp = ({ Component, pageProps }) => {
@@ -37,6 +38,7 @@ const MyApp = ({ Component, pageProps }) => {
 
 
   return (
+    <div>
     <ThemeContext.Provider value={{ theme, switchTheme }}>
       <div data-theme={theme}>
         <NFTMarketplaceProvider>
@@ -45,11 +47,15 @@ const MyApp = ({ Component, pageProps }) => {
             switchState={switchState}
             handleSwitchChange={handleSwitchChange}
           />
+           <KommunicateChat />
           <Component {...pageProps} />
           <Footer />
+          
         </NFTMarketplaceProvider>
+       
       </div>
     </ThemeContext.Provider>
+    </div>
 
   );
 }
