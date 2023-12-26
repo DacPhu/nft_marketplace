@@ -8,6 +8,7 @@ import { BsSearch } from "react-icons/bs";
 import { CgMenuLeft, CgMenuRight } from "react-icons/cg";
 
 import { useRouter } from 'next/router';
+import { Switch } from "@mui/joy";
 
 //INTERNAL IMPORT
 import Style from "./NavBar.module.css";
@@ -19,7 +20,7 @@ import images from "../../img";
 import { NFTMarketplaceContext } from "../../Context/NFTMarketplaceContext";
 import { TbTextColor } from "react-icons/tb";
 
-const NavBar = () => {
+const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
   //----USESTATE COMPONNTS
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
@@ -149,6 +150,18 @@ const NavBar = () => {
                   <Button btnName="Create" handleClick={() => { }} />
                 </a>
               )}
+          </div>
+          <div className="navbar_container_right_switch">
+            <Switch
+              onChange={() => {
+                switchTheme();
+                handleSwitchChange();
+              }}
+              checked={switchState}
+              color={switchState ? 'warning' : 'neutral'}
+              variant={switchState ? 'solid' : 'outlined'}
+              endDecorator={switchState ? 'Light' : 'Dark'}
+            />
           </div>
 
           {/* USER PROFILE */}
