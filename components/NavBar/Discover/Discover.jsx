@@ -37,7 +37,7 @@ const Discover = () => {
     },
     {
       name: "Blog",
-      link: "blog",
+      link: "AllBlog",
     },
   ];
   return (
