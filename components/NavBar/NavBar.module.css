@@ -87,7 +87,7 @@
 
 .navbar_container_right_more_box{
     position: absolute;
-    top: 150%;
+    top: 120%;
     padding: .5rem .5rem;
     box-shadow: var(--box-shadow);
     font-size: 1rem;
