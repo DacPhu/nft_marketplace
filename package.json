@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@kommunicate/kommunicate-chatbot-plugin": "^0.0.7",
+    "@mui/joy": "^5.0.0-beta.20",
     "@openzeppelin/contracts": "^5.0.1",
     "alchemy-sdk": "^3.1.0",
     "axios": "^1.6.2",
