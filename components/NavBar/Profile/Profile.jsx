@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { FaUserAlt, FaRegImage, FaUserEdit, FaCog, FaLanguage, FaAddressBook, FaUsers, FaSignOutAlt } from "react-icons/fa";
+import { FaUserAlt, FaRegImage, FaUserEdit, FaCog, FaLanguage, FaAddressBook,FaHandsHelping, FaUsers, FaSignOutAlt } from "react-icons/fa";
 import { TbDownload } from "react-icons/tb";
 import Link from "next/link";
 import Style from "./Profile.module.css";
@@ -34,12 +34,7 @@ const Profile = ({currentAccount}) => {
             </p>
           </div>
 
-          <div className={Style.profile_menu_one_item}>
-            <FaLanguage />
-            <p>
-              <Link href={{ pathname: "/language" }}>Language</Link>
-            </p>
-          </div>
+         
 
           <div className={Style.profile_menu_one_item}>
             <FaUsers />
@@ -56,18 +51,13 @@ const Profile = ({currentAccount}) => {
           </div>
 
           <div className={Style.profile_menu_one_item}>
-            <FaCog />
+            <FaHandsHelping />
             <p>
               <Link href={{ pathname: "/contactus" }}>Help</Link>
             </p>
           </div>
 
-          <div className={Style.profile_menu_one_item}>
-            <FaCog />
-            <p>
-              <Link href={{ pathname: "/aboutus" }}>About Us</Link>
-            </p>
-          </div>
+          
         </div>
 
           <div className={Style.profile_menu_one_item}>

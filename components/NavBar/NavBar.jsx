@@ -21,6 +21,23 @@ import { NFTMarketplaceContext } from "../../Context/NFTMarketplaceContext";
 import { TbTextColor } from "react-icons/tb";
 
 const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
+  const moreRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close the More menu if the click is outside of the More menu
+      if (moreRef.current && !moreRef.current.contains(event.target)) {
+        setOpenMore(false);
+      }
+    };
+
+    // Add event listener for clicks outside of the More menu
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Cleanup the event listener on component unmount
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [moreRef]);
   //----USESTATE COMPONNTS
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
@@ -118,13 +135,14 @@ const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
           {/* HELP CENTER MENU */}
 
           <div className={Style.navbar_container_right_more}>
-            <p onClick={(e) => openMenu(e)}
+          <span onClick={(e) => openMenu(e)}
+            ref={moreRef}
             style={{ color: "#4c5773", cursor: 'pointer' }}
             onMouseOver={(e) => e.target.style.color = 'blue'}
             onMouseOut={(e) => e.target.style.color = "#4c5773"}
             >
               More
-            </p>
+            </span>
             {openMore && (
               <div className={Style.navbar_container_right_more_box}>
                 <More />
