@@ -18,7 +18,7 @@
 }
 
 .SearchBar_box_icon{
-    font-size: 3rem;
+    font-size: 5rem;
     padding: .5rem .8rem;
     cursor: pointer;
     color: var(--icons-color)
