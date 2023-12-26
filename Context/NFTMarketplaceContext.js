@@ -7,8 +7,8 @@ import axios from 'axios';
 require('dotenv').config();
 
 const FormData = require("form-data");
-const JWT_IMAGE = process.env.JWT_IMAGE
-const JWT_META = process.env.JWT_META
+const JWT_IMAGE_API = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MDEwNzVjNWNhYzYyOWY4NTJkZSIsInNjb3BlZEtleVNlY3JldCI6ImQ4OWI4MjliMjY5ZmY3NmFmMDIxMmM2ZjdiYTA3NzhiOWVhZjVhZjkxZmEwN2E2N2MwNzIyMzJkMjY0ZTlhMzgiLCJpYXQiOjE3MDI4Nzg3MzB9.YrUjdRI0RjrPaL1ytGXqdIVqP_6Y78DQWzQxBzP3U3Q'
+const JWT_META_API = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1NGE3ZWJiYWMzZDQ3MGE1NDE1MSIsInNjb3BlZEtleVNlY3JldCI6IjgwN2MwNDdmNDNkMjI2NDhhMzQ3YTBjZmVhOGU3MWVhZTU3OTIxZDM3ZTRhYTEwZTc4YWYzMWE2OGI3MDExMzciLCJpYXQiOjE3MDI1NDc5MDh9.ZGOw-cX_PC3ibP5OWDj5YSpCOfbeCR9ojjiG0rgGgVE'
 
 // INTERNAL IMPORT 
 import { NFTMarketplaceAddress, NFTMarketplaceABI } from './constants';
@@ -82,7 +82,7 @@ export const NFTMarketplaceProvider = ({children}) => {
             setcurrentAccount(accounts[0]);
             window.location.reload();
         } catch (error) {
-            console.log("Erro while connecting to wallet");
+            console.log("Error while connecting to wallet");
         }
     };
 
@@ -103,7 +103,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                 maxBodyLength: "Infinity",
                 headers: {
                 'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-                Authorization: JWT_IMAGE
+                Authorization: JWT_IMAGE_API
                 }
             });
             console.log(response.data);
@@ -151,7 +151,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                 maxBodyLength: "Infinity",
                 headers: {
                   "Content-Type": `application/json`,
-                  Authorization: JWT_META, // Replace with your actual JWT token
+                  Authorization: JWT_META_API, // Replace with your actual JWT token
                 },
               }
             );
