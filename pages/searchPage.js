@@ -11,12 +11,17 @@ import images from "../img";
 
 // IMPORT SMART CONTRACT
 import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
+import {AuctionContext} from "../Context/AuctionContext";
 
 const searchPage = () => {
 
   const {fetchNFTs} = useContext(NFTMarketplaceContext);
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
+  
+  const {fetchAuctionNFTs} = useContext(AuctionContext);
+  const [auctionNFTs, setAuctionNFTs] = useState([]);
+  const [auctionNFTsCopy, setAuctionNFTsCopy] = useState([]);
 
   useEffect(() => {
     fetchNFTs().then((items) => {
@@ -25,8 +30,18 @@ const searchPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    fetchAuctionNFTs().then((items) => {
+      setAuctionNFTs(items?.reverse());
+      setAuctionNFTsCopy(items);
+    })
+  })
+
   const onHandleSearch = (value) => {
     const filteredNFTs = nfts.filter(({name}) => 
+      name.toLowerCase().includes(value.toLowerCase()));
+    
+    const filteredAuctionNFTs = auctionNFTs.filter(({name}) =>
       name.toLowerCase().includes(value.toLowerCase()));
 
     if(filteredNFTs.length === 0){
@@ -34,6 +49,13 @@ const searchPage = () => {
     }
     else{
       setNfts(filteredNFTs);
+    }
+
+    if(filteredAuctionNFTs.length === 0){
+      setAuctionNFTs(auctionNFTsCopy);
+    }
+    else{
+      setAuctionNFTs(filteredAuctionNFTs);
     }
   };
 
@@ -53,6 +75,7 @@ const searchPage = () => {
       <Filter />
       <NFTCardTwo NFTData={nfts} />
       <Slider />
+      <NFTCardTwo NFTAuctionData = {auctionNFTs}/>
       <Brand />
     </div>
   );

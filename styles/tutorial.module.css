@@ -1,0 +1,54 @@
+.tutorialLayout {
+    display: flex;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.sidebar {
+    flex: 0 0 250px;
+    height: calc(100vh - 40px); /* Adjusted for padding */
+    overflow-y: auto;
+    position: sticky;
+    top: 20px; /* Adjusted for padding */
+    border-right: 1px solid #ccc;
+    padding-right: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li a {
+    text-decoration: none;
+    color: #0070f3;
+    transition: color 0.3s ease;
+}
+
+.sidebar li a:hover {
+    color: #0056b3;
+}
+
+.content {
+    flex: 1;
+    padding-left: 40px;
+}
+
+.content section {
+    margin-bottom: 40px;
+}
+
+.content section h2 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.content p {
+    line-height: 1.6;
+}

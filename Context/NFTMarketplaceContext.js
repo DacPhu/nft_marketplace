@@ -1,6 +1,5 @@
 import React ,{useState, useEffect, useContext} from 'react';
 import Web3Modal from "web3modal";
-import Web3 from "web3";
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -11,13 +10,14 @@ const JWT_IMAGE_API = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb
 const JWT_META_API = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1NGE3ZWJiYWMzZDQ3MGE1NDE1MSIsInNjb3BlZEtleVNlY3JldCI6IjgwN2MwNDdmNDNkMjI2NDhhMzQ3YTBjZmVhOGU3MWVhZTU3OTIxZDM3ZTRhYTEwZTc4YWYzMWE2OGI3MDExMzciLCJpYXQiOjE3MDI1NDc5MDh9.ZGOw-cX_PC3ibP5OWDj5YSpCOfbeCR9ojjiG0rgGgVE'
 
 // INTERNAL IMPORT 
-import { NFTMarketplaceAddress, NFTMarketplaceABI } from './constants';
+import { NFTMarketplaceAddress, NFTMarketplaceABI} from './constants';
 import { BigNumber } from 'alchemy-sdk';
 
 //---FETCHING SMART CONTRACT 
 const fetchContract = (signerOrProvider) => new ethers.Contract(
     NFTMarketplaceAddress,
     NFTMarketplaceABI,
+    // BiddingAuctionABI,
     signerOrProvider
 );
 
@@ -166,8 +166,7 @@ export const NFTMarketplaceProvider = ({children}) => {
               // Call the createSale function with the constructed IPFS URL and price
               await createSale(ipfsUrl, price);
               router.push('/searchPage');
-            //   // Redirect to another page using the router (if needed)
-            //   router.push("/success"); // Replace with the actual path you want to redirect to
+              // Redirect to another page using the router (if needed)x
             } else {
               throw new Error("Failed to upload file to IPFS");
             }
@@ -195,6 +194,21 @@ export const NFTMarketplaceProvider = ({children}) => {
             console.log("Error while creating sale", error);
         }
     };
+
+    const startAuction = async(tokenId, initialPrice, durations) => {
+        try {
+          const contract = await connectingWithSmartContract();
+    
+          if(!tokenId || !initialPrice || !durations){
+            console.error("Data is missing!");
+            return;
+          }
+          const transaction = await contract.startAuction(tokenId, initialPrice, durations);
+          await transaction.wait();
+        } catch (error) {
+          console.log("Error starting the auction:", error);
+        }
+      }
 
     //---FETCHNFTS FUNCTION
     const fetchNFTs = async () => {
@@ -304,7 +318,8 @@ export const NFTMarketplaceProvider = ({children}) => {
                 buyNFT,
                 createSale,
                 currentAccount,
-                titleData
+                titleData,
+                startAuction,
             }}
         >
             {children}

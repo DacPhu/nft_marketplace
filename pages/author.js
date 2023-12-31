@@ -43,18 +43,19 @@ const author = () => {
     },
   ];
 
-  const [collectiables, setCollectiables] = useState(true);
-  const [created, setCreated] = useState(false);
+  const [listed, setListed] = useState(true);
+  const [owned, setOwned] = useState(false);
+  const [auction, setAuction] = useState(false);
   const [like, setLike] = useState(false);
   const [follower, setFollower] = useState(false);
   const [following, setFollowing] = useState(false);
 
   //IMPORT SMART CONTRACT DATA
-
   const {fetchMyNFTsOrListedNTFs, currentAccount} = useContext(NFTMarketplaceContext);
 
   const [nfts, setNfts] = useState([]);
   const [myNFTs, setMyNFTs] = useState([]);
+  const [auctionNFTs, setAuctionNFTs] = useState([]);
 
   useEffect(() => {
     fetchMyNFTsOrListedNTFs("fetchItemsListed").then((items) => {
@@ -67,22 +68,23 @@ const author = () => {
       setMyNFTs(items);
     });
   }, []);
-
   return (
     <div className={Style.author}>
       <Banner bannerImage={images.creatorbackground2} />
       <AuthorProfileCard currentAccount = {currentAccount}/>
       <AuthorTaps
-        setCollectiables={setCollectiables}
-        setCreated={setCreated}
+        setListed={setListed}
+        setOwned={setOwned}
+        setAuction={setAuction}
         setLike={setLike}
         setFollower={setFollower}
         setFollowing={setFollowing}
       />
 
       <AuthorNFTCardBox
-        collectiables={collectiables}
-        created={created}
+        listed={listed}
+        owned={owned}
+        auction={auction}
         like={like}
         follower={follower}
         following={following}

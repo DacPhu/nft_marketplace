@@ -1,0 +1,19 @@
+
+.startAuction{
+    width: 100%;
+    margin-block: 4rem;
+}
+
+.startAuction_box{
+    width: 60%;
+    margin: 0 auto;
+}
+
+.startAuction_box h1{
+    font-size: 3rem;
+}
+
+.startAuction_box_image{
+    margin: 4rem;
+    
+}

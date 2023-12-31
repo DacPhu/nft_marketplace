@@ -97,3 +97,8 @@ node_modules
 
 #localTesting
 /localTesting
+.idea
+
+#localTesting
+/localTesting
+.idea

@@ -25,6 +25,14 @@ const More = () => {
       name: "Blog",
       link: "AllBlog",
     },
+    {
+      name: "NFT Tutorial",
+      link: "nfttutorial",
+    },
+    {
+      name: "Privacy",
+      link: "privacy",
+    },
   ];
   return (
     <div className={Style.box}>

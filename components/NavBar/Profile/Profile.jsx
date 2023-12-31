@@ -42,13 +42,6 @@ const Profile = ({currentAccount}) => {
           </div>
 
           <div className={Style.profile_menu_one_item}>
-            <FaAddressBook />
-            <p>
-              <Link href={{ pathname: "/privacy" }}>Privacy</Link>
-            </p>
-          </div>
-
-          <div className={Style.profile_menu_one_item}>
             <FaUsers />
             <p>
               <Link href={{ pathname: "/community" }}>Community</Link>

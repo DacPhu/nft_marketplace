@@ -6,8 +6,9 @@ import { TiArrowSortedDown, TiArrowSortedUp, TiTick } from "react-icons/ti";
 import Style from "./AuthorTaps.module.css";
 
 const AuthorTaps = ({
-  setCollectiables,
-  setCreated,
+  setListed,
+  setOwned,
+  setAuction,
   setLike,
   setFollower,
   setFollowing,
@@ -35,40 +36,54 @@ const AuthorTaps = ({
     const btnText = e.target.innerText;
     console.log(btnText);
     if (btnText == "Listed NFTs") {
-      setCollectiables(true);
-      setCreated(false);
+      setListed(true);
+      setOwned(false);
+      setAuction(false);
       setFollower(false);
       setFollowing(false);
       setLike(false);
       setActiveBtn(1);
     } else if (btnText == "Own NFTs") {
-      setCollectiables(false);
-      setCreated(true);
+      setListed(false);
+      setOwned(true);
+      setAuction(false);
       setFollower(false);
       setFollowing(false);
       setLike(false);
       setActiveBtn(2);
-    } else if (btnText == "Liked") {
-      setCollectiables(false);
-      setCreated(false);
+    } else if(btnText == "Auction NFTs"){
+      setListed(false);
+      setOwned(false);
+      setAuction(true);
+      setFollower(false);
+      setFollowing(false);
+      setLike(false);
+      setActiveBtn(3);
+    } 
+    else if (btnText == "Liked") {
+      setListed(false);
+      setOwned(false);
+      setAuction(false);
       setFollower(false);
       setFollowing(false);
       setLike(true);
-      setActiveBtn(3);
+      setActiveBtn(4);
     } else if (btnText == "Following") {
-      setCollectiables(false);
-      setCreated(false);
+      setListed(false);
+      setOwned(false);
+      setAuction(false);
       setFollower(false);
       setFollowing(true);
       setLike(false);
-      setActiveBtn(4);
+      setActiveBtn(5);
     } else if (btnText == "Followers") {
-      setCollectiables(false);
-      setCreated(false);
+      setListed(false);
+      setOwned(false);
+      setAuction(false);
       setFollower(true);
       setFollowing(false);
       setLike(false);
-      setActiveBtn(5);
+      setActiveBtn(6);
     }
   };
 
@@ -93,16 +108,22 @@ const AuthorTaps = ({
               className={`${activeBtn == 3 ? Style.active : ""}`}
               onClick={(e) => openTab(e)}
             >
+              Auction NFTs 
+            </button>
+            <button 
+              className={`${activeBtn == 4 ? Style.active : ""}`}
+              onClick={(e) => openTab(e)}
+            >
               Liked
             </button>
             <button
-              className={`${activeBtn == 4 ? Style.active : ""}`}
+              className={`${activeBtn == 5 ? Style.active : ""}`}
               onClick={(e) => openTab(e)}
             >
               Following
             </button>
             <button
-              className={`${activeBtn == 5 ? Style.active : ""}`}
+              className={`${activeBtn == 6 ? Style.active : ""}`}
               onClick={(e) => openTab(e)}
             >
               Followers

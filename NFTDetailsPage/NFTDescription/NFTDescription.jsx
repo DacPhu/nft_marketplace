@@ -10,7 +10,7 @@ import {
   MdOutlineDeleteSweep,
 } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
-import { FaWallet, FaPercentage } from "react-icons/fa";
+import { FaWallet, FaPercentage, FaFontAwesome, FaFileContract } from "react-icons/fa";
 import {
   TiSocialFacebook,
   TiSocialLinkedin,
@@ -256,36 +256,39 @@ const NFTDescription = ({nft}) => {
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_button}>
-
             {currentAccount == nft.seller.toLowerCase() 
-              ? (
-                <p>
-                  You can not buy your own NFT
-                </p>
-              ): currentAccount == nft.owner.toLowerCase()
-               ? (
+              ? (<p> You can not buy your own NFT </p>)
+              : (currentAccount == nft.owner.toLowerCase()
+                ? (
+                  <>
                   <Button
                     icon=<FaWallet />
                     btnName="List on Marketplace"
                     handleClick={() => router.push(`/reSellToken?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                    classStyle={Style.button}
-                  />
-               ): (
+                    classStyle={Style.button}/>
+                  <Button
+                    icon=<FaFileContract />
+                    btnName="Start Auction"
+                    handleClick={() => router.push(`/startAuction?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                    classStyle={Style.button}/>
+                  </>
+                  )
+                  : (
+                  <>
                   <Button
                     icon=<FaWallet />
                     btnName="Buy NFT"
                     handleClick={() => buyNFT(nft)}
-                    classStyle={Style.button}
-                  />
-               )
-            }
-              
-              <Button
-                icon=<FaPercentage />
-                btnName="Make offer"
-                handleClick={() => {}}
-                classStyle={Style.button}
-              />
+                    classStyle={Style.button}/>
+                  <Button
+                    icon=<FaPercentage />
+                    btnName="Make offer"
+                    handleClick={() => {}}
+                    classStyle={Style.button}/>
+                  </>
+                  
+               ))
+               }
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_tabs}>

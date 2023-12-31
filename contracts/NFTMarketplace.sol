@@ -14,6 +14,7 @@ contract NFTMarketplace is ERC721URIStorage {
     address payable owner;
 
     mapping(uint256 => MarketItem) private idToMarketItem;
+    mapping(uint256 => AuctionItem) private idToAuctionItem;
 
     struct MarketItem {
         uint256 tokenId;
@@ -21,6 +22,22 @@ contract NFTMarketplace is ERC721URIStorage {
         address payable owner;
         uint256 price;
         bool sold;
+    }
+
+    struct AuctionItem {
+        uint256 tokenId;
+        address payable seller;
+        address payable owner;
+        uint256 price;
+
+        uint256 startTime;
+        uint256 endTime;
+        
+        address payable highestBidder;
+        uint256 highestBid;
+
+        bool completed;
+        bool activate;
     }
 
     event MarketItemCreated(
@@ -88,6 +105,33 @@ contract NFTMarketplace is ERC721URIStorage {
             price,
             false
         );
+    }
+
+    function startAuction(uint256 tokenId, uint256 price, uint256 durations) public payable {
+        require(
+            idToMarketItem[tokenId].owner == msg.sender,
+            'Only item owner can perform this operation'
+        );
+        // require(
+        //     msg.value == listingPrice,
+        //     'Price must be equal to listing price'
+        // );
+
+        idToAuctionItem[tokenId].activate = true;
+        idToAuctionItem[tokenId].completed = false;
+        idToAuctionItem[tokenId].highestBidder = payable(address(0));
+        idToAuctionItem[tokenId].highestBid = price;
+        idToAuctionItem[tokenId].seller = payable(msg.sender);
+        idToAuctionItem[tokenId].owner = payable(address(this));
+        idToAuctionItem[tokenId].startTime = block.timestamp;
+        idToAuctionItem[tokenId].endTime = block.timestamp + durations;
+
+        _itemsSold--;
+        idToMarketItem[tokenId].sold = false;
+        idToMarketItem[tokenId].price = price;
+        idToMarketItem[tokenId].seller = payable(msg.sender);
+        idToMarketItem[tokenId].owner = payable(address(this));
+        _transfer(msg.sender, address(this), tokenId);
     }
 
     /* allows someone to resell a token they have purchased */
