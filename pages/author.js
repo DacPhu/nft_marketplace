@@ -51,7 +51,7 @@ const author = () => {
   const [following, setFollowing] = useState(false);
 
   //IMPORT SMART CONTRACT DATA
-  const {fetchMyNFTsOrListedNTFs, currentAccount} = useContext(NFTMarketplaceContext);
+  const {fetchMyNFTsOrListedNTFs, fetchAuctionNFTs, currentAccount} = useContext(NFTMarketplaceContext);
 
   const [nfts, setNfts] = useState([]);
   const [myNFTs, setMyNFTs] = useState([]);
@@ -68,6 +68,13 @@ const author = () => {
       setMyNFTs(items);
     });
   }, []);
+
+  useEffect(() => {
+    fetchAuctionNFTs().then((items) => {
+      setAuctionNFTs(items);
+    });
+  }, []);
+
   return (
     <div className={Style.author}>
       <Banner bannerImage={images.creatorbackground2} />
@@ -90,6 +97,7 @@ const author = () => {
         following={following}
         nfts={nfts}
         myNFTs={myNFTs}
+        auctionNFTs={auctionNFTs}
       />
       <Title
         heading="Popular Creators"

@@ -28,7 +28,7 @@ const Home = () => {
     checkIfWalletConnected();
   }, []);
 
-  const {fetchNFTs} = useContext(NFTMarketplaceContext);
+  const {fetchNFTs, fetchAuctionNFTs} = useContext(NFTMarketplaceContext);
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
 

@@ -2,7 +2,6 @@ import "../styles/globals.css";
 //INTRNAL IMPORT
 import { NavBar, Footer } from "../components/componentsindex";
 import { NFTMarketplaceProvider } from "../Context/NFTMarketplaceContext";
-import { AuctionProvider } from "../Context/AuctionContext";
 
 import { useState, useEffect } from "react";
 import { Switch } from "@mui/joy";
@@ -44,7 +43,6 @@ const MyApp = ({ Component, pageProps }) => {
     <ThemeContext.Provider value={{ theme, switchTheme }}>
       <div data-theme={theme}>
         <NFTMarketplaceProvider>
-          <AuctionProvider>
             <NavBar
               switchTheme={switchTheme}
               switchState={switchState}
@@ -53,7 +51,6 @@ const MyApp = ({ Component, pageProps }) => {
             <KommunicateChat />
             <Component {...pageProps} />
             <Footer />
-          </AuctionProvider>
         </NFTMarketplaceProvider>
       </div>
     </ThemeContext.Provider>

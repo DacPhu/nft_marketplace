@@ -6,6 +6,10 @@ import Style from "./MoreCenter.module.css";
 const More = () => {
   const moreCenter = [
     {
+      name: "Auctions",
+      link: "searchAuctionPage"
+    },
+    {
         name: "Recruitment",
         link: "recruitment",
     },

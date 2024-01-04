@@ -13,39 +13,37 @@ import images from "../img";
 import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
 
 const searchPage = () => {
-
-  const {fetchNFTs} = useContext(NFTMarketplaceContext);
-  const [nfts, setNfts] = useState([]);
-  const [nftsCopy, setNftsCopy] = useState([]);
   
   const {fetchAuctionNFTs} = useContext(NFTMarketplaceContext);
   const [auctionNFTs, setAuctionNFTs] = useState([]);
   const [auctionNFTsCopy, setAuctionNFTsCopy] = useState([]);
 
   useEffect(() => {
-    fetchNFTs().then((items) => {
-        setNfts(items?.reverse());
-        setNftsCopy(items);
+    fetchAuctionNFTs().then((items) => {
+      setAuctionNFTs(items?.reverse());
+      setAuctionNFTsCopy(items);
     });
   }, []);
 
   const onHandleSearch = (value) => {
-    const filteredNFTs = nfts.filter(({name}) => 
+    const filteredAuctionNFTs = auctionNFTs.filter(({name}) =>
       name.toLowerCase().includes(value.toLowerCase()));
 
-    if(filteredNFTs.length === 0){
-      setNfts(nftsCopy);
+    if(filteredAuctionNFTs.length === 0){
+      setAuctionNFTs(auctionNFTsCopy);
     }
     else{
-      setNfts(filteredNFTs);
+      setAuctionNFTs(filteredAuctionNFTs);
     }
   };
 
   const onClearSearch = () => {
-    if(nfts.length && nftsCopy.length){
-      setNfts(nftsCopy);
+    if(auctionNFTs.length && auctionNFTsCopy.length){
+      setNfts(auctionNFTsCopy);
     }
   };
+
+  console.log("NFT Auction", auctionNFTs);
 
   return (
     <div className={Style.searchPage}>
@@ -54,8 +52,8 @@ const searchPage = () => {
         onHandleSearch = {onHandleSearch}
         onClearSearch = {onClearSearch}  
       />
-      <Filter />
-      <NFTCardTwo NFTData={nfts} />
+      <Filter/>
+      <NFTCardTwo NFTData = {auctionNFTs}/>
       <Slider />
       <Brand />
     </div>
