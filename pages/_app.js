@@ -2,6 +2,7 @@ import "../styles/globals.css";
 //INTRNAL IMPORT
 import { NavBar, Footer } from "../components/componentsindex";
 import { NFTMarketplaceProvider } from "../Context/NFTMarketplaceContext";
+
 import { useState, useEffect } from "react";
 import { Switch } from "@mui/joy";
 import { createContext } from "react";
@@ -42,17 +43,15 @@ const MyApp = ({ Component, pageProps }) => {
     <ThemeContext.Provider value={{ theme, switchTheme }}>
       <div data-theme={theme}>
         <NFTMarketplaceProvider>
-          <NavBar
-            switchTheme={switchTheme}
-            switchState={switchState}
-            handleSwitchChange={handleSwitchChange}
-          />
-           <KommunicateChat />
-          <Component {...pageProps} />
-          <Footer />
-          
+            <NavBar
+              switchTheme={switchTheme}
+              switchState={switchState}
+              handleSwitchChange={handleSwitchChange}
+            />
+            <KommunicateChat />
+            <Component {...pageProps} />
+            <Footer />
         </NFTMarketplaceProvider>
-       
       </div>
     </ThemeContext.Provider>
     </div>

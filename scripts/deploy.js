@@ -6,7 +6,7 @@ async function main() {
 
   await nftMarketplace.waitForDeployment();
 
-  console.log(`deployed contract address ${nftMarketplace.target}`);
+  console.log(`deployed NFTMarketplace contract address ${nftMarketplace.target}`);
 }
 
 main().catch((error) => {

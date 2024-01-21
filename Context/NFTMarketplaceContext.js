@@ -1,6 +1,5 @@
 import React ,{useState, useEffect, useContext} from 'react';
 import Web3Modal from "web3modal";
-import Web3 from "web3";
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -11,8 +10,7 @@ const JWT_IMAGE_API = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb
 const JWT_META_API = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMWRmMDBmMS0wODEzLTRjZTAtOWI5ZS0zYmExNzhjZGQ3ZDAiLCJlbWFpbCI6InBsZHBwbGRwMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1NGE3ZWJiYWMzZDQ3MGE1NDE1MSIsInNjb3BlZEtleVNlY3JldCI6IjgwN2MwNDdmNDNkMjI2NDhhMzQ3YTBjZmVhOGU3MWVhZTU3OTIxZDM3ZTRhYTEwZTc4YWYzMWE2OGI3MDExMzciLCJpYXQiOjE3MDI1NDc5MDh9.ZGOw-cX_PC3ibP5OWDj5YSpCOfbeCR9ojjiG0rgGgVE'
 
 // INTERNAL IMPORT 
-import { NFTMarketplaceAddress, NFTMarketplaceABI } from './constants';
-import { BigNumber } from 'alchemy-sdk';
+import { NFTMarketplaceAddress, NFTMarketplaceABI} from './constants';
 
 //---FETCHING SMART CONTRACT 
 const fetchContract = (signerOrProvider) => new ethers.Contract(
@@ -166,8 +164,7 @@ export const NFTMarketplaceProvider = ({children}) => {
               // Call the createSale function with the constructed IPFS URL and price
               await createSale(ipfsUrl, price);
               router.push('/searchPage');
-            //   // Redirect to another page using the router (if needed)
-            //   router.push("/success"); // Replace with the actual path you want to redirect to
+              // Redirect to another page using the router (if needed)x
             } else {
               throw new Error("Failed to upload file to IPFS");
             }
@@ -196,6 +193,17 @@ export const NFTMarketplaceProvider = ({children}) => {
         }
     };
 
+    const startAuction = async(tokenId, formInputInitialPrice, durations) => {
+        try {
+          const contract = await connectingWithSmartContract();
+          const initialPrice = ethers.parseUnits(formInputInitialPrice, "ether");
+          const transaction = await contract.startAuction(tokenId, initialPrice, durations);
+          await transaction.wait();
+        } catch (error) {
+          console.log("Error starting the auction:", error);
+        }
+      }
+
     //---FETCHNFTS FUNCTION
     const fetchNFTs = async () => {
         try {
@@ -203,11 +211,10 @@ export const NFTMarketplaceProvider = ({children}) => {
             const contract = fetchContract(provider);
 
             const data = await contract.fetchMarketItems();
-
+            console.log("NFT Market DATA", data);
             const items = await Promise.all(
-                data.map(async({tokenId, seller, owner, price: unformattedPrice}) => {
+                data.map(async({tokenId, seller, owner, price: unformattedPrice, directSold}) => {
                     const tokenURI = await contract.tokenURI(tokenId);
-
                     const {
                         data: {image, name, description},
                     } = await axios.get(tokenURI);
@@ -223,11 +230,11 @@ export const NFTMarketplaceProvider = ({children}) => {
                         owner,
                         image,
                         description,
-                        tokenURI
+                        tokenURI,
+                        directSold,
                     };
                 })
             );
-
             return items;
         } catch (error) {
             console.log("Error while fetching NFTs", error);
@@ -236,7 +243,7 @@ export const NFTMarketplaceProvider = ({children}) => {
 
     useEffect(() => {
         fetchNFTs();
-    }, [])
+    }, []);
 
     //---FETCHING MY NFTs OR LISTED NFTs
     const fetchMyNFTsOrListedNTFs = async(type) =>{
@@ -248,7 +255,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                 : await contract.fetchMyNFTs();
 
             const items = await Promise.all(
-                data.map(async ({tokenId, seller, owner, price: unformattedPrice}) => {
+                data.map(async ({tokenId, seller, owner, price: unformattedPrice, directSold}) => {
                     const tokenURI = await contract.tokenURI(tokenId);
                     const {
                         data: {image, name, description}
@@ -266,14 +273,59 @@ export const NFTMarketplaceProvider = ({children}) => {
                         image,
                         description,
                         tokenURI,
+                        directSold,
                     };
                 })
             );
             return items;
         } catch (error) {
-            console.log("Error while fetching listed NFTs");
+            console.log("Error while fetching listed NFTs", error);
         }
     };
+
+    const fetchAuctionNFTs = async() => {
+        try {
+            const provider = new ethers.JsonRpcProvider();
+            const contract = fetchContract(provider);
+
+            const data = await contract.fetchAuctionItems();
+            console.log("NFT Auction Data", data);
+            const items = await Promise.all(
+                data.map(async ({tokenId, seller, owner, startTime, endTime, highestBidder, highestBid: unformattedPrice, directSold}) => {
+                    const tokenURI = await contract.tokenURI(tokenId);
+                    const {
+                        data: {image, name, description}
+                    } = await axios.get(tokenURI);
+                    const highestBid = ethers.formatUnits(
+                        unformattedPrice.toString(),
+                        "ether"
+                    );
+                    return {
+                        name,
+                        highestBid, 
+                        tokenId: Number(tokenId),
+                        seller,
+                        owner,
+                        highestBidder,
+                        startTime,
+                        endTime,
+                        image,
+                        description,
+                        tokenURI,
+                        directSold
+                    };
+                })
+            );
+            return items;
+        } catch (error) {
+            console.log("Error while fetching Auction NFTs", error);
+        }
+        
+    }
+
+    useEffect(() => {
+        fetchAuctionNFTs();
+    }, []);
 
     //---BUY NFTs FUNCTION
     const buyNFT = async (nft) => {
@@ -292,6 +344,23 @@ export const NFTMarketplaceProvider = ({children}) => {
         }
     };
 
+    //---PLACE BID NFTs FUNCTION
+    const placeBid = async(nft) => {
+        try {
+            const contract = await connectingWithSmartContract();
+            const price = ethers.parseUnits(nft.price, "ether");
+            
+            const transaction = await contract.placeBid(nft.tokenId, {
+                value: price,
+            });
+
+            await transaction.wait();
+            router.push("/author");
+        } catch (error) {
+            console.log("Error while place a bid NFTs", error)
+        }
+    }
+
     return (
         <NFTMarketplaceContext.Provider 
             value = {{
@@ -304,7 +373,10 @@ export const NFTMarketplaceProvider = ({children}) => {
                 buyNFT,
                 createSale,
                 currentAccount,
-                titleData
+                titleData,
+                startAuction,
+                fetchAuctionNFTs,
+                placeBid,
             }}
         >
             {children}

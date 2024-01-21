@@ -10,7 +10,7 @@ import {
   MdOutlineDeleteSweep,
 } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
-import { FaWallet, FaPercentage } from "react-icons/fa";
+import { FaWallet, FaPercentage, FaFontAwesome, FaFileContract } from "react-icons/fa";
 import {
   TiSocialFacebook,
   TiSocialLinkedin,
@@ -38,7 +38,7 @@ const NFTDescription = ({nft}) => {
 
   const router = useRouter();
   //SMART CONTRACT DATA
-  const {buyNFT, currentAccount} = useContext(NFTMarketplaceContext);
+  const {buyNFT, placeBid, currentAccount} = useContext(NFTMarketplaceContext);
 
   const historyArray = [
     images.user1,
@@ -70,6 +70,7 @@ const NFTDescription = ({nft}) => {
       setSocial(false);
     }
   };
+  console.log("NFT", nft);
 
   const openNFTMenu = () => {
     if (!NFTMenu) {
@@ -246,46 +247,76 @@ const NFTDescription = ({nft}) => {
                   Style.NFTDescription_box_profile_biding_box_price_bid
                 }
               >
-                <small>Current Bid</small>
-                <p>
-                  {nft.price} ETH <span>( ≈ $3,221.22)</span>
-                </p>
+                {nft.directSold == "true" ?
+                  (
+                    <>
+                      <small>Price</small>
+                      <p>
+                        {nft.price} ETH <span>( ≈ ${nft.price * 2233.41})</span>
+                      </p>
+                    </>
+                  )
+                  :(
+                    <>
+                      <small> Current Highest Bid</small>
+                      <p>
+                        {nft.highestBid} ETH <span>( ≈ ${nft.highestBid * 2233.41})</span>
+                      </p>
+                    </>
+                  )
+                }
               </div>
 
               <span>[96 in stock]</span>
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_button}>
-
             {currentAccount == nft.seller.toLowerCase() 
-              ? (
-                <p>
-                  You can not buy your own NFT
-                </p>
-              ): currentAccount == nft.owner.toLowerCase()
-               ? (
+              ? (<p> You can not buy your own NFT </p>)
+              : (currentAccount == nft.owner.toLowerCase()
+                ? (
+                  <>
                   <Button
                     icon=<FaWallet />
                     btnName="List on Marketplace"
                     handleClick={() => router.push(`/reSellToken?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                    classStyle={Style.button}
-                  />
-               ): (
+                    classStyle={Style.button}/>
                   <Button
-                    icon=<FaWallet />
-                    btnName="Buy NFT"
-                    handleClick={() => buyNFT(nft)}
-                    classStyle={Style.button}
-                  />
-               )
-            }
-              
-              <Button
-                icon=<FaPercentage />
-                btnName="Make offer"
-                handleClick={() => {}}
-                classStyle={Style.button}
-              />
+                    icon=<FaFileContract />
+                    btnName="Start Auction"
+                    handleClick={() => router.push(`/startAuction?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                    classStyle={Style.button}/>
+                  </>
+                  )
+                  : (
+                  <>
+                  {
+                    nft.directSold == "true"
+                    ? (
+                      <Button
+                      icon=<FaWallet />
+                      btnName="Buy NFT"
+                      handleClick={() => buyNFT(nft)}
+                      classStyle={Style.button}/>
+                    )
+                    : (
+                      <Button
+                      icon=<FaWallet />
+                      btnName="Place a bid"
+                      handleClick={() => placeBid(nft)}
+                      classStyle={Style.button}/>
+                    )
+                  }
+                  
+                  <Button
+                    icon=<FaPercentage />
+                    btnName="Make offer"
+                    handleClick={() => {}}
+                    classStyle={Style.button}/>
+                  </>
+                  
+               ))
+               }
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_tabs}>

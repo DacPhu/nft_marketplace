@@ -18,13 +18,13 @@ const NFTDetails = () => {
     owner: "",
     price: "",
     seller: "",
+    directSold: "",
   });
 
   const router = useRouter();
   useEffect(() => {
     if(!router.isReady) return;
     setNft(router.query);
-    console.log(nft.tokenId);
   }, [router.isReady]);
 
   return (
