@@ -177,12 +177,23 @@ contract NFTMarketplace is ERC721URIStorage {
         require(msg.value > auction.highestBid, "Bid must be greater than highest bid");
         require(block.timestamp >= auction.startTime, "Auction not yet started");
         require(!auction.auctionCompleted, "Auction already completed");
+        require(auction.highestBidder != msg.sender, "Cannot bid twice in a row");
+
+        if(auction.highestBidder != address(0)){
+            address payable previousBidder = payable(auction.highestBidder);
+            previousBidder.transfer(auction.highestBid);
+        }
 
         auction.highestBid = msg.value;
         auction.highestBidder = payable(msg.sender);
 
         idToMarketItem[tokenId] = auction;
-        payable(owner).transfer(msg.value);
+    }   
+
+    function endAuction(uint256 tokenId) public{
+        require(msg.sender == idToMarketItem[tokenId].seller, "Only the token owner can end the auction");
+        require(idToMarketItem[tokenId].highestBidder != address(0), "Auction must have at least one bid");
+        _transfer(address(this), idToMarketItem[tokenId].highestBidder, tokenId);
     }
 
     /* Creates the sale of a marketplace item */

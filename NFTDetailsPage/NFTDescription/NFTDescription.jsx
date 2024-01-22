@@ -24,6 +24,7 @@ import { BiTransferAlt, BiDollar } from "react-icons/bi";
 import Style from "./NFTDescription.module.css";
 import images from "../../img";
 import { Button } from "../../components/componentsindex.js";
+import { Modal } from "../../components/componentsindex.js";
 import { NFTTabs } from "../NFTDetailsIndex";
 
 //IMPORT SMART CONTRACT
@@ -104,6 +105,23 @@ const NFTDescription = ({nft}) => {
       setOwner(false);
       setHistory(true);
     }
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bidPrice, setBidPrice] = useState('');
+
+  const handleBidClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handlePlaceBid = () => {
+    placeBid(nft, bidPrice);
+    console.log("PRICE", bidPrice);
+    setIsModalOpen(false);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -300,11 +318,27 @@ const NFTDescription = ({nft}) => {
                       classStyle={Style.button}/>
                     )
                     : (
-                      <Button
-                      icon=<FaWallet />
-                      btnName="Place a bid"
-                      handleClick={() => placeBid(nft)}
-                      classStyle={Style.button}/>
+                      <>
+                        <Button
+                          icon={<FaWallet />}
+                          btnName="Place a bid"
+                          handleClick={handleBidClick}
+                          classStyle={Style.button}
+                        />
+
+                        {isModalOpen && (
+                          <Modal onClose={handleCloseModal}>
+                            <label htmlFor="bidPrice">Enter Bid Price:</label>
+                            <input
+                              type="text"
+                              id="bidPrice"
+                              value={bidPrice}
+                              onChange={(e) => setBidPrice(e.target.value)}
+                            />
+                            <button onClick={handlePlaceBid}>Place Bid</button>
+                          </Modal>
+                        )}
+                      </>
                     )
                   }
                   

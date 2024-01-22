@@ -197,7 +197,10 @@ export const NFTMarketplaceProvider = ({children}) => {
         try {
           const contract = await connectingWithSmartContract();
           const initialPrice = ethers.parseUnits(formInputInitialPrice, "ether");
-          const transaction = await contract.startAuction(tokenId, initialPrice, durations);
+          
+          const auctionDuration = durations * 24 * 60 * 60;
+          
+          const transaction = await contract.startAuction(tokenId, initialPrice, auctionDuration);
           await transaction.wait();
         } catch (error) {
           console.log("Error starting the auction:", error);
@@ -345,21 +348,19 @@ export const NFTMarketplaceProvider = ({children}) => {
     };
 
     //---PLACE BID NFTs FUNCTION
-    const placeBid = async(nft) => {
+    const placeBid = async (nft, userBidPrice) => {
         try {
             const contract = await connectingWithSmartContract();
-            const price = ethers.parseUnits(nft.price, "ether");
+            const bidPrice = ethers.parseUnits(userBidPrice, "ether"); // Use a different variable name
             
-            const transaction = await contract.placeBid(nft.tokenId, {
-                value: price,
-            });
-
+            const transaction = await contract.placeBid(nft.tokenId, { value: bidPrice });
+    
             await transaction.wait();
             router.push("/author");
         } catch (error) {
-            console.log("Error while place a bid NFTs", error)
+            console.error("Error while placing a bid on NFTs", error);
         }
-    }
+    };
 
     return (
         <NFTMarketplaceContext.Provider 
