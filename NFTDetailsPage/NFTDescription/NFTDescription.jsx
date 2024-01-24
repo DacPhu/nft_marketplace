@@ -24,7 +24,6 @@ import { BiTransferAlt, BiDollar } from "react-icons/bi";
 import Style from "./NFTDescription.module.css";
 import images from "../../img";
 import { Button } from "../../components/componentsindex.js";
-import { Modal } from "../../components/componentsindex.js";
 import { NFTTabs } from "../NFTDetailsIndex";
 
 //IMPORT SMART CONTRACT
@@ -107,22 +106,23 @@ const NFTDescription = ({nft}) => {
     }
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [bidPrice, setBidPrice] = useState('');
 
   const handleBidClick = () => {
-    setIsModalOpen(true);
+    const userInput = prompt("Enter Bid Price:");
+
+    if (userInput !== null) {
+      setBidPrice(userInput);
+      handlePlaceBid();
+    }
   };
 
   const handlePlaceBid = () => {
     placeBid(nft, bidPrice);
+    alert(`Placing bid with price: $${bidPrice}`);
     console.log("PRICE", bidPrice);
-    setIsModalOpen(false);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <div className={Style.NFTDescription}>
@@ -325,19 +325,6 @@ const NFTDescription = ({nft}) => {
                           handleClick={handleBidClick}
                           classStyle={Style.button}
                         />
-
-                        {isModalOpen && (
-                          <Modal onClose={handleCloseModal}>
-                            <label htmlFor="bidPrice">Enter Bid Price:</label>
-                            <input
-                              type="text"
-                              id="bidPrice"
-                              value={bidPrice}
-                              onChange={(e) => setBidPrice(e.target.value)}
-                            />
-                            <button onClick={handlePlaceBid}>Place Bid</button>
-                          </Modal>
-                        )}
                       </>
                     )
                   }
@@ -348,7 +335,6 @@ const NFTDescription = ({nft}) => {
                     handleClick={() => {}}
                     classStyle={Style.button}/>
                   </>
-                  
                ))
                }
             </div>
