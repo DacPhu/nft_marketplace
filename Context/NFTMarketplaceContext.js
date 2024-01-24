@@ -1,4 +1,4 @@
-import React ,{useState, useEffect, useContext} from 'react';
+import React ,{useState, useEffect, useContext, createContext} from 'react';
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
@@ -45,12 +45,17 @@ export const NFTMarketplaceProvider = ({children}) => {
     //---CHECK IF WALLET IS CONNECTED
     const checkIfWalletConnected = async() =>{
         try {
-            if(!window.ethereum)
+          const isDisconnected = localStorage.getItem("isDisconnected") === "true";
+          console.log(isDisconnected)
+          if (isDisconnected) {
+            return ;
+          }
+          if(!window.ethereum)
                 return console.log("Install MetaMask");
             const accounts = await window.ethereum.request({
                 method: "eth_accounts"
             });
-            
+
             if(accounts.length){
                 setcurrentAccount(accounts[0]);
             }
@@ -78,24 +83,31 @@ export const NFTMarketplaceProvider = ({children}) => {
             });
 
             setcurrentAccount(accounts[0]);
+            localStorage.removeItem("isDisconnected");
             window.location.reload();
         } catch (error) {
             console.log("Error while connecting to wallet");
         }
     };
 
+    //--- DISCONNECT WALLET FUNCTION
+    const disconnectWallet = async () => {
+      setcurrentAccount("");
+      localStorage.setItem("isDisconnected", "true");
+    }
+
     //---UPLOAD TO IPFS FUNCTION
     const uploadToIPFS = async(file) =>{
         const formData = new FormData();
         formData.append('file', file)
-        
+
         const pinataOptions = JSON.stringify({
             cidVersion: 0,
         })
         formData.append('pinataOptions', pinataOptions);
 
         const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
-        
+
         try {
             const response = await axios.post(url, formData, {
                 maxBodyLength: "Infinity",
@@ -108,7 +120,7 @@ export const NFTMarketplaceProvider = ({children}) => {
 
             if (response.status === 200) {
                 const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-                
+
                 return ipfsUrl;
             } else {
                 throw new Error('Failed to upload file to IPFS');
@@ -116,9 +128,9 @@ export const NFTMarketplaceProvider = ({children}) => {
         } catch (error) {
             throw new Error('Failed to upload file to IPFS: ' + error.message);
         }
-        
+
     };
-    
+
     //---CREATENFT FUNCTION
     const createNFT = async(name, price, image, description, router) => {
         try {
@@ -126,7 +138,7 @@ export const NFTMarketplaceProvider = ({children}) => {
               console.error("Data is missing");
               return;
             }
-        
+
             // Constructing the metadata for Pinata
             const data = JSON.stringify({
                 pinataContent: {
@@ -138,7 +150,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                   name: "metadata.json"
                 }
               })
-        
+
             // Appending JSON stringified options to the FormData
             // formData.append("pinataOptions", JSON.stringify(pinataOptions));
             // Making a POST request to Pinata to pin the file to IPFS
@@ -153,14 +165,14 @@ export const NFTMarketplaceProvider = ({children}) => {
                 },
               }
             );
-            
+
             // Log the response from Pinata
             console.log(response.data);
-        
+
             if (response.status === 200) {
               // Constructing the IPFS URL
               const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-        
+
               // Call the createSale function with the constructed IPFS URL and price
               await createSale(ipfsUrl, price);
               router.push('/searchPage');
@@ -179,7 +191,7 @@ export const NFTMarketplaceProvider = ({children}) => {
             const price = ethers.parseUnits(formInputPrice, "ether");
             const contract = await connectingWithSmartContract();
             const listingPrice = await contract.getListingPrice();
-            const transaction = !isReselling 
+            const transaction = !isReselling
                 ? await contract.createToken(url, price, {
                     value: listingPrice.toString(),
                 })
@@ -269,7 +281,7 @@ export const NFTMarketplaceProvider = ({children}) => {
                     );
                     return {
                         name,
-                        price, 
+                        price,
                         tokenId: Number(tokenId),
                         seller,
                         owner,
@@ -335,7 +347,7 @@ export const NFTMarketplaceProvider = ({children}) => {
         try {
             const contract = await connectingWithSmartContract();
             const price = ethers.parseUnits(nft.price, "ether");
-            
+
             const transaction = await contract.createMarketSale(nft.tokenId, {
                 value: price,
             });
@@ -363,10 +375,11 @@ export const NFTMarketplaceProvider = ({children}) => {
     };
 
     return (
-        <NFTMarketplaceContext.Provider 
+        <NFTMarketplaceContext.Provider
             value = {{
                 checkIfWalletConnected,
                 connectWallet,
+                disconnectWallet,
                 uploadToIPFS,
                 createNFT,
                 fetchNFTs,
