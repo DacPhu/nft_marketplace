@@ -14,16 +14,8 @@ const More = () => {
         link: "recruitment",
     },
     {
-        name: "NFT tutorial",
-        link: "nfttutorial",
-    },
-    {
         name: "Pandora",
         link: "pandora",
-    },
-    {
-      name: "About",
-      link: "aboutus",
     },
     {
       name: "Blog",
@@ -36,6 +28,10 @@ const More = () => {
     {
       name: "Privacy",
       link: "privacy",
+    },
+    {
+      name: "About",
+      link: "aboutus",
     },
   ];
   return (

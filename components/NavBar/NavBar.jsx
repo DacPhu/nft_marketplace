@@ -21,6 +21,7 @@ import { NFTMarketplaceContext } from "../../Context/NFTMarketplaceContext";
 import { TbTextColor } from "react-icons/tb";
 
 const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
+  
   //----USESTATE COMPONNTS
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
@@ -29,12 +30,18 @@ const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
 
   const openMenu = (e) => {
     const btnText = e.target.innerText;
-    if (btnText == "More") {
-      setNotification(false);
-      setProfile(false);
-      setOpenMore(true);
-    }
-    else {
+    if (btnText === "More") {
+      // If "More" is clicked and the menu is already open, close it
+      if (openMore) {
+        setOpenMore(false);
+      } else {
+        // If the menu is not open, open it
+        setNotification(false);
+        setProfile(false);
+        setOpenMore(true);
+      }
+    } else {
+      // If other buttons are clicked, close the "More" menu
       setNotification(false);
       setProfile(false);
       setOpenMore(false);
@@ -118,7 +125,7 @@ const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
           {/* HELP CENTER MENU */}
 
           <div className={Style.navbar_container_right_more}>
-            <p onClick={(e) => openMenu(e)}
+          <p onClick={(e) => openMenu(e)}
             style={{ color: "#4c5773", cursor: 'pointer' }}
             onMouseOver={(e) => e.target.style.color = 'blue'}
             onMouseOut={(e) => e.target.style.color = "#4c5773"}
