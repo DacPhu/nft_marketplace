@@ -362,6 +362,43 @@ export const NFTMarketplaceProvider = ({children}) => {
         }
     };
 
+    //--- FINISH AUCTION FUNCTION
+    const finishAuction = async(nft) => {
+        try{
+            const contract = await connectingWithSmartContract();
+            const transaction = await contract.finishAuction(nft.tokenId);
+
+            await transaction.wait();
+            router.push("/searchPage");
+        } catch(error){
+            console.log("Error while finishing auction", error);
+        }
+    }
+
+    //--- CANCEL AUCTION FUNCTION
+    const cancelAuction = async(nft) =>{
+        try {
+            const contract = await connectingWithSmartContract();
+            const transaction = await contract.cancelAuction(nft.tokenId);
+            await transaction.wait();
+            router.push("/author");
+        } catch (error) {
+            console.log("Error whole canceling auction", error);
+        }
+    }
+
+    //--- CANCEL SELLING FUNCTION
+    const cancelSelling = async(nft) =>{
+        try {
+            const contract = await connectingWithSmartContract();
+            const transaction = await contract.cancelSelling(nft.tokenId);
+            await transaction.wait();
+            router.push("/author");
+        } catch (error) {
+            console.log("Error whole canceling selling", error);
+        }
+    }
+
     return (
         <NFTMarketplaceContext.Provider 
             value = {{
@@ -378,6 +415,9 @@ export const NFTMarketplaceProvider = ({children}) => {
                 startAuction,
                 fetchAuctionNFTs,
                 placeBid,
+                finishAuction,
+                cancelAuction,
+                cancelSelling
             }}
         >
             {children}
