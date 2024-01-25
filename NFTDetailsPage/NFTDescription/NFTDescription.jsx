@@ -95,16 +95,15 @@ const NFTDescription = ({nft}) => {
 
   const handleBidClick = () => {
     const userInput = prompt("Enter Bid Price:");
-
+  
     if (userInput !== null) {
-      setBidPrice(userInput);
-      handlePlaceBid();
+      handlePlaceBid(userInput); 
     }
   };
-
-  const handlePlaceBid = () => {
+  
+  const handlePlaceBid = (bidPrice) => {
     placeBid(nft, bidPrice);
-    alert(`Placing bid with price: $${bidPrice}`);
+    alert(`Placing bid with price: ${bidPrice} ETH` );
   };
 
   const [countdown, setCountdown] = useState({
