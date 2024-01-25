@@ -10,11 +10,13 @@ contract NFTMarketplace is ERC721URIStorage {
     uint256 private _tokenIds;
     uint256 private itemMarketCount;
     uint256 private itemAuctionCount;
+    uint256 private totalBidCount;
 
     uint256 listingPrice = 0.025 ether;
     address payable owner;
 
     mapping(uint256 => MarketItem) private idToMarketItem;
+    mapping(uint256 => BidInfo) private idToBid;
 
     struct MarketItem {
         uint256 tokenId;
@@ -31,6 +33,13 @@ contract NFTMarketplace is ERC721URIStorage {
         uint256 highestBid;
 
         bool auctionCompleted;
+    }
+
+    struct BidInfo{
+        uint256 tokenId;
+        address payable auctioner;
+        uint256 time;
+        bool isValid;
     }
 
     event MarketItemCreated(
@@ -184,7 +193,16 @@ contract NFTMarketplace is ERC721URIStorage {
 
         auction.highestBid = msg.value;
         auction.highestBidder = payable(msg.sender);
-
+        
+        BidInfo storage currentBid = BidInfo(
+            tokenId,
+            payable(msg.sender),
+            block.timestamp,
+            true
+        );
+        idToBid[totalBidCount] = currentBid;
+        totalBidCount++;
+        
         idToMarketItem[tokenId] = auction;
     }
 
@@ -331,5 +349,32 @@ contract NFTMarketplace is ERC721URIStorage {
             }
         }
         return items;
+    }
+
+    function getBidHistory(uint256 tokenId) public view returns (BidInfo[] memory) {
+        uint256 totalBid = 0;
+        MarketItem storage auction = idToMarketItem[tokenId];
+        
+        for(uint256 i = 0; i < totalBidCount; ++i){
+            if(idToBid[i + 1].time > auction.endTime || idToBid[i + 1].time < auction.startTime)
+                continue;
+            if(idToBid[i + 1].tokenId == tokenId)
+                totalBid++;
+        }
+
+        uint256 currentIndex = 0;
+
+        BidInfo[] memory bids = new BidInfo[](totalBid);
+        for(uint256 i = 0; i < totalBid; ++i){
+            if(idToBid[i + 1].time > auction.endTime || idToBid[i + 1].time < auction.startTime)
+                continue;
+            if(idToBid[i + 1].tokenId == tokenId){
+                uint256 currentId = i + 1;
+                BidInfo storage currentBid = idToBid[currentId];
+                bids[currentIndex] = currentBid;
+                currentIndex++;
+            }
+        }
+        return bids;
     }
 }
