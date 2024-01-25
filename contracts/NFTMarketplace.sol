@@ -194,15 +194,14 @@ contract NFTMarketplace is ERC721URIStorage {
         auction.highestBid = msg.value;
         auction.highestBidder = payable(msg.sender);
         
-        BidInfo storage currentBid = BidInfo(
+        idToBid[totalBidCount] = BidInfo(
             tokenId,
             payable(msg.sender),
             block.timestamp,
             true
         );
-        idToBid[totalBidCount] = currentBid;
         totalBidCount++;
-        
+
         idToMarketItem[tokenId] = auction;
     }
 

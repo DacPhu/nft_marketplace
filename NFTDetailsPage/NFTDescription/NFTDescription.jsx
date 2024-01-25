@@ -44,6 +44,7 @@ const NFTDescription = ({nft}) => {
         cancelSelling,
         finishAuction,
         getTimeEndAuction,
+        fetchBidHistory,
         currentAccount} = useContext(NFTMarketplaceContext);
 
   const historyArray = [
@@ -53,6 +54,14 @@ const NFTDescription = ({nft}) => {
     images.user4,
     images.user5,
   ];
+
+  const [bidHistory, setBidHistory] = useState([]);
+  useEffect(() => {
+    fetchBidHistory().then((items) => {
+        setBidHistory(items?.reverse());
+    });
+  }, []);
+
   const provananceArray = [
     images.user6,
     images.user7,
@@ -217,7 +226,7 @@ const NFTDescription = ({nft}) => {
             )}
           </div>
         </div>
-        {/* //Part TWO */}
+        {/* Part TWO */}
         <div className={Style.NFTDescription_box_profile}>
           <h1>{nft.name} #{nft.tokenId}</h1>
           <div className={Style.NFTDescription_box_profile_box}>
@@ -387,7 +396,7 @@ const NFTDescription = ({nft}) => {
 
             {history && (
               <div className={Style.NFTDescription_box_profile_biding_box_card}>
-                <NFTTabs dataTab={historyArray} />
+                <NFTTabs dataTab={historyArray} bidHistory={bidHistory} />
               </div>
             )}
             {provanance && (

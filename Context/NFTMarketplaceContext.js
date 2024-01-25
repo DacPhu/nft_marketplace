@@ -418,9 +418,40 @@ export const NFTMarketplaceProvider = ({children}) => {
             await transaction.wait();
             router.push("/author");
         } catch (error) {
-            console.log("Error whole canceling selling", error);
+            console.log("Error while canceling selling", error);
         }
     }
+
+    //---GET BID HISTORY INFORMATION
+    const fetchBidHistory = async(nft) => {
+        try {
+            const contract = await connectingWithSmartContract();
+            const data = await contract.getBidHistory(nft.tokenId);
+            const items = await Promise.all(
+                data.map(async ({auctioner, timestamp, bid: unformattedPrice}) => {
+                    const tokenURI = await contract.tokenURI(tokenId);
+                    const bid = ethers.formatUnits(
+                        unformattedPrice.toString(),
+                        "ether"
+                    );
+                    return {
+                        tokenId: Number(nft.tokenId),
+                        auctioner, 
+                        timestamp, 
+                        bid,
+                        tokenURI,
+                    };
+                })
+            );
+            return items;
+        } catch (error) {
+            console.log("Error while getting bid history", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchBidHistory();
+    }, []);
 
     return (
         <NFTMarketplaceContext.Provider
@@ -442,7 +473,8 @@ export const NFTMarketplaceProvider = ({children}) => {
                 finishAuction,
                 cancelAuction,
                 cancelSelling,
-                getTimeEndAuction
+                getTimeEndAuction,
+                fetchBidHistory
             }}
         >
             {children}
