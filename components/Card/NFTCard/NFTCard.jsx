@@ -6,10 +6,10 @@ import { MdVerified, MdTimer } from "react-icons/md";
 import Link from "next/link";
 
 //INTERNAL IMPORT
-import Style from "./NFTCardTwo.module.css";
-import { LikeProfile } from "../componentsindex";
+import Style from "./NFTCard.module.css";
+import { LikeProfile } from "../../componentsindex";
 
-const NFTCardTwo = ({ NFTData }) => {
+const NFTCard = ({ NFTData }) => {
   const [like, setLike] = useState(false);
   const [likeInc, setLikeInc] = useState(21);
 
@@ -24,14 +24,14 @@ const NFTCardTwo = ({ NFTData }) => {
   };
 
   return (
-    <div className={Style.NFTCardTwo}>
+    <div className={Style.NFTCard}>
       {NFTData?.map((el, i) => (
         <Link href={{pathname: "/NFT-details", query: el}} key={i + 1}>
-        <div className={Style.NFTCardTwo_box} key={i + 1}>
-          <div className={Style.NFTCardTwo_box_like}>
-            <div className={Style.NFTCardTwo_box_like_box}>
-              <div className={Style.NFTCardTwo_box_like_box_box}>
-                <BsImage className={Style.NFTCardTwo_box_like_box_box_icon} />
+        <div className={Style.NFTCard_box} key={i + 1}>
+          <div className={Style.NFTCard_box_like}>
+            <div className={Style.NFTCard_box_like_box}>
+              <div className={Style.NFTCard_box_like_box_box}>
+                <BsImage className={Style.NFTCard_box_like_box_box_icon} />
                 <p onClick={() => likeNFT()}>
                   {like ? <AiOutlineHeart /> : <AiFillHeart />}
                   {""}
@@ -41,27 +41,27 @@ const NFTCardTwo = ({ NFTData }) => {
             </div>
           </div>
 
-          <div className={Style.NFTCardTwo_box_img}>
+          <div className={Style.NFTCard_box_img}>
             <Image
               src={el.image}
               alt="NFT"
               width={500}
               height={500}
               objectFit="cover"
-              className={Style.NFTCardTwo_box_img_img}
+              className={Style.NFTCard_box_img_img}
             />
           </div>
 
-          <div className={Style.NFTCardTwo_box_info}>
-            <div className={Style.NFTCardTwo_box_info_left}>
+          <div className={Style.NFTCard_box_info}>
+            <div className={Style.NFTCard_box_info_left}>
               <LikeProfile />
               <p>{el.name}</p>
             </div>
             <small>4{i + 2}</small>
           </div>
 
-          <div className={Style.NFTCardTwo_box_price}>
-            <div className={Style.NFTCardTwo_box_price_box}>
+          <div className={Style.NFTCard_box_price}>
+            <div className={Style.NFTCard_box_price_box}>
               { el.directSold == false ?
                 (
                   <>
@@ -79,7 +79,7 @@ const NFTCardTwo = ({ NFTData }) => {
               
             </div>
             { el.directSold == false && (
-              <p className={Style.NFTCardTwo_box_price_stock}>
+              <p className={Style.NFTCard_box_price_stock}>
               <MdTimer /> <span>{i + 1} hours left</span>
               </p>
             )}
@@ -92,4 +92,4 @@ const NFTCardTwo = ({ NFTData }) => {
   );
 };
 
-export default NFTCardTwo;
+export default NFTCard;

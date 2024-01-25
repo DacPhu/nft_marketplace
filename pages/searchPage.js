@@ -6,7 +6,7 @@ import { Slider, Brand } from "../components/componentsindex";
 import { SearchBar } from "../SearchPage/searchBarIndex";
 import { Filter } from "../components/componentsindex";
 
-import { NFTCardTwo, Banner } from "../collectionPage/collectionIndex";
+import { NFTCard, Banner } from "../collectionPage/collectionIndex";
 import images from "../img";
 
 // IMPORT SMART CONTRACT
@@ -51,7 +51,7 @@ const searchPage = () => {
         onClearSearch = {onClearSearch}  
       />
       <Filter />
-      <NFTCardTwo NFTData={nfts} />
+      <NFTCard NFTData={nfts} />
       <Slider />
       <Brand />
     </div>
