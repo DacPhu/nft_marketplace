@@ -17,10 +17,6 @@ const searchPage = () => {
   const {fetchNFTs} = useContext(NFTMarketplaceContext);
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
-  
-  const {fetchAuctionNFTs} = useContext(NFTMarketplaceContext);
-  const [auctionNFTs, setAuctionNFTs] = useState([]);
-  const [auctionNFTsCopy, setAuctionNFTsCopy] = useState([]);
 
   useEffect(() => {
     fetchNFTs().then((items) => {

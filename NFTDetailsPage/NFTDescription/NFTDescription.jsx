@@ -35,6 +35,7 @@ const NFTDescription = ({nft}) => {
   const [history, setHistory] = useState(true);
   const [provanance, setProvanance] = useState(false);
   const [owner, setOwner] = useState(false);
+  console.log("DEBUG1", nft);
 
   const router = useRouter();
   //SMART CONTRACT DATA
@@ -125,6 +126,40 @@ const NFTDescription = ({nft}) => {
     placeBid(nft, bidPrice);
     alert(`Placing bid with price: $${bidPrice}`);
   };
+
+  const [countdown, setCountdown] = useState({
+    days: 2,
+    hours: 22,
+    minutes: 45,
+    seconds: 12,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        const { days, hours, minutes, seconds } = prevCountdown;
+
+        if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+          clearInterval(interval);
+          // Handle timer completion logic here
+        } else {
+          const newSeconds = seconds === 0 ? 59 : seconds - 1;
+          const newMinutes = newSeconds === 59 ? minutes - 1 : minutes;
+          const newHours = newMinutes === -1 ? hours - 1 : hours;
+          const newDays = newHours === -1 ? days - 1 : days;
+
+          return {
+            days: newDays,
+            hours: newHours >= 0 ? newHours : 0,
+            minutes: newMinutes >= 0 ? newMinutes : 0,
+            seconds: newSeconds,
+          };
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
 
   return (
@@ -221,46 +256,33 @@ const NFTDescription = ({nft}) => {
               </div>
             </div>
           </div>
-
           <div className={Style.NFTDescription_box_profile_biding}>
-            <p>
-              <MdTimer /> <span>Auction ending in:</span>
-            </p>
+            {nft.directSold != "true" && (
+                <>
+                  <p>
+                    <MdTimer /> <span>Auction ending in:</span>
+                  </p>
 
-            <div className={Style.NFTDescription_box_profile_biding_box_timer}>
-              <div
-                className={
-                  Style.NFTDescription_box_profile_biding_box_timer_item
-                }
-              >
-                <p>2</p>
-                <span>Days</span>
-              </div>
-              <div
-                className={
-                  Style.NFTDescription_box_profile_biding_box_timer_item
-                }
-              >
-                <p>22</p>
-                <span>hours</span>
-              </div>
-              <div
-                className={
-                  Style.NFTDescription_box_profile_biding_box_timer_item
-                }
-              >
-                <p>45</p>
-                <span>mins</span>
-              </div>
-              <div
-                className={
-                  Style.NFTDescription_box_profile_biding_box_timer_item
-                }
-              >
-                <p>12</p>
-                <span>secs</span>
-              </div>
-            </div>
+                  <div className={Style.NFTDescription_box_profile_biding_box_timer}>
+                    <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
+                      <p>{countdown.days}</p>
+                      <span>Days</span>
+                    </div>
+                    <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
+                      <p>{countdown.hours}</p>
+                      <span>Hours</span>
+                    </div>
+                    <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
+                      <p>{countdown.minutes}</p>
+                      <span>Mins</span>
+                    </div>
+                    <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
+                      <p>{countdown.seconds}</p>
+                      <span>Secs</span>
+                    </div>
+                  </div>
+                </>
+              )}
 
             <div className={Style.NFTDescription_box_profile_biding_box_price}>
               <div
@@ -273,8 +295,8 @@ const NFTDescription = ({nft}) => {
                     <>
                       <small>Price</small>
                       <p>
-                        {typeof nft.price === 'number' ? nft.price.toFixed(10) + ' ETH' : 'N/A'} 
-                        <span>( ≈ ${typeof nft.price === 'number' ? (nft.price * 2233.41).toFixed(10) : 'N/A'})</span>
+                        {nft.price != null ? (nft.price).slice(0, 10) + ' ETH' : 'N/A'} 
+                        <span>( ≈ ${nft.price != null ? String(nft.price * 2233.41).slice(0, 10): 'N/A'})</span>
                       </p>
                     </>
                   )
@@ -282,8 +304,8 @@ const NFTDescription = ({nft}) => {
                     <>
                       <small> Current Highest Bid</small>
                       <p>
-                        {typeof nft.highestBid === 'number' ? nft.highestBid.toFixed(10) + ' ETH' : 'N/A'} 
-                        <span>( ≈ ${typeof nft.highestBid === 'number' ? (nft.highestBid * 2233.41).toFixed(10) : 'N/A'})</span>
+                        {nft.highestBid != null ? (nft.highestBid).slice(0, 10) + ' ETH' : 'N/A'} 
+                        <span>( ≈ ${nft.highestBid != null ? String(nft.highestBid * 2233.41).slice(0, 10): 'N/A'})</span>
                       </p>
                     </>
                   )

@@ -292,7 +292,7 @@ export const NFTMarketplaceProvider = ({children}) => {
             const contract = fetchContract(provider);
 
             const data = await contract.fetchAuctionItems();
-            console.log("NFT Auction Data", data);
+
             const items = await Promise.all(
                 data.map(async ({tokenId, seller, owner, startTime, endTime, highestBidder, highestBid: unformattedPrice, directSold}) => {
                     const tokenURI = await contract.tokenURI(tokenId);
@@ -356,7 +356,7 @@ export const NFTMarketplaceProvider = ({children}) => {
             const transaction = await contract.placeBid(nft.tokenId, { value: bidPrice });
     
             await transaction.wait();
-            router.push("/author");
+            router.push("/searchPage");
         } catch (error) {
             console.error("Error while placing a bid on NFTs", error);
         }

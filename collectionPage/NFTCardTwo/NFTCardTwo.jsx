@@ -70,8 +70,7 @@ const NFTCardTwo = ({ NFTData }) => {
                   </>
                 ) 
                 :
-                (
-                  <>
+                (<>
                     <small>Price</small>
                     <p> {el.price} ETH</p>
                   </>
