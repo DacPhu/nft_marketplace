@@ -68,14 +68,6 @@ const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
     }
   };
 
-  const openSideBar = () => {
-    if (!openSideMenu) {
-      setOpenSideMenu(true);
-    } else {
-      setOpenSideMenu(false);
-    }
-  };
-
   // SMART CONTRACT SECTION
   const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
 
@@ -198,15 +190,6 @@ const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
           </div>
         </div>
       </div>
-
-      {/* SIDBAR CPMPONE/NT */}
-      {openSideMenu && (
-        <div className={Style.sideBar}>
-          <SideBar setOpenSideMenu={setOpenSideMenu}
-            currentAccount={currentAccount}
-            connectWallet={connectWallet} />
-        </div>
-      )}
     </div>
   );
 };

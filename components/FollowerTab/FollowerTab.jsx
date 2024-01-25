@@ -11,6 +11,12 @@ import FollowerTabCard from "./FollowerTabCard/FollowerTabCard";
 import images from "../../img";
 
 const FollowerTab = ({TopCreator}) => {
+  // console.log("CREATOR", TopCreator)
+  // if(TopCreator.size()){
+  //   console.log("HERE")
+  //   return (<></>)
+  // }
+    
   // const CardArray = [
   //   {
   //     background: images.creatorbackground1,

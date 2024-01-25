@@ -120,7 +120,7 @@ const NFTDescription = ({nft}) => {
         const timeEnd = await getTimeEndAuction(nft);
         const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
         if (timeEnd !== undefined && currentTimeInSeconds !== undefined) {
-          const timeLeft = timeEnd - currentTimeInSeconds + 24 * 60 * 60 * 2;
+          const timeLeft = timeEnd - currentTimeInSeconds;
           setCountdown({
             days: Math.floor(timeLeft / (24 * 60 * 60)),
             hours: Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60)),
