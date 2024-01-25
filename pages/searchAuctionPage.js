@@ -12,7 +12,7 @@ import images from "../img";
 // IMPORT SMART CONTRACT
 import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
 
-const searchPage = () => {
+const searchAuctionPage = () => {
   
   const {fetchAuctionNFTs} = useContext(NFTMarketplaceContext);
   const [auctionNFTs, setAuctionNFTs] = useState([]);
@@ -43,8 +43,6 @@ const searchPage = () => {
     }
   };
 
-  console.log("NFT Auction", auctionNFTs);
-
   return (
     <div className={Style.searchPage}>
       <Banner bannerImage={images.creatorbackground2} />
@@ -60,4 +58,4 @@ const searchPage = () => {
   );
 };
 
-export default searchPage;
+export default searchAuctionPage;

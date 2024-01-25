@@ -128,26 +128,24 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     function startAuction(uint256 tokenId, uint256 price, uint256 durations) public payable {
+        MarketItem storage auction = idToMarketItem[tokenId];
         require(
             idToMarketItem[tokenId].owner == msg.sender,
             'Only item owner can perform this operation'
         );
-        // require(
-        //     msg.value == listingPrice,
-        //     'Price must be equal to listing price'
-        // );
 
-        idToMarketItem[tokenId].directSold = false;
-        idToMarketItem[tokenId].auctionCompleted = false;
-        idToMarketItem[tokenId].highestBidder = payable(msg.sender);
-        idToMarketItem[tokenId].highestBid = price;
-        idToMarketItem[tokenId].seller = payable(msg.sender);
-        idToMarketItem[tokenId].owner = payable(address(this));
-        idToMarketItem[tokenId].startTime = block.timestamp;
-        idToMarketItem[tokenId].endTime = block.timestamp + durations;
-        idToMarketItem[tokenId].sold = false;
+        auction.directSold = false;
+        auction.auctionCompleted = false;
+        auction.highestBidder = payable(msg.sender);
+        auction.highestBid = price;
+        auction.seller = payable(msg.sender);
+        auction.owner = payable(address(this));
+        auction.startTime = block.timestamp;
+        auction.endTime = block.timestamp + durations;
+        auction.sold = false;
 
         itemAuctionCount++;
+        idToMarketItem[tokenId] = auction;
         _transfer(msg.sender, address(this), tokenId);
     }
 
@@ -188,12 +186,33 @@ contract NFTMarketplace is ERC721URIStorage {
         auction.highestBidder = payable(msg.sender);
 
         idToMarketItem[tokenId] = auction;
-    }   
+    }
 
-    function endAuction(uint256 tokenId) public{
-        require(msg.sender == idToMarketItem[tokenId].seller, "Only the token owner can end the auction");
-        require(idToMarketItem[tokenId].highestBidder != address(0), "Auction must have at least one bid");
+    function finishAuction(uint256 tokenId) public payable{
+        MarketItem storage auction = idToMarketItem[tokenId];
+        require(msg.sender == auction.seller, "Only the token owner can end the auction");
+        require(auction.highestBidder != address(0), "Auction must have at least one bid");
+        
         _transfer(address(this), idToMarketItem[tokenId].highestBidder, tokenId);
+        auction.auctionCompleted = true;
+        auction.owner = auction.highestBidder;
+        auction.seller = payable(address(0));
+
+        idToMarketItem[tokenId] = auction;
+    }
+
+    function cancelAuction(uint256 tokenId) public payable{
+        MarketItem storage auction = idToMarketItem[tokenId];
+
+        require(msg.sender == auction.seller, "Only owner can cancel auction");
+        itemAuctionCount--;
+        if(auction.highestBidder != address(0)){
+            payable(auction.highestBidder).transfer(auction.highestBid);
+        }
+        auction.owner = payable(msg.sender);
+        auction.seller = payable(address(0));
+        _transfer(address(this), msg.sender, tokenId);
+        idToMarketItem[tokenId] = auction;
     }
 
     /* Creates the sale of a marketplace item */
@@ -211,6 +230,14 @@ contract NFTMarketplace is ERC721URIStorage {
         _transfer(address(this), msg.sender, tokenId);
         payable(owner).transfer(listingPrice);
         payable(idToMarketItem[tokenId].seller).transfer(msg.value);
+        idToMarketItem[tokenId].seller = payable(address(0));
+    }
+
+    function cancelSelling(uint256 tokenId) public payable{
+        require(msg.sender == idToMarketItem[tokenId].seller, "Only owner can cancel selling");
+        itemMarketCount--;
+        _transfer(address(this), msg.sender, tokenId);
+        idToMarketItem[tokenId].owner = payable(msg.sender);
         idToMarketItem[tokenId].seller = payable(address(0));
     }
 

@@ -34,7 +34,6 @@ const Auction = () => {
 
     const start = async() => {
         await startAuction(id, price, 7);
-        console.log()
         router.push("/author");
     };
 
