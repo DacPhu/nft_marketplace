@@ -78,9 +78,12 @@ const NFTCardTwo = ({ NFTData }) => {
               }
               
             </div>
-            <p className={Style.NFTCardTwo_box_price_stock}>
+            { el.directSold == false && (
+              <p className={Style.NFTCardTwo_box_price_stock}>
               <MdTimer /> <span>{i + 1} hours left</span>
-            </p>
+              </p>
+            )}
+            
           </div>
         </div>
         </Link>

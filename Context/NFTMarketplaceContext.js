@@ -368,7 +368,7 @@ export const NFTMarketplaceProvider = ({children}) => {
             const transaction = await contract.placeBid(nft.tokenId, { value: bidPrice });
     
             await transaction.wait();
-            router.push("/searchPage");
+            router.push("/searchAuctionPage");
         } catch (error) {
             console.error("Error while placing a bid on NFTs", error);
         }
@@ -396,6 +396,17 @@ export const NFTMarketplaceProvider = ({children}) => {
             router.push("/author");
         } catch (error) {
             console.log("Error whole canceling auction", error);
+        }
+    }
+
+    const getTimeEndAuction = async(nft) =>{
+        try{
+            const contract = await connectingWithSmartContract();
+            const timeEndString = await contract.getTimeEndOfAuction(nft.tokenId);
+            const timeEnd = parseInt(timeEndString, 10);
+            return timeEnd;
+        } catch (error){
+            console.log("Error while getting time end of auction", error);
         }
     }
 
@@ -430,7 +441,8 @@ export const NFTMarketplaceProvider = ({children}) => {
                 placeBid,
                 finishAuction,
                 cancelAuction,
-                cancelSelling
+                cancelSelling,
+                getTimeEndAuction
             }}
         >
             {children}

@@ -42,7 +42,8 @@ const NFTDescription = ({nft}) => {
         placeBid, 
         cancelAuction, 
         cancelSelling,
-        finishAuction,  
+        finishAuction,
+        getTimeEndAuction,
         currentAccount} = useContext(NFTMarketplaceContext);
 
   const historyArray = [
@@ -58,13 +59,6 @@ const NFTDescription = ({nft}) => {
     images.user8,
     images.user9,
     images.user10,
-  ];
-  const ownerArray = [
-    images.user1,
-    images.user8,
-    images.user2,
-    images.user6,
-    images.user5,
   ];
 
   const openSocial = () => {
@@ -91,22 +85,9 @@ const NFTDescription = ({nft}) => {
     if (btnText == "Bid History") {
       setHistory(true);
       setProvanance(false);
-      setOwner(false);
     } else if (btnText == "Provanance") {
       setHistory(false);
       setProvanance(true);
-      setOwner(false);
-    }
-  };
-
-  const openOwmer = () => {
-    if (!owner) {
-      setOwner(true);
-      setHistory(false);
-      setProvanance(false);
-    } else {
-      setOwner(false);
-      setHistory(true);
     }
   };
 
@@ -127,26 +108,46 @@ const NFTDescription = ({nft}) => {
   };
 
   const [countdown, setCountdown] = useState({
-    days: 2,
-    hours: 22,
-    minutes: 45,
-    seconds: 12,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
   });
-
+  
   useEffect(() => {
+    const updateCountdown = async () => {
+      try {
+        const timeEnd = await getTimeEndAuction(nft);
+        const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
+        if (timeEnd !== undefined && currentTimeInSeconds !== undefined) {
+          const timeLeft = timeEnd - currentTimeInSeconds + 24 * 60 * 60 * 2;
+          setCountdown({
+            days: Math.floor(timeLeft / (24 * 60 * 60)),
+            hours: Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60)),
+            minutes: Math.floor((timeLeft % (60 * 60)) / 60),
+            seconds: Math.floor(timeLeft % 60),
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching time left:', error);
+      }
+    };
+  
+    updateCountdown();
+  
     const interval = setInterval(() => {
       setCountdown((prevCountdown) => {
         const { days, hours, minutes, seconds } = prevCountdown;
-
+  
         if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
           clearInterval(interval);
-          // Handle timer completion logic here
         } else {
-          const newSeconds = seconds === 0 ? 59 : seconds - 1;
-          const newMinutes = newSeconds === 59 ? minutes - 1 : minutes;
-          const newHours = newMinutes === -1 ? hours - 1 : hours;
-          const newDays = newHours === -1 ? days - 1 : days;
-
+          const totalSecond = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds - 1;
+          const newDays = Math.floor(totalSecond / (24 * 60 * 60));
+          const newHours = Math.floor((totalSecond % (24 * 60 * 60)) / (60 * 60));
+          const newMinutes = Math.floor((totalSecond % (60 * 60)) / 60);
+          const newSeconds = Math.floor(totalSecond % 60);
+  
           return {
             days: newDays,
             hours: newHours >= 0 ? newHours : 0,
@@ -156,9 +157,9 @@ const NFTDescription = ({nft}) => {
         }
       });
     }, 1000);
-
+  
     return () => clearInterval(interval);
-  }, []);
+  }, [nft.tokenId]);
 
 
   return (

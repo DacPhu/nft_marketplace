@@ -24,8 +24,9 @@ const Auction = () => {
             return;
         
         const {data} = await axios.get(tokenURI);
-
+        
         setImage(data.image);
+        setTime(data.startTime);
     };
 
     useEffect(() => {
@@ -33,8 +34,8 @@ const Auction = () => {
     }, [id]);
 
     const start = async() => {
-        await startAuction(id, price, 7);
-        router.push("/author");
+        await startAuction(id, price, time);
+        router.push("/searchAuctionPage");
     };
 
   return (

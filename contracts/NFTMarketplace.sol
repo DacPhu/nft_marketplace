@@ -188,6 +188,11 @@ contract NFTMarketplace is ERC721URIStorage {
         idToMarketItem[tokenId] = auction;
     }
 
+    function getTimeEndOfAuction(uint256 tokenId) public view returns (uint256){
+        MarketItem storage auction = idToMarketItem[tokenId];
+        return auction.endTime;
+    }
+
     function finishAuction(uint256 tokenId) public payable{
         MarketItem storage auction = idToMarketItem[tokenId];
         require(msg.sender == auction.seller, "Only the token owner can end the auction");
