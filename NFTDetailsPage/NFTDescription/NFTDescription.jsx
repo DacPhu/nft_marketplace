@@ -35,7 +35,6 @@ const NFTDescription = ({nft}) => {
   const [history, setHistory] = useState(true);
   const [provanance, setProvanance] = useState(false);
   const [owner, setOwner] = useState(false);
-  console.log("DEBUG1", nft);
 
   const router = useRouter();
   //SMART CONTRACT DATA

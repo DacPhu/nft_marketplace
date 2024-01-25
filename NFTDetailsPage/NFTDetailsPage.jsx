@@ -5,7 +5,6 @@ import { NFTDescription, NFTDetailsImg, NFTTabs } from "./NFTDetailsIndex";
 import Style from "./NFTDetailsPage.module.css";
 
 const NFTDetailsPage = ({nft}) => {
-  console.log("DEBUG", nft);
   return (
     <div className={Style.NFTDetailsPage}>
       <div className={Style.NFTDetailsPage_box}>
