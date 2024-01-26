@@ -14,15 +14,11 @@ import { Button } from "../components/componentsindex.js";
 import { DropZone } from "../UploadNFT/uploadNFTIndex.js";
 
 const UloadNFT = ( {uploadToIPFS, createNFT}) => {
-  const [price, setPrice] = useState(0);
   const [active, setActive] = useState(0);
   const [name, setName] = useState("");
   const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
-  const [royalties, setRoyalties] = useState("");
-  const [fileSize, setFileSize] = useState("");
   const [category, setCategory] = useState(0);
-  const [properties, setProperties] = useState("");
   const [image, setImage] = useState(null);
 
   const router = useRouter();
@@ -63,10 +59,7 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
         name={name}
         website={website}
         description={description}
-        royalties={royalties}
-        fileSize={fileSize}
         category={category}
-        properties={properties}
         setImage={setImage}
         uploadToIPFS={uploadToIPFS}
       />
@@ -76,7 +69,7 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
           <label htmlFor="nft">Item Name</label>
           <input
             type="text"
-            placeholder="shoaib bhai"
+            placeholder="Name of NFT"
             className={formStyle.Form_box_input_userName}
             onChange={(e) => setName(e.target.value)}
           />
@@ -154,67 +147,11 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
           </div>
         </div>
 
-        <div className={formStyle.Form_box_input_social}>
-          <div className={formStyle.Form_box_input}>
-            <label htmlFor="Royalties">Royalties</label>
-            <div className={formStyle.Form_box_input_box}>
-              <div className={formStyle.Form_box_input_box_icon}>
-                <FaPercent />
-              </div>
-              <input
-                type="text"
-                placeholder="20%"
-                onChange={(e) => setRoyalties(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className={formStyle.Form_box_input}>
-            <label htmlFor="size">Size</label>
-            <div className={formStyle.Form_box_input_box}>
-              <div className={formStyle.Form_box_input_box_icon}>
-                <MdOutlineAttachFile />
-              </div>
-              <input
-                type="text"
-                placeholder="165MB"
-                onChange={(e) => setFileSize(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className={formStyle.Form_box_input}>
-            <label htmlFor="Propertie">Propertie</label>
-            <div className={formStyle.Form_box_input_box}>
-              <div className={formStyle.Form_box_input_box_icon}>
-                <AiTwotonePropertySafety />
-              </div>
-              <input
-                type="text"
-                placeholder="Propertie"
-                onChange={(e) => setProperties(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className={formStyle.Form_box_input}>
-            <label htmlFor="Price">Price</label>
-            <div className={formStyle.Form_box_input_box}>
-              <div className={formStyle.Form_box_input_box_icon}>
-                <AiTwotonePropertySafety />
-              </div>
-              <input
-                type="text"
-                placeholder="Price"
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-
         <div className={Style.upload_box_btn}>
           <Button
             btnName="Upload"
             handleClick={async() => 
               createNFT(name, 
-                        price, 
                         image, 
                         description, 
                         router,

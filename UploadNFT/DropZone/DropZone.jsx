@@ -13,10 +13,7 @@ const DropZone = ({
   name,
   website,
   description,
-  royalties,
-  fileSize,
   category,
-  properties,
   uploadToIPFS,
   setImage
 }) => {
@@ -85,18 +82,6 @@ const DropZone = ({
               </div>
 
               <div className={Style.DropZone_box_aside_box_preview_three}>
-                <p>
-                  <span>Royalties</span>
-                  {royalties || ""}
-                </p>
-                <p>
-                  <span>FileSize</span>
-                  {fileSize || ""}
-                </p>
-                <p>
-                  <span>Properties</span>
-                  {properties || ""}
-                </p>
                 <p>
                   <span>Category</span>
                   {category || ""}
