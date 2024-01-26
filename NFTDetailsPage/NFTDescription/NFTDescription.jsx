@@ -156,6 +156,10 @@ const NFTDescription = ({ nft }) => {
         }
       } catch (error) {
         console.error('Error fetching time left:', error);
+        notification.error({
+          message: 'Error fetching time left',
+          description: 'There was an error fetching the time left for the auction.',
+        });
       }
     };
 
