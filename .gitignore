@@ -99,6 +99,4 @@ node_modules
 /localTesting
 .idea
 
-#localTesting
-/localTesting
-.idea
+/Context/NFTMarketplace.json
