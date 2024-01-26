@@ -27,7 +27,6 @@
     border: 1px solid var(--icons-color);
     display: flex;
     align-items: center;
-    background-color: white;
     padding: 1rem;
     border-radius: 2rem;
 }
