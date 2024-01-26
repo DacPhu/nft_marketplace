@@ -235,6 +235,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
     const createSale = async (tokenId, formInputPrice) => {
         try {
             const price = ethers.parseUnits(formInputPrice, "ether");
+            console.log("PRICE2", price)
             const contract = await connectingWithSmartContract();
             const listingPrice = await contract.getListingPrice();
             const transaction = await contract.createMarketItem(tokenId, price, {
@@ -360,7 +361,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
             const data = await contract.fetchAllAuctionItems();
 
             const items = await Promise.all(
-                data.map(async ({ tokenId, seller, owner, startTime, endTime, highestBidder, highestBid: unformattedPrice, directSold }) => {
+                data.map(async ({ tokenId, seller, owner, startTime, endTime, highestBidder, highestBid: unformattedPrice}) => {
                     const tokenURI = await contract.tokenURI(tokenId);
                     const {
                         data: { image, name, description }
@@ -447,8 +448,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
         try {
             const contract = await connectingWithSmartContract();
             const price = ethers.parseUnits(nft.price, "ether");
-
-            const transaction = await contract.createMarketSale(nft.tokenId, price);
+            console.log(price);
+            const transaction = await contract.createMarketSale(nft.tokenId, {value: price});
 
             await transaction.wait();
             router.push("/author");
@@ -505,10 +506,10 @@ export const NFTMarketplaceProvider = ({ children }) => {
             await transaction.wait();
             router.push("/author");
         } catch (error) {
-            console.log("Error whole canceling auction", error);
+            console.log("Error while canceling auction", error);
             notification.error({
                 message: 'Error',
-                description: 'Error whole canceling auction'
+                description: 'Error while canceling auction'
             });
         }
     }
