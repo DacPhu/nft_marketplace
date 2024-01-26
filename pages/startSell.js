@@ -45,7 +45,7 @@ const startSell = () => {
                     placeholder="Price"
                     min={1}
                     className={formStyle.Form_box_input_userName}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onBlur={(e) => setPrice(e.target.value)}
                 />
             </div>
             <div className={Style.startSellToken_box_image}> 

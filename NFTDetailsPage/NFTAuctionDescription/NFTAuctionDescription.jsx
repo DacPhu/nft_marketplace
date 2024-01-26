@@ -107,7 +107,7 @@ const NFTAuctionDescription = ({nft}) => {
   };
 
   const [open, setOpen] = useState(false); // Add this state for controlling dialog visibility
-  const [bidPrice, setBidPrice] = useState('');
+  const [bidPrice, setBidPrice] = useState(0);
 
   const handleBidClick = () => {
     setOpen(true); // Open the dialog when bid button is clicked

@@ -42,8 +42,8 @@ const author = () => {
     },
   ];
 
-  const [listed, setListed] = useState(true);
-  const [owned, setOwned] = useState(false);
+  const [listed, setListed] = useState(false);
+  const [owned, setOwned] = useState(true);
   const [auction, setAuction] = useState(false);
   const [like, setLike] = useState(false);
   const [follower, setFollower] = useState(false);

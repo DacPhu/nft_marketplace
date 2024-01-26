@@ -117,7 +117,6 @@ contract NFTMarketplace is ERC721URIStorage {
             payable(msg.sender), // highest bidder
             price, // highest bid
             false // auction completed
-
         );
 
         itemAuctionCount++;
@@ -127,18 +126,17 @@ contract NFTMarketplace is ERC721URIStorage {
     function placeBid(uint256 tokenId) public payable{
         MarketItem storage auction = idToMarketItem[tokenId];
 
-        require(msg.value > auction.highestBid, "Bid must be greater than highest bid");
         require(block.timestamp >= auction.startTime, "Auction not yet started");
-        require(!auction.auctionCompleted, "Auction already completed");
         require(auction.highestBidder != msg.sender, "Cannot bid twice in a row");
 
-        if(auction.highestBidder != address(0)){
+        if(auction.highestBidder != auction.seller){
             address payable previousBidder = payable(auction.highestBidder);
             previousBidder.transfer(auction.highestBid);
         }
 
         auction.highestBid = msg.value;
         auction.highestBidder = payable(msg.sender);
+        payable(auction.seller).transfer(msg.value);
         idToMarketItem[tokenId] = auction;
     }
 
@@ -150,10 +148,10 @@ contract NFTMarketplace is ERC721URIStorage {
     function finishAuction(uint256 tokenId) public payable{
         MarketItem storage auction = idToMarketItem[tokenId];
         require(msg.sender == auction.seller, "Only the token owner can end the auction");
-        require(auction.highestBidder != address(0), "Auction must have at least one bid");
         itemAuctionCount--;
-        _transfer(address(this), idToMarketItem[tokenId].highestBidder, tokenId);
+        _transfer(address(this), auction.highestBidder, tokenId);
         auction.auctionCompleted = true;
+        auction.sold = true;
         auction.owner = auction.highestBidder;
         auction.seller = payable(address(0));
         idToMarketItem[tokenId] = auction;
@@ -161,16 +159,14 @@ contract NFTMarketplace is ERC721URIStorage {
 
     function cancelAuction(uint256 tokenId) public payable{
         MarketItem storage auction = idToMarketItem[tokenId];
-
         require(msg.sender == auction.seller, "Only owner can cancel auction");
         itemAuctionCount--;
-        if(auction.highestBidder != address(0)){
+        if(auction.highestBidder != auction.seller){
             payable(auction.highestBidder).transfer(auction.highestBid);
         }
-        auction.owner = payable(msg.sender);
-        auction.seller = payable(address(0));
+        idToMarketItem[tokenId].owner = payable(msg.sender);
+        idToMarketItem[tokenId].seller = payable(address(0));
         _transfer(address(this), msg.sender, tokenId);
-        idToMarketItem[tokenId] = auction;
     }
 
     // Sold
