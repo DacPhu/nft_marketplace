@@ -4,10 +4,12 @@
     width: 100%;
 }
 
+
+
 .SearchBar_box{
     width: 40%;
     margin:  0 auto;
-    background-color: var(--main-bg-color);
+    background-color: white;
     color: var(--main-bg-color);
     display: flex;
     border-radius: 5rem;
@@ -29,7 +31,7 @@
     border: 0;
     outline: 0;
     padding: 2rem;
-    background-color: var(--main-bg-color);
+    background-color: white;
 
 }
 
