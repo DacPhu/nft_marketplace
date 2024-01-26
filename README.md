@@ -16,6 +16,8 @@ npm i @kommunicate/kommunicate-chatbot-plugin
 # install mui
 npm install @mui/material @emotion/react @emotion/styled
 
+# install antd
+npm install antd
 # run web
 npm run dev
 
