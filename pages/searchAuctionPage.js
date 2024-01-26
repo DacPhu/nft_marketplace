@@ -12,12 +12,12 @@ import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
 
 const searchAuctionPage = () => {
   
-  const {fetchAuctionNFTs} = useContext(NFTMarketplaceContext);
+  const {fetchAllAuctionNFTs} = useContext(NFTMarketplaceContext);
   const [auctionNFTs, setAuctionNFTs] = useState([]);
   const [auctionNFTsCopy, setAuctionNFTsCopy] = useState([]);
 
   useEffect(() => {
-    fetchAuctionNFTs().then((items) => {
+    fetchAllAuctionNFTs().then((items) => {
       setAuctionNFTs(items?.reverse());
       setAuctionNFTsCopy(items);
     });

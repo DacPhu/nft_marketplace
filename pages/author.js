@@ -50,7 +50,7 @@ const author = () => {
   const [following, setFollowing] = useState(false);
 
   //IMPORT SMART CONTRACT DATA
-  const {fetchMyNFTsOrListedNTFs, fetchAuctionNFTs, currentAccount} = useContext(NFTMarketplaceContext);
+  const {fetchMyNFTsOrListedNTFs, fetchMyAuctionNFTs, currentAccount} = useContext(NFTMarketplaceContext);
 
   const [nfts, setNfts] = useState([]);
   const [myNFTs, setMyNFTs] = useState([]);
@@ -69,7 +69,7 @@ const author = () => {
   }, []);
 
   useEffect(() => {
-    fetchAuctionNFTs().then((items) => {
+    fetchMyAuctionNFTs().then((items) => {
       setAuctionNFTs(items);
     });
   }, []);

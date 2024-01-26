@@ -352,12 +352,12 @@ export const NFTMarketplaceProvider = ({ children }) => {
         }
     };
 
-    const fetchAuctionNFTs = async () => {
+    const fetchAllAuctionNFTs = async () => {
         try {
             const provider = new ethers.JsonRpcProvider();
             const contract = fetchContract(provider);
 
-            const data = await contract.fetchAuctionItems();
+            const data = await contract.fetchAllAuctionItems();
 
             const items = await Promise.all(
                 data.map(async ({ tokenId, seller, owner, startTime, endTime, highestBidder, highestBid: unformattedPrice, directSold }) => {
@@ -386,18 +386,61 @@ export const NFTMarketplaceProvider = ({ children }) => {
             );
             return items;
         } catch (error) {
-            console.log("Error while fetching Auction NFTs", error);
+            console.log("Error while fetching all Auction NFTs", error);
             notification.error({
                 message: 'Error',
-                description: 'Error while fetching Auction NFTs'
+                description: 'Error while fetching all Auction NFTs'
             });
         }
 
     }
 
     useEffect(() => {
-        fetchAuctionNFTs();
+        fetchAllAuctionNFTs();
     }, []);
+
+    const fetchMyAuctionNFTs = async () => {
+        try {
+            const provider = new ethers.JsonRpcProvider();
+            const contract = fetchContract(provider);
+
+            const data = await contract.fetchMyAuctionItems();
+
+            const items = await Promise.all(
+                data.map(async ({ tokenId, seller, owner, startTime, endTime, highestBidder, highestBid: unformattedPrice, directSold }) => {
+                    const tokenURI = await contract.tokenURI(tokenId);
+                    const {
+                        data: { image, name, description }
+                    } = await axios.get(tokenURI);
+                    const highestBid = ethers.formatUnits(
+                        unformattedPrice.toString(),
+                        "ether"
+                    );
+                    return {
+                        name,
+                        highestBid,
+                        tokenId: Number(tokenId),
+                        seller,
+                        owner,
+                        highestBidder,
+                        startTime,
+                        endTime,
+                        image,
+                        description,
+                        tokenURI,
+                    };
+                })
+            );
+            return items;
+        } catch (error) {
+            console.log("Error while fetching my Auction NFTs", error);
+            notification.error({
+                message: 'Error',
+                description: 'Error while fetching my Auction NFTs'
+            });
+        }
+
+    }
 
     //---BUY NFTs FUNCTION
     const buyNFT = async (nft) => {
@@ -517,7 +560,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
                 currentAccount,
                 titleData,
                 startAuction,
-                fetchAuctionNFTs,
+                fetchAllAuctionNFTs,
+                fetchMyAuctionNFTs,
                 placeBid,
                 finishAuction,
                 cancelAuction,

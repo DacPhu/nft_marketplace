@@ -311,7 +311,7 @@ contract NFTMarketplace is ERC721URIStorage {
         return items;
     }
 
-    function fetchAuctionItems() public view returns (MarketItem[] memory) {
+    function fetchAllAuctionItems() public view returns (MarketItem[] memory) {
         uint256 totalItemCount = _tokenIds;
         uint256 itemCount = itemAuctionCount;
         uint256 currentIndex = 0;
@@ -319,6 +319,32 @@ contract NFTMarketplace is ERC721URIStorage {
         MarketItem[] memory items = new MarketItem[](itemCount);
         for (uint256 i = 0; i < totalItemCount; i++) {
             if (idToMarketItem[i + 1].owner == address(this) 
+            && idToMarketItem[i + 1].directSold == false
+            && idToMarketItem[i + 1].sold == false) {
+                uint256 currentId = i + 1;
+                MarketItem storage currentItem = idToMarketItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+        return items;
+    }
+
+    function fetchMyAuctionItems() public view returns (MarketItem[] memory) {
+        uint256 totalItemCount = _tokenIds;
+        uint256 itemCount = 0;
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 0; i < totalItemCount; i++) {
+            if (idToMarketItem[i + 1].owner == msg.sender
+            && idToMarketItem[i + 1].directSold == false
+            && idToMarketItem[i + 1].sold == false) 
+                itemCount++;
+        }
+
+        MarketItem[] memory items = new MarketItem[](itemCount);
+        for (uint256 i = 0; i < totalItemCount; i++) {
+            if (idToMarketItem[i + 1].owner == msg.sender
             && idToMarketItem[i + 1].directSold == false
             && idToMarketItem[i + 1].sold == false) {
                 uint256 currentId = i + 1;
