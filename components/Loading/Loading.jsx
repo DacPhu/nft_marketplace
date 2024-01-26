@@ -8,7 +8,7 @@ const Loading = ({ isLoading }) => {
     <div>
       {isLoading ? (
         <div id={Style.loading_overlay}>
-          <div className="loading_spinner"></div>
+          <div className={Style.loading_spinner}></div>
           <p>Loading...</p>
         </div>
       ) : (
