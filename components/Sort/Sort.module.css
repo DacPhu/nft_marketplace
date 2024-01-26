@@ -1,0 +1,61 @@
+.sort_box {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sort_box_left {
+    display: flex;
+    gap: 2rem;
+}
+
+.sort_box_left button {
+    border: 1px solid var(--icons-color);
+    color: var(--icons-color);
+    box-shadow: var(--box-shadow);
+    color: var(--icons-color);
+    box-shadow: var(--box-shadow);
+    outline: none;
+    padding: 1rem 1.5rem;
+    border-radius: 2rem;
+    transition: all .3s ease-in;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: var(--main-bg-color);
+}
+
+.sort_box_right_box {
+    border: 1px solid var(--icons-color);
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    color: var(--icons-color);
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Additional styles specific to the sort component can be added here */
+
+@media screen and (min-device-width: 320px) and (max-device-width: 375px) {
+    .sort_box {
+        width: 90%;
+        display: grid;
+        gap: 4rem;
+    }
+    .sort_box_left {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: .5rem;
+    }
+
+    .sort_box_left button {
+        padding: 1rem;
+    }
+
+    /* ... other responsive styles ... */
+}
+
+/* Repeat for other media queries adjusting as necessary for the sort functionality */

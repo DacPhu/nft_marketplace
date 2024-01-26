@@ -15,8 +15,9 @@ import { TiTick } from "react-icons/ti";
 
 //INTERNAL IMPORT
 import Style from "./Filter.module.css";
+import Sort from "../Sort/Sort"
 
-const Filter = () => {
+const Filter = ({sortOrder, onChangeSortOrder }) => {
   const [filter, setFilter] = useState(true);
   const [image, setImage] = useState(true);
   const [video, setVideo] = useState(true);
@@ -75,6 +76,9 @@ const Filter = () => {
             <span>Filter</span> {filter ? <FaAngleDown /> : <FaAngleUp />}
           </div>
         </div>
+
+        <Sort sortOrder={sortOrder} onChangeSortOrder={onChangeSortOrder}></Sort>
+
       </div>
 
       {filter && (

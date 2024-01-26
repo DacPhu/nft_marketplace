@@ -16,6 +16,7 @@ import FollowerTab from "./FollowerTab/FollowerTab";
 import Slider from "./Slider/Slider";
 import Brand from "./Brand/Brand";
 import Banner from "./Banner/Banner";
+import Sort from "./Sort/Sort";
 
 export {
   Button,
@@ -36,4 +37,5 @@ export {
   Slider,
   Brand,
   Banner,
+  Sort,
 };
