@@ -1,4 +1,4 @@
-import React ,{useState, useEffect, useContext, createContext} from 'react';
+import React ,{useState, useEffect, useContext, createContext, useRef} from 'react';
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
@@ -42,6 +42,14 @@ export const NFTMarketplaceProvider = ({children}) => {
     const [currentAccount, setcurrentAccount] = useState("");
     const router = useRouter();
 
+
+    //---DETECTING WHEN CHANGING ACCOUNT
+    useEffect(() => {
+        window.ethereum.on('accountsChanged', function (accounts) {
+            window.location.reload();
+        });
+    }, [])
+
     //---CHECK IF WALLET IS CONNECTED
     const checkIfWalletConnected = async() =>{
         try {
@@ -68,7 +76,7 @@ export const NFTMarketplaceProvider = ({children}) => {
         }
     };
 
-    useEffect(() =>{
+    useEffect(() => {
         checkIfWalletConnected();
     }, []);
 
