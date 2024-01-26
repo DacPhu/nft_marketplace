@@ -7,7 +7,7 @@
 .SearchBar_box{
     width: 40%;
     margin:  0 auto;
-    background-color: var(--main-bg-color);
+    background-color: white;
     color: var(--main-bg-color);
     display: flex;
     border-radius: 5rem;
@@ -28,14 +28,15 @@
     width: 85%;
     border: 0;
     outline: 0;
+    font-size: 1.4rem;
     padding: 2rem;
-    background-color: var(--main-bg-color);
+    background-color: white;
 
 }
 
 .SearchBar_box input::placeholder{
     color: var(--icons-color);
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 @media screen and (max-width: 35em) {
