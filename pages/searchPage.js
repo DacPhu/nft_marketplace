@@ -2,13 +2,14 @@ import React, {useEffect, useState, useContext} from "react";
 
 //INTERNAL IMPORT
 import Style from "../styles/searchPage.module.css";
-import { Slider, Brand, Filter, Banner, NFTCard } from "../components/componentsindex";
+import { Slider, Brand, Sort, Banner, NFTCard } from "../components/componentsindex";
 import { SearchBar } from "../SearchPage/searchBarIndex";
 
 import images from "../img";
 
 // IMPORT SMART CONTRACT
 import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
+import Filter from "../components/Filter/Filter";
 
 const searchPage = () => {
 
@@ -49,6 +50,7 @@ const searchPage = () => {
         onClearSearch = {onClearSearch}  
       />
       <Filter />
+      <Sort />
       <NFTCard NFTData={nfts} />
       <Slider />
       <Brand />
