@@ -46,9 +46,9 @@ export const NFTMarketplaceProvider = ({children}) => {
     const checkIfWalletConnected = async() =>{
         try {
           const isDisconnected = localStorage.getItem("isDisconnected") === "true";
-          console.log(isDisconnected)
+
           if (isDisconnected) {
-            return ;
+            return;
           }
           if(!window.ethereum)
                 return console.log("Install MetaMask");
@@ -91,9 +91,10 @@ export const NFTMarketplaceProvider = ({children}) => {
     };
 
     //--- DISCONNECT WALLET FUNCTION
-    const disconnectWallet = async () => {
+    const disConnectWallet = async () => {
       setcurrentAccount("");
       localStorage.setItem("isDisconnected", "true");
+      window.location.reload();
     }
 
     //---UPLOAD TO IPFS FUNCTION
@@ -226,7 +227,6 @@ export const NFTMarketplaceProvider = ({children}) => {
             const contract = fetchContract(provider);
 
             const data = await contract.fetchMarketItems();
-            console.log("NFT Market DATA", data);
             const items = await Promise.all(
                 data.map(async({tokenId, seller, owner, price: unformattedPrice, directSold}) => {
                     const tokenURI = await contract.tokenURI(tokenId);
@@ -427,7 +427,7 @@ export const NFTMarketplaceProvider = ({children}) => {
             value = {{
                 checkIfWalletConnected,
                 connectWallet,
-                disconnectWallet,
+                disConnectWallet,
                 uploadToIPFS,
                 createNFT,
                 fetchNFTs,

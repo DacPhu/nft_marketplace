@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 //INTERNAL IMPORT
 import { Button, Category, Brand } from "../components/componentsindex";
-import NFTDetailsPage from "../NFTDetailsPage/NFTDetailsPage";
+import NFTAuctionDetailsPage from "../NFTDetailsPage/NFTAuctionDetailsPage";
 
 //IMPORT SMART CONTRACT DATA
 import { NFTMarketplaceContext } from "../Context/NFTMarketplaceContext";
@@ -30,7 +30,7 @@ const NFTDetails = () => {
 
   return (
     <div>
-      <NFTDetailsPage nft = {nft}/>
+      <NFTAuctionDetailsPage nft = {nft}/>
       <Category />
       <Brand />
     </div>

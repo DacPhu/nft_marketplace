@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Image from "next/image";
 import { FaUserAlt, FaRegImage, FaUserEdit, FaCog, FaLanguage, FaAddressBook,FaHandsHelping, FaUsers, FaSignOutAlt } from "react-icons/fa";
 import { TbDownload } from "react-icons/tb";
@@ -6,8 +6,12 @@ import Link from "next/link";
 import Style from "./Profile.module.css";
 import images from "../../../img";
 
+// IMPORT FROM SMART CONTRACT
+import { NFTMarketplaceContext } from "../../../Context/NFTMarketplaceContext";
+
 const Profile = ({currentAccount}) => {
-  const [checked, setChecked] = React.useState(false);
+  // const [checked, setChecked] = React.useState(false);
+  const {disConnectWallet} = useContext(NFTMarketplaceContext);
   return (
     <div className={Style.profile}>
       <div className={Style.profile_account}>
@@ -57,14 +61,10 @@ const Profile = ({currentAccount}) => {
             </p>
           </div>
 
-          
         </div>
-
-          <div className={Style.profile_menu_one_item}>
+          <div className={Style.profile_menu_one_item} onClick={disConnectWallet}>
             <FaSignOutAlt />
-            <p>
-              <Link href={{ pathname: "/logout" }}>Log out</Link>
-            </p>
+            <p> Log out </p>
           </div>
           
         </div>

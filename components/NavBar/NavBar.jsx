@@ -12,7 +12,7 @@ import { Switch } from "@mui/joy";
 
 //INTERNAL IMPORT
 import Style from "./NavBar.module.css";
-import { Discover, HelpCenter, Notification, Profile, SideBar, More } from "./index";
+import {Notification, Profile, More } from "./index";
 import { Button } from "../componentsindex";
 import images from "../../img";
 
@@ -25,23 +25,19 @@ const NavBar = ({ switchTheme, switchState, handleSwitchChange }) => {
   //----USESTATE COMPONNTS
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
-  const [openSideMenu, setOpenSideMenu] = useState(false);
   const [openMore, setOpenMore] = useState(false);
 
   const openMenu = (e) => {
     const btnText = e.target.innerText;
     if (btnText === "More") {
-      // If "More" is clicked and the menu is already open, close it
       if (openMore) {
         setOpenMore(false);
       } else {
-        // If the menu is not open, open it
         setNotification(false);
         setProfile(false);
         setOpenMore(true);
       }
     } else {
-      // If other buttons are clicked, close the "More" menu
       setNotification(false);
       setProfile(false);
       setOpenMore(false);
