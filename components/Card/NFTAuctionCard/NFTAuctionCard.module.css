@@ -103,8 +103,9 @@
 .NFTAuctionCard_box_price_stock{
     display: flex;
     align-items: center;
-    gap: .5rem;
+    /* gap: .5rem; */
     font-size: 1.1rem;
+    margin-bottom: 2rem;
 }
 
 @media screen and (max-width: 35em) {
