@@ -4,7 +4,6 @@ import { NavBar, Footer } from "../components/componentsindex";
 import { NFTMarketplaceProvider } from "../Context/NFTMarketplaceContext";
 
 import { useState, useEffect } from "react";
-import { Switch } from "@mui/joy";
 import { createContext } from "react";
 import KommunicateChat from "../components/ChatBot";
 const ThemeContext = createContext();

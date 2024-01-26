@@ -160,7 +160,6 @@ export const NFTMarketplaceProvider = ({ children }) => {
     const createNFT = async (name, price, image, description, router) => {
         try {
             if (!name || !description || !price || !image) {
-                console.error("Data is missing");
                 notification.error({
                     message: 'Error',
                     description: 'Data is missing'
@@ -229,9 +228,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
                     value: listingPrice.toString(),
                 })
                 : await contract.resellToken(id, price, {
-                    value: (listingPrice.toString()),
+                    value: listingPrice.toString(),
                 });
-
             await transaction.wait();
         } catch (error) {
             console.log("Error while creating sale", error);

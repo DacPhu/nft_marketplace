@@ -14,7 +14,7 @@ import { Button } from "../components/componentsindex.js";
 import { DropZone } from "../UploadNFT/uploadNFTIndex.js";
 
 const UloadNFT = ( {uploadToIPFS, createNFT}) => {
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   const [active, setActive] = useState(0);
   const [name, setName] = useState("");
   const [website, setWebsite] = useState("");
@@ -217,12 +217,7 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
                         price, 
                         image, 
                         description, 
-                        router, 
-                        // website, 
-                        // royalties, 
-                        // fileSize, 
-                        // category,
-                        // properties
+                        router,
                         )}
             classStyle={Style.upload_box_btn_style}
           />

@@ -13,8 +13,8 @@ import { NFTMarketplaceContext } from '../Context/NFTMarketplaceContext';
 
 const reSellToken = () => {
     const {createSale} = useContext(NFTMarketplaceContext);
-    const [price, setPrice] = useState("");
-    const [image, setImage] = useState('');
+    const [price, setPrice] = useState(0);
+    const [image, setImage] = useState("");
     const router = useRouter();
     const {id, tokenURI} = router.query;
 
@@ -31,7 +31,7 @@ const reSellToken = () => {
 
     const resell = async() => {
         await createSale(tokenURI, price, true, id);
-        router.push("/author");
+        router.push("/searchPage");
     };
 
   return (
@@ -50,12 +50,12 @@ const reSellToken = () => {
             </div>
             <div className={Style.reSellToken_box_image}> 
                 {
-                    image && <Image src = {image} alt="resell nft" width={400} height={400}/>
+                    image && <Image src = {image} alt="NFT" width={400} height={400}/>
                 }
             </div>
 
             <div className={Style.reSellToken_box_btn}>
-                <Button btnName="Resell NFT" handleClick={() => resell()} />
+                <Button btnName="Listing" handleClick={() => resell()} />
             </div>
         </div>
     </div>

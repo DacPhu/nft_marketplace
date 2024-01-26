@@ -13,8 +13,8 @@ import { NFTMarketplaceContext } from '../Context/NFTMarketplaceContext';
 
 const Auction = () => {
     const {startAuction} = useContext(NFTMarketplaceContext);
-    const [price, setPrice] = useState("");
-    const [time, setTime] = useState("");
+    const [price, setPrice] = useState(0);
+    const [time, setTime] = useState(0);
     const [image, setImage] = useState('');
     const router = useRouter();
     const {id, tokenURI} = router.query;

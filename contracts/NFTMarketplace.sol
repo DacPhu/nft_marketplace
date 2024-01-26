@@ -197,7 +197,7 @@ contract NFTMarketplace is ERC721URIStorage {
         MarketItem storage auction = idToMarketItem[tokenId];
         require(msg.sender == auction.seller, "Only the token owner can end the auction");
         require(auction.highestBidder != address(0), "Auction must have at least one bid");
-        
+        itemAuctionCount--;
         _transfer(address(this), idToMarketItem[tokenId].highestBidder, tokenId);
         auction.auctionCompleted = true;
         auction.owner = auction.highestBidder;
