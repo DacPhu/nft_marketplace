@@ -19,7 +19,6 @@ const NFTDetails = () => {
     highestBid: "",
     highestBidder: "",
     seller: "",
-    directSold: "",
   });
 
   const router = useRouter();

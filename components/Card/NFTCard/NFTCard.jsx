@@ -62,28 +62,9 @@ const NFTCard = ({ NFTData }) => {
 
           <div className={Style.NFTCard_box_price}>
             <div className={Style.NFTCard_box_price_box}>
-              { el.directSold == false ?
-                (
-                  <>
-                  <small>Current Highest Bid</small>
-                  <p> {el.highestBid} ETH</p>
-                  </>
-                ) 
-                :
-                (<>
-                    <small>Price</small>
-                    <p> {el.price} ETH</p>
-                  </>
-                )
-              }
-              
+              <small>Price</small>
+              <p> {el.price} ETH</p>
             </div>
-            { el.directSold == false && (
-              <p className={Style.NFTCard_box_price_stock}>
-              <MdTimer /> <span>{i + 1} hours left</span>
-              </p>
-            )}
-            
           </div>
         </div>
         </Link>

@@ -26,7 +26,6 @@ const searchAuctionPage = () => {
   const onHandleSearch = (value) => {
     const filteredAuctionNFTs = auctionNFTs.filter(({name}) =>
       name.toLowerCase().includes(value.toLowerCase()));
-
     if(filteredAuctionNFTs.length === 0){
       setAuctionNFTs(auctionNFTsCopy);
     }
@@ -37,7 +36,7 @@ const searchAuctionPage = () => {
 
   const onClearSearch = () => {
     if(auctionNFTs.length && auctionNFTsCopy.length){
-      setNfts(auctionNFTsCopy);
+      setAuctionNFTs(auctionNFTsCopy);
     }
   };
 

@@ -33,7 +33,7 @@ import { NFTMarketplaceContext } from "../../Context/NFTMarketplaceContext.js";
 const NFTOwnDescription = ({nft}) => {
   const [social, setSocial] = useState(false);
   const [NFTMenu, setNFTMenu] = useState(false);
-  const [provanance, setProvanance] = useState(false);
+  const [provanance, setProvanance] = useState(true);
   const [owner, setOwner] = useState(false);
 
   const router = useRouter();

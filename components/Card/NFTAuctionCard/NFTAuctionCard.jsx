@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { BsImage } from "react-icons/bs";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
@@ -9,9 +9,13 @@ import Link from "next/link";
 import Style from "./NFTAuctionCard.module.css";
 import { LikeProfile } from "../../componentsindex";
 
+// IMPORT SMART CONTRACT
+import { NFTMarketplaceContext } from "../../../Context/NFTMarketplaceContext";
+
 const NFTAuctionCard = ({ NFTData }) => {
   const [like, setLike] = useState(false);
   const [likeInc, setLikeInc] = useState(21);
+  const { getTimeEndAuction } = useContext(NFTMarketplaceContext);
 
   const likeNFT = () => {
     if (!like) {
@@ -22,6 +26,28 @@ const NFTAuctionCard = ({ NFTData }) => {
       setLikeInc(23 + 1);
     }
   };
+
+  const [countdown, setCountdown] = useState({
+    hours: 0,
+  });
+  
+  useEffect(() => {
+    const updateCountdown = async (el) => {
+      try {
+        const timeEnd = await getTimeEndAuction(el);
+        const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
+        if (timeEnd !== undefined && currentTimeInSeconds !== undefined) {
+          const timeLeft = timeEnd - currentTimeInSeconds;
+          setCountdown({
+            hours: Math.floor(timeLeft / (60 * 60)),
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching time left:', error);
+      }
+    }
+    NFTData.forEach((el) => updateCountdown(el));
+  }, [NFTData]);
 
   return (
     <div className={Style.NFTAuctionCard}>
@@ -66,7 +92,7 @@ const NFTAuctionCard = ({ NFTData }) => {
                 <p> {el.highestBid} ETH</p>
             </div>
               <p className={Style.NFTAuctionCard_box_price_stock}>
-              <MdTimer /> <span>{i + 1} hours left</span>
+              <MdTimer /> <span>{countdown.hours} hours left</span>
               </p>
           </div>
         </div>

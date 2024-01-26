@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 //INTERNAL IMPORT
-import { Button, Category, Brand } from "../components/componentsindex";
+import { Category, Brand } from "../components/componentsindex";
 import NFTDetailsPage from "../NFTDetailsPage/NFTDetailsPage";
 
 //IMPORT SMART CONTRACT DATA
@@ -18,7 +18,6 @@ const NFTDetails = () => {
     owner: "",
     price: "",
     seller: "",
-    directSold: "",
   });
 
   const router = useRouter();

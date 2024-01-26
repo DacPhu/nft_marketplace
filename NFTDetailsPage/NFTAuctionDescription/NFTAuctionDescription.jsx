@@ -57,10 +57,10 @@ const NFTAuctionDescription = ({nft}) => {
 
   const historyArray = [
     images.user1,
-    images.user2,
     images.user3,
-    images.user4,
     images.user5,
+    images.user7,
+    images.user9,
   ];
   const provananceArray = [
     images.user6,
@@ -94,9 +94,11 @@ const NFTAuctionDescription = ({nft}) => {
     if (btnText == "Bid History") {
       setHistory(true);
       setProvanance(false);
+      setOwner(false);
     } else if (btnText == "Provanance") {
       setHistory(false);
       setProvanance(true);
+      setOwner(false);
     } else {
       setHistory(false);
       setProvanance(false);
@@ -378,12 +380,6 @@ const NFTAuctionDescription = ({nft}) => {
               <button onClick={(e) => openTabs(e)}>Provanance</button>
               <button onClick={(e) => openTabs(e)}>Owner</button>
             </div>
-
-            {history && (
-              <div className={Style.NFTAuctionDescription_box_profile_biding_box_card}>
-                <NFTTabs dataTab={historyArray} />
-              </div>
-            )}
             {
               <Dialog open={open} onClose={handleClose} sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '90vh' } }}>
                 <DialogTitle sx={{ fontSize: '2rem' }}>Enter Bid Price</DialogTitle>

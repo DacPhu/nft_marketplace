@@ -34,7 +34,7 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } 
 const NFTDescription = ({ nft }) => {
   const [social, setSocial] = useState(false);
   const [NFTMenu, setNFTMenu] = useState(false);
-  const [provanance, setProvanance] = useState(false);
+  const [provanance, setProvanance] = useState(true);
   const [owner, setOwner] = useState(false);
 
   const router = useRouter();
