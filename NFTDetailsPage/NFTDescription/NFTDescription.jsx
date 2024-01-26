@@ -340,97 +340,29 @@ const NFTDescription = ({ nft }) => {
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_button}>
-              {currentAccount == nft.seller.toLowerCase()
-                ? (nft.directSold == "true"
-                  ? (
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={() => cancelSelling(nft)}
-                      className={Style.button}
-                      size="large"
-                    >
-                      Cancel Selling
-                    </Button>
-                  )
-                  : (
-                    <>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => finishAuction(nft)}
-                        size="large"
-                        className={Style.button}
-                      >
-                        Finish Auction
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => cancelAuction(nft)}
-                        size="large"
-                        className={Style.button}
-                      >
-                        Cancel Auction
-                      </Button>
-                    </>
-                  )
+            {currentAccount == nft.seller.toLowerCase() 
+              ? (<Button
+                variant="contained"
+                color="error"
+                onClick={() => cancelSelling(nft)}
+                className={Style.button}
+                size="large"
+              >
+                Cancel Selling
+              </Button>
                 )
-                : (currentAccount == nft.owner.toLowerCase()
-                  ? (<>
-                    <Button
-                      startIcon={<FaWallet />}
-                      variant="contained"
-                      color="primary"
-                      onClick={() => router.push(`/reSellToken?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                      size="large"
-                      className={Style.button}
-                    >
-                      List on Marketplace
-                    </Button>
-                    <Button
-                      startIcon={<FaFileContract />}
-                      variant="contained"
-                      color="primary"
-                      onClick={() => router.push(`/startAuction?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                      size="large"
-                      className={Style.button}
-                    >
-                      Start Auction
-                    </Button>
-                  </>)
-                  : (<>
-                    {
-                      nft.directSold == "true"
-                        ? (
-                          <Button
-                            startIcon={<FaWallet />}
-                            variant="contained"
-                            color="success"
-                            onClick={() => buyNFT(nft)}
-                            size="large"
-                            className={Style.button}
-                          >
-                            Buy NFT
-                          </Button>
-                        )
-                        : (
-                          <>
-                            <Button
-                              startIcon={<FaWallet />}
-                              variant="contained"
-                              color="primary"
-                              onClick={handleBidClick}
-                              size="large"
-                              className={Style.button}
-                            >
-                              Place a bid
-                            </Button>
-                          </>
-                        )
-                    }
-
-                    <Button
+              : (<Button
+                startIcon={<FaWallet />}
+                variant="contained"
+                color="success"
+                onClick={() => buyNFT(nft)}
+                size="large"
+                className={Style.button}
+              >
+                Buy NFT
+              </Button>)
+            }
+              <Button
                       startIcon={<FaPercentage />}
                       variant="contained"
                       color="warning"
@@ -440,9 +372,6 @@ const NFTDescription = ({ nft }) => {
                     >
                       Make offer
                     </Button>
-                  </>
-                  ))
-              }
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_tabs}>
@@ -450,37 +379,7 @@ const NFTDescription = ({ nft }) => {
               <button onClick={(e) => openTabs(e)}>Provanance</button>
               <button onClick={() => openOwmer()}>Owner</button>
             </div>
-            {
-              <Dialog open={open} onClose={handleClose} sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '90vh' } }}>
-                <DialogTitle sx={{ fontSize: '2rem' }}>Enter Bid Price</DialogTitle>
-                <DialogContent>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="bidPrice"
-                    label="Bid Price"
-                    type="number"
-                    fullWidth
-                    value={bidPrice}
-                    onChange={(e) => setBidPrice(e.target.value)}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  {/* <Button
-                    btnName="Cancel"
-                    handleClick={() => handleClose()}
-                    classStyle={Style.button}/> */}
-                  <Button onClick={handlePlaceBid} variant="contained" color="primary">
-                    Submit Bid
-                  </Button>
-                  {/* <Button
-                    btnName="Submit Bid"
-                    handleClick={() => handlePlaceBid()}
-                    classStyle={Style.button}/> */}
-                </DialogActions>
-              </Dialog>
-            }
+            
 
             {history && (
               <div className={Style.NFTDescription_box_profile_biding_box_card}>
