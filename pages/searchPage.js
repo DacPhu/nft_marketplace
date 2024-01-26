@@ -2,11 +2,9 @@ import React, {useEffect, useState, useContext} from "react";
 
 //INTERNAL IMPORT
 import Style from "../styles/searchPage.module.css";
-import { Slider, Brand } from "../components/componentsindex";
+import { Slider, Brand, Filter, Banner, NFTCard } from "../components/componentsindex";
 import { SearchBar } from "../SearchPage/searchBarIndex";
-import { Filter } from "../components/componentsindex";
 
-import { NFTCardTwo, Banner } from "../collectionPage/collectionIndex";
 import images from "../img";
 
 // IMPORT SMART CONTRACT
@@ -45,13 +43,13 @@ const searchPage = () => {
 
   return (
     <div className={Style.searchPage}>
-      <Banner bannerImage={images.creatorbackground2} />
+      <Banner bannerImage={images.creatorbackground3} />
       <SearchBar 
         onHandleSearch = {onHandleSearch}
         onClearSearch = {onClearSearch}  
       />
       <Filter />
-      <NFTCardTwo NFTData={nfts} />
+      <NFTCard NFTData={nfts} />
       <Slider />
       <Brand />
     </div>

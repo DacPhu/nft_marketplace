@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React ,{useState, useEffect, useContext, createContext, useRef} from 'react';
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
@@ -46,15 +46,23 @@ export const NFTMarketplaceProvider = ({ children }) => {
     const [currentAccount, setcurrentAccount] = useState("");
     const router = useRouter();
 
+
+    //---DETECTING WHEN CHANGING ACCOUNT
+    useEffect(() => {
+        window.ethereum.on('accountsChanged', function (accounts) {
+            window.location.reload();
+        });
+    }, [])
+
     //---CHECK IF WALLET IS CONNECTED
     const checkIfWalletConnected = async () => {
         try {
-            const isDisconnected = localStorage.getItem("isDisconnected") === "true";
-            console.log(isDisconnected)
-            if (isDisconnected) {
-                return;
-            }
-            if (!window.ethereum)
+          const isDisconnected = localStorage.getItem("isDisconnected") === "true";
+
+          if (isDisconnected) {
+            return;
+          }
+          if(!window.ethereum)
                 return console.log("Install MetaMask");
             const accounts = await window.ethereum.request({
                 method: "eth_accounts"
@@ -107,9 +115,10 @@ export const NFTMarketplaceProvider = ({ children }) => {
     };
 
     //--- DISCONNECT WALLET FUNCTION
-    const disconnectWallet = async () => {
-        setcurrentAccount("");
-        localStorage.setItem("isDisconnected", "true");
+    const disConnectWallet = async () => {
+      setcurrentAccount("");
+      localStorage.setItem("isDisconnected", "true");
+      window.location.reload();
     }
 
     //---UPLOAD TO IPFS FUNCTION
@@ -258,7 +267,6 @@ export const NFTMarketplaceProvider = ({ children }) => {
             const contract = fetchContract(provider);
 
             const data = await contract.fetchMarketItems();
-            console.log("NFT Market DATA", data);
             const items = await Promise.all(
                 data.map(async ({ tokenId, seller, owner, price: unformattedPrice, directSold }) => {
                     const tokenURI = await contract.tokenURI(tokenId);
@@ -495,7 +503,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
             value={{
                 checkIfWalletConnected,
                 connectWallet,
-                disconnectWallet,
+                disConnectWallet,
                 uploadToIPFS,
                 createNFT,
                 fetchNFTs,

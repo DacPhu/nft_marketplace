@@ -8,11 +8,14 @@ import Subscribe from "./Subscribe/Subscribe";
 import Title from "./Title/Title";
 import Category from "./Category/Category";
 import Filter from "./Filter/Filter";
-import NFTCard from "./NFTCard/NFTCard";
+import NFTCard from "./Card/NFTCard/NFTCard";
+import NFTOwnCard from "./Card/NFTOwnCard/NFTOwnCard"
+import NFTAuctionCard from "./Card/NFTAuctionCard/NFTAuctionCard"
 import LikeProfile from "./LikeProfile/LikeProfile";
 import FollowerTab from "./FollowerTab/FollowerTab";
 import Slider from "./Slider/Slider";
 import Brand from "./Brand/Brand";
+import Banner from "./Banner/Banner";
 
 export {
   Button,
@@ -26,8 +29,11 @@ export {
   Category,
   Filter,
   NFTCard,
+  NFTOwnCard,
+  NFTAuctionCard,
   LikeProfile,
   FollowerTab,
   Slider,
   Brand,
+  Banner,
 };

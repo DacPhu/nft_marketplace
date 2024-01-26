@@ -8,8 +8,7 @@ import {
   BigNFTSilder,
   Title,
   Category,
-  Filter,
-  NFTCard,
+  Slider,
   FollowerTab,
 } from "../components/componentsindex";
 import { getTopCreators } from "../TopCreator/TopCreator";
@@ -41,12 +40,7 @@ const Home = () => {
       <HeroSection />
       <BigNFTSilder />
       {creators && <FollowerTab TopCreator={creators}/>}
-      <Title
-        heading="Featured NFTs"
-        paragraph="Discover the most outstanding NFTs in all topics of life."
-      />
-      <Filter />
-      <NFTCard NFTData={nfts}/>
+      <Slider />
       <Service />
       <Title
         heading="Browse by category"
