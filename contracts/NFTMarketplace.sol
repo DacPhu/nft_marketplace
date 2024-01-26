@@ -284,7 +284,7 @@ contract NFTMarketplace is ERC721URIStorage {
         uint256 currentIndex = 0;
 
         for (uint256 i = 0; i < totalItemCount; i++) {
-            if (idToMarketItem[i + 1].owner == msg.sender
+            if (idToMarketItem[i + 1].seller == msg.sender
             && idToMarketItem[i + 1].directSold == false
             && idToMarketItem[i + 1].sold == false) 
                 itemCount++;
@@ -292,7 +292,7 @@ contract NFTMarketplace is ERC721URIStorage {
 
         MarketItem[] memory items = new MarketItem[](itemCount);
         for (uint256 i = 0; i < totalItemCount; i++) {
-            if (idToMarketItem[i + 1].owner == msg.sender
+            if (idToMarketItem[i + 1].seller == msg.sender
             && idToMarketItem[i + 1].directSold == false
             && idToMarketItem[i + 1].sold == false) {
                 uint256 currentId = i + 1;
