@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
+import { notification } from 'antd';
 import {
   MdVerified,
   MdCloudUpload,
@@ -103,12 +104,33 @@ const NFTDescription = ({ nft }) => {
     setOpen(false);
   };
   const handlePlaceBid = () => {
-    if (bidPrice.trim() !== '') {
-      placeBid(nft, bidPrice);
-
-     // alert(`Placing bid with price: ${bidPrice} ETH`);
-      setOpen(false); // Close the dialog after placing bid
+    // Validate bid price
+    const numericBidPrice = parseFloat(bidPrice);
+    const numericHighestBid = parseFloat(nft.highestBid);
+    
+    if (isNaN(numericBidPrice) || numericBidPrice <= 0) {
+      notification.error({
+        message: 'Invalid Bid Price',
+        description: 'Please enter a valid bid price greater than 0.',
+      });
+      return;
     }
+    
+    if (numericBidPrice <= numericHighestBid) {
+      notification.error({
+        message: 'Invalid Bid Price',
+        description: 'Bid price must be higher than the current highest bid.',
+      });
+      return;
+    }
+  
+    // Proceed with placing bid
+    placeBid(nft, bidPrice);
+    notification.success({
+      message: 'Bid Placed Successfully',
+      description: `Your bid of ${bidPrice} ETH has been successfully placed.`,
+    });
+    setOpen(false); // Close the dialog after placing bid
   };
 
   const [countdown, setCountdown] = useState({
