@@ -186,7 +186,7 @@ const NFTOwnDescription = ({nft}) => {
                   startIcon={<FaWallet />}
                   variant="contained"
                   color="primary"
-                  onClick={() => router.push(`/reSellToken?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                  onClick={() => router.push(`/startSell?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
                   size="large"
                   className={Style.button}>
                     List on Marketplace

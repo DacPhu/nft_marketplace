@@ -71,7 +71,7 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     /* Mints a token and lists it in the marketplace */
-    function createToken(string memory tokenURI, uint256 price)
+    function createToken(string memory tokenURI)
         public
         payable
         returns (uint256)
@@ -81,17 +81,34 @@ contract NFTMarketplace is ERC721URIStorage {
 
         _mint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, tokenURI);
-        createMarketItem(newTokenId, price);
+        idToMarketItem[newTokenId] = MarketItem(
+            newTokenId, // tokenId
+            payable(address(0)), // seller
+            payable(address(msg.sender)), // owner
+            0, // price
+            true, // is sold
+            true, // type sold
+
+            block.timestamp, // time start auction
+            block.timestamp, // time end auction
+
+            payable(address(0)), // highest bidder
+            0, // highest bid
+            false // auction completed
+        );
         return newTokenId;
     }
 
-    function createMarketItem(uint256 tokenId, uint256 price) private {
+    function createMarketItem(uint256 tokenId, uint256 price) public payable {
         require(price > 0, 'Price must be at least 1 wei');
         require(
             msg.value == listingPrice,
             'Price must be equal to listing price'
         );
-
+        require(
+            idToMarketItem[tokenId].owner == msg.sender,
+            'Only item owner can perform this operation'
+        );
         idToMarketItem[tokenId] = MarketItem(
             tokenId, // tokenId
             payable(msg.sender), // seller
@@ -146,26 +163,6 @@ contract NFTMarketplace is ERC721URIStorage {
 
         itemAuctionCount++;
         idToMarketItem[tokenId] = auction;
-        _transfer(msg.sender, address(this), tokenId);
-    }
-
-    /* allows someone to resell a token they have purchased */
-    function resellToken(uint256 tokenId, uint256 price) public payable {
-        require(
-            idToMarketItem[tokenId].owner == msg.sender,
-            'Only item owner can perform this operation'
-        );
-        require(
-            msg.value == listingPrice,
-            'Price must be equal to listing price'
-        );
-        idToMarketItem[tokenId].sold = false;
-        idToMarketItem[tokenId].price = price;
-        idToMarketItem[tokenId].seller = payable(msg.sender);
-        idToMarketItem[tokenId].owner = payable(address(this));
-        idToMarketItem[tokenId].directSold = true;
-        itemMarketCount++;
-
         _transfer(msg.sender, address(this), tokenId);
     }
 

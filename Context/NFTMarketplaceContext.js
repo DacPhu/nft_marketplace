@@ -202,8 +202,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
                 const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
 
                 // Call the createSale function with the constructed IPFS URL and price
-                await createSale(ipfsUrl, price);
-                router.push('/searchPage');
+                await createToken(ipfsUrl);
+                router.push('/author');
                 // Redirect to another page using the router (if needed)x
             } else {
                 throw new Error("Failed to upload file to IPFS");
@@ -216,18 +216,28 @@ export const NFTMarketplaceProvider = ({ children }) => {
             });
         }
     };
+    
+    //--- CREATE NFT FUNCTION
+    const createToken = async (url) => {
+        try {
+            const contract = await connectingWithSmartContract();
+            const transaction = await contract.createToken(url);
+            await transaction.wait();
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: 'Error while creating NFT Token'
+            });
+        }
+    }
 
     //---CREATESALE FUNCTION
-    const createSale = async (url, formInputPrice, isReselling, id) => {
+    const createSale = async (tokenId, formInputPrice) => {
         try {
             const price = ethers.parseUnits(formInputPrice, "ether");
             const contract = await connectingWithSmartContract();
             const listingPrice = await contract.getListingPrice();
-            const transaction = !isReselling
-                ? await contract.createToken(url, price, {
-                    value: listingPrice.toString(),
-                })
-                : await contract.resellToken(id, price, {
+            const transaction = await contract.createMarketItem(tokenId, price, {
                     value: listingPrice.toString(),
                 });
             await transaction.wait();
@@ -398,9 +408,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
             const contract = await connectingWithSmartContract();
             const price = ethers.parseUnits(nft.price, "ether");
 
-            const transaction = await contract.createMarketSale(nft.tokenId, {
-                value: price,
-            });
+            const transaction = await contract.createMarketSale(nft.tokenId, price);
 
             await transaction.wait();
             router.push("/author");
@@ -504,6 +512,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
                 disConnectWallet,
                 uploadToIPFS,
                 createNFT,
+                createSale,
                 fetchNFTs,
                 fetchMyNFTsOrListedNTFs,
                 buyNFT,

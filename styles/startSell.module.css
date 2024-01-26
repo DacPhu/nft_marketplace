@@ -1,19 +1,19 @@
 
-.reSellToken{
+.startSellToken{
     width: 100%;
     margin-block: 4rem;
 }
 
-.reSellToken_box{
+.startSellToken_box{
     width: 60%;
     margin: 0 auto;
 }
 
-.reSellToken_box h1{
+.startSellToken_box h1{
     font-size: 3rem;
 }
 
-.reSellToken_box_image{
+.startSellToken_box_image{
     margin: 4rem;
     
 }

@@ -4,14 +4,14 @@ import axios from 'axios';
 import Image from 'next/image';
 
 //INTERNAL IMPORT
-import Style from '../styles/reSell.module.css'
+import Style from '../styles/startSell.module.css'
 import formStyle from '../AccountPage/Form/Form.module.css'
 import { Button } from '../components/componentsindex';
 
 //IMPORT SMART CONTRACT
 import { NFTMarketplaceContext } from '../Context/NFTMarketplaceContext';
 
-const reSellToken = () => {
+const startSell = () => {
     const {createSale} = useContext(NFTMarketplaceContext);
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState("");
@@ -29,15 +29,15 @@ const reSellToken = () => {
         fetchNFT();
     }, [id]);
 
-    const resell = async() => {
-        await createSale(tokenURI, price, true, id);
+    const start = async() => {
+        await createSale(id, price);
         router.push("/searchPage");
     };
 
   return (
-    <div className={Style.reSellToken}>
-        <div className= {Style.reSellToken_box}>
-            <h1> ReSell your token, set price</h1>
+    <div className={Style.startSellToken}>
+        <div className= {Style.startSellToken_box}>
+            <h1> startSell your token, set price</h1>
             <div className={formStyle.Form_box_input}>
                 <label htmlFor="name">Price</label>
                 <input
@@ -48,18 +48,18 @@ const reSellToken = () => {
                     onChange={(e) => setPrice(e.target.value)}
                 />
             </div>
-            <div className={Style.reSellToken_box_image}> 
+            <div className={Style.startSellToken_box_image}> 
                 {
                     image && <Image src = {image} alt="NFT" width={400} height={400}/>
                 }
             </div>
 
-            <div className={Style.reSellToken_box_btn}>
-                <Button btnName="Listing" handleClick={() => resell()} />
+            <div className={Style.startSellToken_box_btn}>
+                <Button btnName="Listing" handleClick={() => start()} />
             </div>
         </div>
     </div>
   )
 }
 
-export default reSellToken
+export default startSell
