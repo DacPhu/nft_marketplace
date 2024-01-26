@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
+import { notification } from 'antd';
 import {
   MdVerified,
   MdCloudUpload,
@@ -23,7 +24,9 @@ import { BiTransferAlt, BiDollar } from "react-icons/bi";
 //INTERNAL IMPORT
 import Style from "./NFTAuctionDescription.module.css";
 import images from "../../img";
-import { Button } from "../../components/componentsindex.js";
+
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+
 import { NFTTabs } from "../NFTDetailsIndex";
 
 //IMPORT SMART CONTRACT
@@ -89,22 +92,45 @@ const NFTAuctionDescription = ({nft}) => {
     }
   };
 
+  const [open, setOpen] = useState(false); // Add this state for controlling dialog visibility
   const [bidPrice, setBidPrice] = useState('');
 
+
   const handleBidClick = () => {
-    const userInput = prompt("Enter Bid Price:");
-
-    if (userInput !== null) {
-      setBidPrice(userInput);
-      handlePlaceBid();
-    }
+    setOpen(true); // Open the dialog when bid button is clicked
   };
-
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handlePlaceBid = () => {
+    // Validate bid price
+    const numericBidPrice = parseFloat(bidPrice);
+    const numericHighestBid = parseFloat(nft.highestBid);
+    
+    if (isNaN(numericBidPrice) || numericBidPrice <= 0) {
+      notification.error({
+        message: 'Invalid Bid Price',
+        description: 'Please enter a valid bid price greater than 0.',
+      });
+      return;
+    }
+    
+    if (numericBidPrice <= numericHighestBid) {
+      notification.error({
+        message: 'Invalid Bid Price',
+        description: 'Bid price must be higher than the current highest bid.',
+      });
+      return;
+    }
+  
+    // Proceed with placing bid
     placeBid(nft, bidPrice);
-    alert(`Placing bid with price: $${bidPrice}`);
+    notification.success({
+      message: 'Bid Placed Successfully',
+      description: `Your bid of ${bidPrice} ETH has been successfully placed.`,
+    });
+    setOpen(false); // Close the dialog after placing bid
   };
-
   const [countdown, setCountdown] = useState({
     days: 0,
     hours: 0,
@@ -295,26 +321,45 @@ const NFTAuctionDescription = ({nft}) => {
             {currentAccount == nft.seller.toLowerCase() 
               ? (<>
                     <Button
-                    btnName="Finish Auction"
-                    handleClick={() => finishAuction(nft)}
-                    classStyle={Style.button}/>
-                    <Button
-                    btnName="Cancel Auction"
-                    handleClick={() => cancelAuction(nft)}
-                    classStyle={Style.button}/>
+                        variant="contained"
+                        color="success"
+                        onClick={() => finishAuction(nft)}
+                        size="large"
+                        className={Style.button}
+                      >
+                        Finish Auction
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => cancelAuction(nft)}
+                        size="large"
+                        className={Style.button}
+                      >
+                        Cancel Auction
+                      </Button>
                   </>)
                 : (<>
-                    <Button
-                        icon={<FaWallet />}
-                        btnName="Place a bid"
-                        handleClick={handleBidClick}
-                        classStyle={Style.button}
-                    />
-                    <Button
-                        icon=<FaPercentage />
-                        btnName="Make offer"
-                        handleClick={() => {}}
-                        classStyle={Style.button}/>
+                   <Button
+                              startIcon={<FaWallet />}
+                              variant="contained"
+                              color="primary"
+                              onClick={handleBidClick}
+                              size="large"
+                              className={Style.button}
+                            >
+                              Place a bid
+                            </Button>
+                            <Button
+                      startIcon={<FaPercentage />}
+                      variant="contained"
+                      color="warning"
+                      onClick={() => { }}
+                      size="large"
+                      className={Style.button}
+                    >
+                      Make offer
+                    </Button>
                     </>)
             }
             </div>
@@ -330,6 +375,37 @@ const NFTAuctionDescription = ({nft}) => {
                 <NFTTabs dataTab={historyArray} />
               </div>
             )}
+            {
+              <Dialog open={open} onClose={handleClose} sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '90vh' } }}>
+                <DialogTitle sx={{ fontSize: '2rem' }}>Enter Bid Price</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="bidPrice"
+                    label="Bid Price"
+                    type="number"
+                    fullWidth
+                    value={bidPrice}
+                    onChange={(e) => setBidPrice(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  {/* <Button
+                    btnName="Cancel"
+                    handleClick={() => handleClose()}
+                    classStyle={Style.button}/> */}
+                  <Button onClick={handlePlaceBid} variant="contained" color="primary">
+                    Submit Bid
+                  </Button>
+                  {/* <Button
+                    btnName="Submit Bid"
+                    handleClick={() => handlePlaceBid()}
+                    classStyle={Style.button}/> */}
+                </DialogActions>
+              </Dialog>
+            }
             {provanance && (
               <div className={Style.NFTAuctionDescription_box_profile_biding_box_card}>
                 <NFTTabs dataTab={provananceArray} />

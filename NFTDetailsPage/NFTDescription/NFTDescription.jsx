@@ -199,21 +199,36 @@ const NFTDescription = ({ nft }) => {
             <div className={Style.NFTDescription_box_profile_biding_box_button}>
             {currentAccount == nft.seller.toLowerCase() 
               ? (<Button
-                  btnName="Cancel Selling"
-                  handleClick={() => cancelSelling(nft)}
-                  classStyle={Style.button}/>
+                variant="contained"
+                color="error"
+                onClick={() => cancelSelling(nft)}
+                className={Style.button}
+                size="large"
+              >
+                Cancel Selling
+              </Button>
                 )
               : (<Button
-                  icon=<FaWallet />
-                  btnName="Buy NFT"
-                  handleClick={() => buyNFT(nft)}
-                  classStyle={Style.button}/>)
+                startIcon={<FaWallet />}
+                variant="contained"
+                color="success"
+                onClick={() => buyNFT(nft)}
+                size="large"
+                className={Style.button}
+              >
+                Buy NFT
+              </Button>)
             }
               <Button
-                icon=<FaPercentage />
-                btnName="Make offer"
-                handleClick={() => {}}
-                classStyle={Style.button}/>
+                      startIcon={<FaPercentage />}
+                      variant="contained"
+                      color="warning"
+                      onClick={() => { }}
+                      size="large"
+                      className={Style.button}
+                    >
+                      Make offer
+                    </Button>
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_tabs}>
@@ -221,37 +236,7 @@ const NFTDescription = ({ nft }) => {
               <button onClick={(e) => openTabs(e)}>Provanance</button>
               <button onClick={(e) => openTabs(e)}>Owner</button>
             </div>
-            {
-              <Dialog open={open} onClose={handleClose} sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '90vh' } }}>
-                <DialogTitle sx={{ fontSize: '2rem' }}>Enter Bid Price</DialogTitle>
-                <DialogContent>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="bidPrice"
-                    label="Bid Price"
-                    type="number"
-                    fullWidth
-                    value={bidPrice}
-                    onChange={(e) => setBidPrice(e.target.value)}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  {/* <Button
-                    btnName="Cancel"
-                    handleClick={() => handleClose()}
-                    classStyle={Style.button}/> */}
-                  <Button onClick={handlePlaceBid} variant="contained" color="primary">
-                    Submit Bid
-                  </Button>
-                  {/* <Button
-                    btnName="Submit Bid"
-                    handleClick={() => handlePlaceBid()}
-                    classStyle={Style.button}/> */}
-                </DialogActions>
-              </Dialog>
-            }
+            
 
             {provanance && (
               <div className={Style.NFTDescription_box_profile_biding_box_card}>
