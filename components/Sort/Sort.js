@@ -4,12 +4,9 @@ import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 //INTERNAL IMPORT
 import styles from './Sort.module.css'; // Rename your CSS file accordingly
 
-const Sort = ({}) => {
-  const [sortDirection, setSortDirection] = useState('asc');
-
+const Sort = ({sortOrder, onChangeSortOrder }) => {
   const handleSort = (direction) => {
-    setSortDirection(direction);
-    //onSort(direction);
+    onChangeSortOrder(direction);
   };
 
   return (
@@ -17,9 +14,9 @@ const Sort = ({}) => {
       <div className={styles.sort_box}>
         <div className={styles.sort_box_left}>
           {/* When clicked, toggle the sort direction and call the onSort function */}
-          <button onClick={() => handleSort(sortDirection === 'asc' ? 'desc' : 'asc')}>
+          <button onClick={() => handleSort(sortOrder === 'asc' ? 'desc' : 'asc')}>
             <span>Sort </span>
-            {sortDirection === 'asc' ? (
+            {sortOrder === 'asc' ? (
               <FaSortAmountUp className={styles.icon}/>
             ) : (
               <FaSortAmountDown className={styles.icon}/>

@@ -17,7 +17,7 @@ import { TiTick } from "react-icons/ti";
 import Style from "./Filter.module.css";
 import Sort from "../Sort/Sort"
 
-const Filter = () => {
+const Filter = ({sortOrder, onChangeSortOrder }) => {
   const [filter, setFilter] = useState(true);
   const [image, setImage] = useState(true);
   const [video, setVideo] = useState(true);
@@ -77,7 +77,7 @@ const Filter = () => {
           </div>
         </div>
 
-        <Sort></Sort>
+        <Sort sortOrder={sortOrder} onChangeSortOrder={onChangeSortOrder}></Sort>
 
       </div>
 
