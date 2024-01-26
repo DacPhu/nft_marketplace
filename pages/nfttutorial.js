@@ -21,6 +21,7 @@ const nfttutorial = () => {
           </ul>
         </aside>
         <main className={styles.content}>
+          <p>Last Updated: 11/11/2023</p>
           <section id="getting-started">
             <h2>Getting Started</h2>
             <p>First, you access the website, and then you must link it to your wallet using
