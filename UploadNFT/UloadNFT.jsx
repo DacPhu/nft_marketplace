@@ -12,6 +12,7 @@ import formStyle from "../AccountPage/Form/Form.module.css";
 import images from "../img";
 import { Button } from "../components/componentsindex.js";
 import { DropZone } from "../UploadNFT/uploadNFTIndex.js";
+import Loading from "../components/Loading/Loading.jsx";
 
 const UloadNFT = ( {uploadToIPFS, createNFT}) => {
   const [price, setPrice] = useState("");
@@ -24,6 +25,7 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
   const [category, setCategory] = useState(0);
   const [properties, setProperties] = useState("");
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -53,6 +55,16 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
       category: "Photography",
     },
   ];
+
+  const handleUploadClick = async () => {
+    setIsLoading(true); 
+    try {
+      await createNFT(name, price, image, description, router);
+    } catch (error) {
+      console.error("Error during NFT creation:", error);
+    }
+    setIsLoading(false); 
+  };
 
   return (
     <div className={Style.upload}>
@@ -208,22 +220,12 @@ const UloadNFT = ( {uploadToIPFS, createNFT}) => {
             </div>
           </div>
         </div>
-
+        <Loading isLoading={isLoading} />
         <div className={Style.upload_box_btn}>
           <Button
             btnName="Upload"
-            handleClick={async() => 
-              createNFT(name, 
-                        price, 
-                        image, 
-                        description, 
-                        router, 
-                        // website, 
-                        // royalties, 
-                        // fileSize, 
-                        // category,
-                        // properties
-                        )}
+            handleClick={handleUploadClick}
+            
             classStyle={Style.upload_box_btn_style}
           />
           <Button
