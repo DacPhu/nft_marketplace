@@ -466,8 +466,11 @@ export const NFTMarketplaceProvider = ({ children }) => {
     const placeBid = async (nft, userBidPrice) => {
         try {
             const contract = await connectingWithSmartContract();
-            const bidPrice = ethers.parseUnits(userBidPrice, "ether"); // Use a different variable name
-
+            var bidPrice;
+            if((typeof userBidPrice) == "string")
+                bidPrice = ethers.parseUnits(userBidPrice, "ether"); // Use a different variable name
+            else
+                bidPrice = userBidPrice;
             const transaction = await contract.placeBid(nft.tokenId, { value: bidPrice });
 
             await transaction.wait();
