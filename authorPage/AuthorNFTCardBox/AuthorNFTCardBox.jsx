@@ -3,7 +3,7 @@ import React, { useState } from "react";
 //INTERNAL IMPORT
 import Style from "./AuthorNFTCardBox.module.css";
 import images from "../../img";
-import { NFTCard } from "../../collectionPage/collectionIndex";
+import { NFTCard, NFTOwnCard, NFTAuctionCard } from "../../components/componentsindex";
 import FollowerTabCard from "../../components/FollowerTab/FollowerTabCard/FollowerTabCard";
 
 const AuthorNFTCardBox = ({
@@ -17,31 +17,6 @@ const AuthorNFTCardBox = ({
   myNFTs,
   auctionNFTs,
 }) => {
-  // const collectiablesArray = [
-  //   images.nft_image_1,
-  //   images.nft_image_2,
-  //   images.nft_image_3,
-  //   images.nft_image_1,
-  //   images.nft_image_2,
-  //   images.nft_image_3,
-  //   images.nft_image_1,
-  //   images.nft_image_2,
-  // ];
-
-  // const createdArray = [
-  //   images.nft_image_1,
-  //   images.nft_image_2,
-  //   images.nft_image_3,
-  //   images.nft_image_1,
-  // ];
-
-  // const likeArray = [
-  //   images.nft_image_1,
-  //   images.nft_image_2,
-  //   images.nft_image_3,
-  //   images.nft_image_1,
-  //   images.nft_image_2,
-  // ];
 
   const followerArray = [
     {
@@ -95,8 +70,8 @@ const AuthorNFTCardBox = ({
   return (
     <div className={Style.AuthorNFTCardBox}>
       {listed && <NFTCard NFTData={nfts} />}
-      {owned && <NFTCard NFTData={myNFTs} />}
-      {auction && <NFTCard NFTData = {auctionNFTs} />}
+      {owned && <NFTOwnCard NFTData={myNFTs} />}
+      {auction && <NFTAuctionCard NFTData = {auctionNFTs} />}
       {like && <NFTCard NFTData={nfts} />}
       {follower && (
         <div className={Style.AuthorNFTCardBox_box}>

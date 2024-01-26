@@ -47,6 +47,14 @@ const NFTOwnDescription = ({nft}) => {
     images.user10,
   ];
 
+  const ownerArray = [
+    images.user1,
+    images.user2,
+    images.user3,
+    images.user4,
+    images.user5,
+  ];
+
   const openSocial = () => {
     if (!social) {
       setSocial(true);
@@ -186,9 +194,8 @@ const NFTOwnDescription = ({nft}) => {
             </div>
 
             <div className={Style.NFTOwnDescription_box_profile_biding_box_tabs}>
-              <button onClick={(e) => openTabs(e)}>Bid History</button>
               <button onClick={(e) => openTabs(e)}>Provanance</button>
-              <button onClick={() => openOwmer()}>Owner</button>
+              <button onClick={(e) => openTabs(e)}>Owner</button>
             </div>
 
             {provanance && (
