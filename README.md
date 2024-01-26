@@ -13,6 +13,9 @@ Polygon Mumbai: npx hardhat run scripts/deploy.js --network polygon_mumbai
 # install kommunicate
 npm i @kommunicate/kommunicate-chatbot-plugin
 
+# install mui
+npm install @mui/material @emotion/react @emotion/styled
+
 # run web
 npm run dev
 
