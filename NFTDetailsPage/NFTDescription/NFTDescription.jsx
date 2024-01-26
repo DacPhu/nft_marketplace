@@ -34,7 +34,6 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } 
 const NFTDescription = ({ nft }) => {
   const [social, setSocial] = useState(false);
   const [NFTMenu, setNFTMenu] = useState(false);
-  const [history, setHistory] = useState(true);
   const [provanance, setProvanance] = useState(false);
   const [owner, setOwner] = useState(false);
 
@@ -44,7 +43,7 @@ const NFTDescription = ({ nft }) => {
     cancelSelling,
     currentAccount } = useContext(NFTMarketplaceContext);
 
-  const historyArray = [
+  const ownerArray = [
     images.user1,
     images.user2,
     images.user3,
@@ -80,113 +79,14 @@ const NFTDescription = ({ nft }) => {
   const openTabs = (e) => {
     const btnText = e.target.innerText;
 
-    if (btnText == "Bid History") {
-      setHistory(true);
+    if (btnText == "Owner") {
+      setOwner(true);
       setProvanance(false);
     } else if (btnText == "Provanance") {
-      setHistory(false);
+      setOwner(false);
       setProvanance(true);
     }
   };
-
-  const [open, setOpen] = useState(false); // Add this state for controlling dialog visibility
-  const [bidPrice, setBidPrice] = useState('');
-
-
-  const handleBidClick = () => {
-    setOpen(true); // Open the dialog when bid button is clicked
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handlePlaceBid = () => {
-    // Validate bid price
-    const numericBidPrice = parseFloat(bidPrice);
-    const numericHighestBid = parseFloat(nft.highestBid);
-    
-    if (isNaN(numericBidPrice) || numericBidPrice <= 0) {
-      notification.error({
-        message: 'Invalid Bid Price',
-        description: 'Please enter a valid bid price greater than 0.',
-      });
-      return;
-    }
-    
-    if (numericBidPrice <= numericHighestBid) {
-      notification.error({
-        message: 'Invalid Bid Price',
-        description: 'Bid price must be higher than the current highest bid.',
-      });
-      return;
-    }
-  
-    // Proceed with placing bid
-    placeBid(nft, bidPrice);
-    notification.success({
-      message: 'Bid Placed Successfully',
-      description: `Your bid of ${bidPrice} ETH has been successfully placed.`,
-    });
-    setOpen(false); // Close the dialog after placing bid
-  };
-
-  const [countdown, setCountdown] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  useEffect(() => {
-    const updateCountdown = async () => {
-      try {
-        const timeEnd = await getTimeEndAuction(nft);
-        const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
-        if (timeEnd !== undefined && currentTimeInSeconds !== undefined) {
-          const timeLeft = timeEnd - currentTimeInSeconds;
-          setCountdown({
-            days: Math.floor(timeLeft / (24 * 60 * 60)),
-            hours: Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60)),
-            minutes: Math.floor((timeLeft % (60 * 60)) / 60),
-            seconds: Math.floor(timeLeft % 60),
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching time left:', error);
-        notification.error({
-          message: 'Error fetching time left',
-          description: 'There was an error fetching the time left for the auction.',
-        });
-      }
-    };
-
-    updateCountdown();
-
-    const interval = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        const { days, hours, minutes, seconds } = prevCountdown;
-
-        if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-          clearInterval(interval);
-        } else {
-          const totalSecond = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds - 1;
-          const newDays = Math.floor(totalSecond / (24 * 60 * 60));
-          const newHours = Math.floor((totalSecond % (24 * 60 * 60)) / (60 * 60));
-          const newMinutes = Math.floor((totalSecond % (60 * 60)) / 60);
-          const newSeconds = Math.floor(totalSecond % 60);
-
-          return {
-            days: newDays,
-            hours: newHours >= 0 ? newHours : 0,
-            minutes: newMinutes >= 0 ? newMinutes : 0,
-            seconds: newSeconds,
-          };
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [nft.tokenId]);
-
 
   return (
     <div className={Style.NFTDescription}>
@@ -283,59 +183,16 @@ const NFTDescription = ({ nft }) => {
             </div>
           </div>
           <div className={Style.NFTDescription_box_profile_biding}>
-            {nft.directSold != "true" && (
-              <>
-                <p>
-                  <MdTimer /> <span>Auction ending in:</span>
-                </p>
-
-                <div className={Style.NFTDescription_box_profile_biding_box_timer}>
-                  <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
-                    <p>{countdown.days}</p>
-                    <span>Days</span>
-                  </div>
-                  <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
-                    <p>{countdown.hours}</p>
-                    <span>Hours</span>
-                  </div>
-                  <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
-                    <p>{countdown.minutes}</p>
-                    <span>Mins</span>
-                  </div>
-                  <div className={Style.NFTDescription_box_profile_biding_box_timer_item}>
-                    <p>{countdown.seconds}</p>
-                    <span>Secs</span>
-                  </div>
-                </div>
-              </>
-            )}
-
             <div className={Style.NFTDescription_box_profile_biding_box_price}>
               <div
                 className={
                   Style.NFTDescription_box_profile_biding_box_price_bid
-                }
-              >
-                {nft.directSold == "true" ?
-                  (
-                    <>
-                      <small>Price</small>
-                      <p>
-                        {nft.price != null ? (nft.price).slice(0, 10) + ' ETH' : 'N/A'}
-                        <span>( ≈ ${nft.price != null ? String(nft.price * 2233.41).slice(0, 10) : 'N/A'})</span>
-                      </p>
-                    </>
-                  )
-                  : (
-                    <>
-                      <small> Current Highest Bid</small>
-                      <p>
-                        {nft.highestBid != null ? (nft.highestBid).slice(0, 10) + ' ETH' : 'N/A'}
-                        <span>( ≈ ${nft.highestBid != null ? String(nft.highestBid * 2233.41).slice(0, 10) : 'N/A'})</span>
-                      </p>
-                    </>
-                  )
-                }
+                }>
+                  <small>Price</small>
+                  <p>
+                    {nft.price != null ? (nft.price).slice(0, 10) + ' ETH' : 'N/A'}
+                    <span>( ≈ ${nft.price != null ? String(nft.price * 2233.41).slice(0, 10) : 'N/A'})</span>
+                  </p>
               </div>
             </div>
 
@@ -363,29 +220,21 @@ const NFTDescription = ({ nft }) => {
               </Button>)
             }
               <Button
-                      startIcon={<FaPercentage />}
-                      variant="contained"
-                      color="warning"
-                      onClick={() => { }}
-                      size="large"
-                      className={Style.button}
-                    >
-                      Make offer
-                    </Button>
+                startIcon={<FaPercentage />}
+                variant="contained"
+                color="warning"
+                onClick={() => { }}
+                size="large"
+                className={Style.button}>
+                  Make offer
+              </Button>
             </div>
 
             <div className={Style.NFTDescription_box_profile_biding_box_tabs}>
-              <button onClick={(e) => openTabs(e)}>Bid History</button>
               <button onClick={(e) => openTabs(e)}>Provanance</button>
-              <button onClick={() => openOwmer()}>Owner</button>
+              <button onClick={(e) => openTabs(e)}>Owner</button>
             </div>
             
-
-            {history && (
-              <div className={Style.NFTDescription_box_profile_biding_box_card}>
-                <NFTTabs dataTab={historyArray} />
-              </div>
-            )}
             {provanance && (
               <div className={Style.NFTDescription_box_profile_biding_box_card}>
                 <NFTTabs dataTab={provananceArray} />

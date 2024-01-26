@@ -12,7 +12,7 @@ import {
 import { BsThreeDots } from "react-icons/bs";
 import { FaWallet, FaPercentage, FaFontAwesome, FaFileContract } from "react-icons/fa";
 
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { Button} from '@mui/material';
 import {
   TiSocialFacebook,
   TiSocialLinkedin,
@@ -182,37 +182,24 @@ const NFTOwnDescription = ({nft}) => {
           </div>
           <div className={Style.NFTOwnDescription_box_profile_biding}>
             <div className={Style.NFTOwnDescription_box_profile_biding_box_button}>
-                {/* <Button
-                icon=<FaWallet />
-                btnName="List on Marketplace"
-                handleClick={() => router.push(`/reSellToken?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                classStyle={Style.button}/>
-
                 <Button
-                icon=<FaFileContract />
-                btnName="Start Auction"
-                handleClick={() => router.push(`/startAuction?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                classStyle={Style.button}/> */}
+                  startIcon={<FaWallet />}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => router.push(`/reSellToken?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                  size="large"
+                  className={Style.button}>
+                    List on Marketplace
+                </Button>
                 <Button
-                      startIcon={<FaWallet />}
-                      variant="contained"
-                      color="primary"
-                      onClick={() => router.push(`/reSellToken?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                      size="large"
-                      className={Style.button}
-                    >
-                      List on Marketplace
-                    </Button>
-                <Button
-                      startIcon={<FaFileContract />}
-                      variant="contained"
-                      color="warning"
-                      onClick={() => router.push(`/startAuction?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
-                      size="large"
-                      className={Style.button}
-                    >
-                      Start Auction
-                    </Button>
+                  startIcon={<FaFileContract />}
+                  variant="contained"
+                  color="warning"
+                  onClick={() => router.push(`/startAuction?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                  size="large"
+                  className={Style.button}>
+                    Start Auction
+                  </Button>
             </div>
 
             <div className={Style.NFTOwnDescription_box_profile_biding_box_tabs}>

@@ -47,6 +47,14 @@ const NFTAuctionDescription = ({nft}) => {
         getTimeEndAuction,
         currentAccount} = useContext(NFTMarketplaceContext);
 
+  const ownerArray = [
+    images.user1,
+    images.user2,
+    images.user3,
+    images.user4,
+    images.user5,
+  ];
+
   const historyArray = [
     images.user1,
     images.user2,
@@ -89,12 +97,15 @@ const NFTAuctionDescription = ({nft}) => {
     } else if (btnText == "Provanance") {
       setHistory(false);
       setProvanance(true);
+    } else {
+      setHistory(false);
+      setProvanance(false);
+      setOwner(true);
     }
   };
 
   const [open, setOpen] = useState(false); // Add this state for controlling dialog visibility
   const [bidPrice, setBidPrice] = useState('');
-
 
   const handleBidClick = () => {
     setOpen(true); // Open the dialog when bid button is clicked
@@ -340,26 +351,24 @@ const NFTAuctionDescription = ({nft}) => {
                       </Button>
                   </>)
                 : (<>
-                   <Button
-                              startIcon={<FaWallet />}
-                              variant="contained"
-                              color="primary"
-                              onClick={handleBidClick}
-                              size="large"
-                              className={Style.button}
-                            >
-                              Place a bid
-                            </Button>
-                            <Button
-                      startIcon={<FaPercentage />}
-                      variant="contained"
-                      color="warning"
-                      onClick={() => { }}
-                      size="large"
-                      className={Style.button}
-                    >
-                      Make offer
-                    </Button>
+                      <Button
+                        startIcon={<FaWallet />}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleBidClick}
+                        size="large"
+                        className={Style.button}>
+                          Place a bid
+                      </Button>
+                      <Button
+                        startIcon={<FaPercentage />}
+                        variant="contained"
+                        color="warning"
+                        onClick={() => { }}
+                        size="large"
+                        className={Style.button}>
+                          Make offer
+                      </Button>
                     </>)
             }
             </div>
@@ -367,7 +376,7 @@ const NFTAuctionDescription = ({nft}) => {
             <div className={Style.NFTAuctionDescription_box_profile_biding_box_tabs}>
               <button onClick={(e) => openTabs(e)}>Bid History</button>
               <button onClick={(e) => openTabs(e)}>Provanance</button>
-              <button onClick={() => openOwmer()}>Owner</button>
+              <button onClick={(e) => openTabs(e)}>Owner</button>
             </div>
 
             {history && (
@@ -392,20 +401,18 @@ const NFTAuctionDescription = ({nft}) => {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
-                  {/* <Button
-                    btnName="Cancel"
-                    handleClick={() => handleClose()}
-                    classStyle={Style.button}/> */}
                   <Button onClick={handlePlaceBid} variant="contained" color="primary">
                     Submit Bid
                   </Button>
-                  {/* <Button
-                    btnName="Submit Bid"
-                    handleClick={() => handlePlaceBid()}
-                    classStyle={Style.button}/> */}
                 </DialogActions>
               </Dialog>
             }
+
+            {history && (
+              <div className={Style.NFTAuctionDescription_box_profile_biding_box_card}>
+                <NFTTabs dataTab={historyArray} />
+              </div>
+            )}
             {provanance && (
               <div className={Style.NFTAuctionDescription_box_profile_biding_box_card}>
                 <NFTTabs dataTab={provananceArray} />
