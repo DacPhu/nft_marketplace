@@ -50,7 +50,6 @@ const searchPage = () => {
         onClearSearch = {onClearSearch}  
       />
       <Filter />
-      <Sort />
       <NFTCard NFTData={nfts} />
       <Slider />
       <Brand />

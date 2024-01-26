@@ -4,7 +4,7 @@ import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 //INTERNAL IMPORT
 import styles from './Sort.module.css'; // Rename your CSS file accordingly
 
-const Sort = ({ onSort }) => {
+const Sort = ({}) => {
   const [sortDirection, setSortDirection] = useState('asc');
 
   const handleSort = (direction) => {

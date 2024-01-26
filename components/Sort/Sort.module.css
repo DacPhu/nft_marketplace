@@ -1,15 +1,8 @@
-.sort {
-    padding: 4rem 0;
-    width: 100%;
-}
-
 .sort_box {
-    width: 80%;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 4rem;
 }
 
 .sort_box_left {
@@ -18,21 +11,18 @@
 }
 
 .sort_box_left button {
-    border: none;
-    outline: none;
-    padding: 1rem 1.5rem;
-    border-radius: 2rem;
-    border: 1px solid var(--main-bg-color);
-    transition: all .3s ease-in;
-    font-size: 1.3rem;
-    cursor: pointer;
-    background-color: var(--main-bg-color);
-}
-
-.sort_box_left button:hover {
     border: 1px solid var(--icons-color);
     color: var(--icons-color);
     box-shadow: var(--box-shadow);
+    color: var(--icons-color);
+    box-shadow: var(--box-shadow);
+    outline: none;
+    padding: 1rem 1.5rem;
+    border-radius: 2rem;
+    transition: all .3s ease-in;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: var(--main-bg-color);
 }
 
 .sort_box_right_box {
