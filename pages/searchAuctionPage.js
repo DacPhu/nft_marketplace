@@ -18,7 +18,7 @@ const searchAuctionPage = () => {
   const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
-    fetchAuctionNFTs().then((items) => {
+    fetchAllAuctionNFTs().then((items) => {
       if (sortOrder === 'asc') {
         items.sort((a, b) => a.highestBid - b.highestBid);
       } else {
