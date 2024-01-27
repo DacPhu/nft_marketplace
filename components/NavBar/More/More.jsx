@@ -1,9 +1,16 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 import Style from "./MoreCenter.module.css";
 //INTERNAL IMPORT
 const More = () => {
+  const router = useRouter();
+
+  const handleClick = (url) => {
+    router.push(url);
+  };
+
   const moreCenter = [
     {
       name: "Auctions",
@@ -37,7 +44,7 @@ const More = () => {
   return (
     <div className={Style.box}>
       {moreCenter.map((el, i) => (
-        <div className={Style.moreCenter} key = {i + 1}>
+        <div className={Style.moreCenter} key = {i + 1} onClick={() => handleClick(el.link)}>
           <Link href={{ pathname: `${el.link}` }}>{el.name}</Link>
         </div>
       ))}
