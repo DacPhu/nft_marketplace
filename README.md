@@ -1,25 +1,34 @@
 NFT MARKET NOTES
+# Dependencies
+- next
+- kommunicate
+- mui
+- antd
+## Install
+```shell
+npm install next @kommunicate/kommunicate-chatbot-plugin @mui/material @emotion/react @emotion/styled antd
+```
 
-# install next
-npm install next
-
-# init node
+# Init node
+```shell
 npx hardhat node 
+```
 
-# deploy node
-Local: npx hardhat run scripts/deploy.js --network localhost
-Polygon Mumbai: npx hardhat run scripts/deploy.js --network polygon_mumbai
+# Deploy node
+## Local: 
+```shell
+npx hardhat run scripts/deploy.js --network localhost
+```
 
-# install kommunicate
-npm i @kommunicate/kommunicate-chatbot-plugin
+## Polygon Mumbai: 
+```shell
+npx hardhat run scripts/deploy.js --network polygon_mumbai
+```
 
-# install mui
-npm install @mui/material @emotion/react @emotion/styled
-
-# install antd
-npm install antd
-# run web
+# Run web
+```shell
 npm run dev
+```
 
 # essential documents
 https://docs.pinata.cloud/docs/getting-started
